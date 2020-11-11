@@ -336,7 +336,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(300.f), float32(-30.f));
+		tempDef.position.Set(float32(0.f), float32(40.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
