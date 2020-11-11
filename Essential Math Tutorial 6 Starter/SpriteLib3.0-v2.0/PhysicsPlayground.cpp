@@ -77,6 +77,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
+		ECS::AttachComponent<MoveUp>(entity);
 
 		//Sets up the components
 		std::string fileName = "LinkStandby.png";
@@ -143,6 +144,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
+
 
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
@@ -285,9 +287,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "boxSprite.jpg";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 40);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new DestroyTrigger();
+		ECS::GetComponent<Trigger*>(entity) = new MoveUpTrigger();
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ball);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -351,6 +353,7 @@ void PhysicsPlayground::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -362,6 +365,14 @@ void PhysicsPlayground::KeyboardDown()
 		{
 			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
 			canJump.m_canJump = false;
+		}
+	}
+	if (canMove.moveUp)
+	{
+		if (Input::GetKeyDown(Key::UpArrow))
+		{
+			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y+100), 0);
+			canMove.moveUp = false;
 		}
 	}
 }

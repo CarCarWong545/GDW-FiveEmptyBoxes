@@ -17,6 +17,8 @@ public:
 	void KeyboardDown() override;
 	void KeyboardUp() override;
 
+	bool moveUp = false;
+
 protected:
 	PhysicsPlaygroundListener listener;
 
