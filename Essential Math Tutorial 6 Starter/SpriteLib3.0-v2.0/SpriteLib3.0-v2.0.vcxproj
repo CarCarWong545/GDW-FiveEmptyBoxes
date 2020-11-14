@@ -221,6 +221,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MoveUp.cpp" />
+    <ClCompile Include="MoveUpTrigger.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="PhysicsPlayground.cpp" />
     <ClCompile Include="PhysicsPlaygroundListener.cpp" />
