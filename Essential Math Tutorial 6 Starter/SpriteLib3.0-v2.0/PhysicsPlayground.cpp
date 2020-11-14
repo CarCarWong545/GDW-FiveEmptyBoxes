@@ -73,17 +73,23 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::SetIsMainPlayer(entity, true);
 
 		//Add components
+		ECS::AttachComponent<Player>(entity);
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
 		ECS::AttachComponent<MoveUp>(entity);
+		ECS::AttachComponent<AnimationController>(entity);
 
 		//Sets up the components
-		std::string fileName = "LinkStandby.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
+		std::string fileName = "spritesheets/luigi.png";
+		std::string animations = "Luigi.json";
+		//ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
+		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
+			&ECS::GetComponent<AnimationController>(entity),
+			&ECS::GetComponent<Transform>(entity));
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -313,7 +319,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 void PhysicsPlayground::Update()
 {
-	
+	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	player.Update();
+
 }
 
 

@@ -18,4 +18,6 @@ void MoveUpTrigger::OnEnter()
 void MoveUpTrigger::OnExit()
 {
 	Trigger::OnExit();
+	auto& object = ECS::GetComponent<MoveUp>(m_targetEntities[0]);
+	object.moveUp = false;
 }

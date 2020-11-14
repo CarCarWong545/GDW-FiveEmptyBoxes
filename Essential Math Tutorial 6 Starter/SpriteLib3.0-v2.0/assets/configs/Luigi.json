@@ -1,0 +1,56 @@
+{
+  "LuigiNoEquipmentLeft": {
+    "Frame0": [ 100.0, 240.0, 150.0, 180.0 ],
+    "Frame1": [ 150.0, 240.0, 200.0, 180.0 ],
+    "Frame2": [ 200.0, 240.0, 250.0, 180.0 ],
+    "Frame3": [ 0.0, 240.0, 50.0, 180.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  },
+  "LuigiNoEquipmentRight": {
+    "Frame0": [ 250.0, 60.0, 300.0, 0.0 ],
+    "Frame1": [ 250.0, 220.0, 300.0, 60.0 ],
+    "Frame2": [ 250.0, 180.0, 300.0, 120.0 ],
+    "Frame3": [ 50.0, 240.0, 100.0, 180.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  },
+  "LuigiWalkingLeft": {
+    "Frame0": [ 100.0, 60.0, 150.0, 0.0 ],
+    "Frame1": [ 150.0, 60.0, 200.0, 0.0 ],
+    "Frame2": [ 0.0, 120.0, 50.0, 60.0 ],
+    "Frame3": [ 100.0, 120.0, 150.0, 60.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  },
+  "LuigiWalkingRight": {
+    "Frame0": [ 250.0, 240.0, 300.0, 180.0 ],
+    "Frame1": [ 200.0, 120.0, 250.0, 60.0 ],
+    "Frame2": [ 50.0, 180.0, 100.0, 120.0 ],
+    "Frame3": [ 150.0, 180.0, 200.0, 120.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  },
+  "LuigiFlashlightOffWalkingLeft": {
+    "Frame0": [ 0.0, 60.0, 50.0, 0.0 ],
+    "Frame1": [ 200.0, 60.0, 250.0, 0.0 ],
+    "Frame2": [ 50.0, 120.0, 100.0, 60.0 ],
+    "Frame3": [ 150.0, 120.0, 200.0, 60.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  },
+  "LuigiFlashlightoffWalkingRight": {
+    "Frame0": [ 50.0, 60.0, 100.0, 0.0 ],
+    "Frame1": [ 0.0, 150.0, 50.0, 120.0 ],
+    "Frame2": [ 100.0, 180.0, 150.0, 120.0 ],
+    "Frame3": [ 200.0, 180.0, 250.0, 120.0 ],
+    "NumFrames": 4,
+    "Repeating": true,
+    "SecsPerFrame": 0.30000001192092896
+  }
+}

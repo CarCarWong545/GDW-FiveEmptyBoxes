@@ -3,7 +3,7 @@
 
 #include "BackEnd.h"
 
-#define TOPDOWN
+
 
 enum AnimEnums
 {
@@ -44,8 +44,9 @@ enum AnimTypes
 #endif
 #ifndef TOPDOWN
 	IDLE = 0,
-	WALK = 2,
-	ATTACK = 4
+	//WALK = 2,
+	EQUIP = 2,
+	LIGHT = 4
 #endif
 };
 
@@ -83,6 +84,10 @@ private:
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
 	bool m_locked = false;
+	//is luigi holding his flashlight
+	bool m_flashlight = true;
+	//does luigi have equipment
+	bool m_equip = false;
 
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;
