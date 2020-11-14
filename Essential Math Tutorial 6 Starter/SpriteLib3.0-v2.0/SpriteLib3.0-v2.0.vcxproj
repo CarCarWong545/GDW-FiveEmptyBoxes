@@ -221,10 +221,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
     <ClCompile Include="Matrix.cpp" />
-<<<<<<< Updated upstream
+
     <ClCompile Include="MoveUp.cpp" />
-=======
->>>>>>> Stashed changes
+
     <ClCompile Include="MoveUpTrigger.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="PhysicsPlayground.cpp" />
