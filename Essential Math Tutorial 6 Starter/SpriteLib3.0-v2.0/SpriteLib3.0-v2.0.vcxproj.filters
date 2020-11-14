@@ -350,9 +350,12 @@
     <ClCompile Include="CanJump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="MoveUp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+=======
+>>>>>>> Stashed changes
     <ClCompile Include="MoveUpTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
