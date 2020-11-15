@@ -37,23 +37,30 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	//IDLE ANIMATIONS\\
 	
 	//Idle Left
-	m_animController->AddAnimation(animations["LuigiNoEquipmentLeft"].get<Animation>()); //value 0
-	//Idle Right
-	m_animController->AddAnimation(animations["LuigiNoEquipmentRight"].get<Animation>()); //value 1
+	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleLeft"].get<Animation>()); //Idle + left = 0
+	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleRight"].get<Animation>()); //idle + right = 1
+	m_animController->AddAnimation(animations["LuigiFlashlightOffIdleLeft"].get<Animation>()); //idle + equip + left= 0+0+2
+	m_animController->AddAnimation(animations["LuigiFlashlightoffIdleRight"].get<Animation>()); //idle + equip + right =0+2+1 = 3
+	m_animController->AddAnimation(animations["LuigiIdleLeft"].get<Animation>());//idle + light + left = 0+4+1 = 4;
+	m_animController->AddAnimation(animations["LuigiIdleRight"].get<Animation>());//idle + light+ right = 5
 
 	//Walk Animations\\
 
-	//WalkLeft
-	m_animController->AddAnimation(animations["LuigiWalkingLeft"].get<Animation>()); // 2+0
-	//WalkRight
-	m_animController->AddAnimation(animations["LuigiWalkingRight"].get<Animation>()); // 2+1
+	m_animController->AddAnimation(animations["LuigiNoEquipmentLeft"].get<Animation>()); //walk + left = 6
+	
+	m_animController->AddAnimation(animations["LuigiNoEquipmentRight"].get<Animation>()); //7
 
 	//turn off flashlight
-	m_animController->AddAnimation(animations["LuigiFlashlightOffWalkingLeft"].get<Animation>()); //4 +0
-	m_animController->AddAnimation(animations["LuigiFlashlightoffWalkingRight"].get<Animation>());//4 +1
+	m_animController->AddAnimation(animations["LuigiFlashlightOffWalkingLeft"].get<Animation>());//walk + left + equip = 6+0+2 = 8
+	m_animController->AddAnimation(animations["LuigiFlashlightoffWalkingRight"].get<Animation>()); //9
+
+	//WalkLeft
+	m_animController->AddAnimation(animations["LuigiWalkingLeft"].get<Animation>());//walk+left+light = 6+0+4 = 10 
+	//WalkRight
+	m_animController->AddAnimation(animations["LuigiWalkingRight"].get<Animation>()); //11
 
 	//Set Default Animation
-	m_animController->SetActiveAnim(IDLELEFT);
+	m_animController->SetActiveAnim(IDLERIGHT);
 
 
 }
@@ -104,22 +111,22 @@ void Player::AnimationUpdate()
 {
 	int activeAnimation = 0;
 
-	//if (m_moving)
+	if (m_moving)
 	{
 		//Puts it into the WALK category
-		//activeAnimation = WALK;
-	}
-	if (!m_flashlight && m_equip)
-	{
-		activeAnimation = LIGHT;
-	}
-	else if (m_equip)
-	{
-		activeAnimation = EQUIP;
+		activeAnimation = WALK;
 	}
 	else
 	{
 		activeAnimation = IDLE;
+	}
+	if (m_flashlight && m_equip)
+	{
+		activeAnimation += LIGHT;
+	}
+	else if (m_equip)
+	{
+		activeAnimation += EQUIP;
 	}
 
 	SetActiveAnimation(activeAnimation + (int)m_facing);

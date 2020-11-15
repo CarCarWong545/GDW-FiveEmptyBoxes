@@ -44,9 +44,9 @@ enum AnimTypes
 #endif
 #ifndef TOPDOWN
 	IDLE = 0,
-	//WALK = 2,
 	EQUIP = 2,
-	LIGHT = 4
+	LIGHT = 4,
+	WALK = 6
 #endif
 };
 
