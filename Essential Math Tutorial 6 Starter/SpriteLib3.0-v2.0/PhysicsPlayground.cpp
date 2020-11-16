@@ -80,6 +80,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<CanJump>(entity);
 		ECS::AttachComponent<MoveUp>(entity);
 		ECS::AttachComponent<AnimationController>(entity);
+		ECS::AttachComponent<MoveDown>(entity);
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -332,6 +333,8 @@ void PhysicsPlayground::KeyboardDown()
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
+	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -352,6 +355,15 @@ void PhysicsPlayground::KeyboardDown()
 			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y+100), 0);
 			canMove.moveUp = false;
 		}
+	}
+	if (canMoveD.moveDown)
+	{
+		if (Input::GetKeyDown(Key::DownArrow))
+		{
+			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y - 100), 0);
+			canMoveD.moveDown = false;
+		}
+
 	}
 }
 
