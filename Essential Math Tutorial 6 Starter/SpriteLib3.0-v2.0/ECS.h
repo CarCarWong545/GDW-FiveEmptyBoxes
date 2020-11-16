@@ -15,6 +15,8 @@
 #include "CanJump.h"
 #include "MoveUp.h"
 #include "MoveUpTrigger.h"
+#include "MoveDownTrigger.h"
+#include "MoveDown.h"
 
 
 class ECS abstract
