@@ -72,6 +72,7 @@ void Scene::InitScene(float windowWidth, float windowHeight)
 	}
 }
 
+
 void Scene::BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency, float friction, float density)
 {
 	auto entity = ECS::CreateEntity();

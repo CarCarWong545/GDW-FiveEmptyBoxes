@@ -330,8 +330,10 @@ void PhysicsBody::ScaleBody(float scale, int fixture)
 			b2Vec2 dir = (vert - center);
 			dir.Normalize();
 
-			//Moves the vert out by a scaled direction vector
-			bodyShape->m_vertices[i] += scale * dir;
+		
+			{//Moves the vert out by a scaled direction vector
+				bodyShape->m_vertices[i].x += scale * dir.x;
+			}
 		}
 
 		m_width = rX - lX;

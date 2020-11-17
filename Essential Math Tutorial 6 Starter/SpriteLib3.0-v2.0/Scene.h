@@ -22,6 +22,9 @@ public:
 	//init, as each scene's contents will be different
 	virtual void InitScene(float windowWidth, float windowHeight);
 
+	virtual int ChangeScene() { return -1; }
+	//int ChangeScene();
+
 	//for basic platforms
 	void BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency, float friction = (1.0f), float density = (1.0f));
 	//make environment objects (cant jump)

@@ -17,6 +17,9 @@
 #include "MoveUpTrigger.h"
 #include "MoveDownTrigger.h"
 #include "MoveDown.h"
+#include "SwitchScene.h"
+#include "SwitchScene2.h"
+#include "SceneTrigger.h"
 
 
 class ECS abstract

@@ -12,6 +12,8 @@ public:
 
 	void Update() override;
 
+	int ChangeScene() override;
+
 	//Input overrides
 	void KeyboardHold() override;
 	void KeyboardDown() override;
