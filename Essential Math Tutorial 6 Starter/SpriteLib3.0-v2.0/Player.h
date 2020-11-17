@@ -74,6 +74,8 @@ public:
 	void Update();
 	void MovementUpdate();
 	void AnimationUpdate();
+	//does luigi have equipment
+	bool m_equip = false;
 
 private:
 	void SetActiveAnimation(int anim);
@@ -86,8 +88,7 @@ private:
 	bool m_locked = false;
 	//is luigi holding his flashlight
 	bool m_flashlight = true;
-	//does luigi have equipment
-	bool m_equip = false;
+	
 
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;

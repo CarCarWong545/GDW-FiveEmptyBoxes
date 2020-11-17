@@ -101,10 +101,10 @@ void Player::MovementUpdate()
 	{
 		m_flashlight = !m_flashlight;
 	}
-	if (Input::GetKeyDown(Key::X))
+	/*if (Input::GetKeyDown(Key::X))
 	{
 		m_equip = !m_equip;
-	}
+	}*/
 }
 
 void Player::AnimationUpdate()

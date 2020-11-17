@@ -20,6 +20,7 @@
 #include "SwitchScene.h"
 #include "SwitchScene2.h"
 #include "SceneTrigger.h"
+#include "DialogueTrigger.h"
 
 
 class ECS abstract
