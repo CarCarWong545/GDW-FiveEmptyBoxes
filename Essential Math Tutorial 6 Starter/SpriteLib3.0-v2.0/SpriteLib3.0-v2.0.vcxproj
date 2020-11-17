@@ -203,6 +203,7 @@
     <ClCompile Include="CameraSystem.cpp" />
     <ClCompile Include="CanJump.cpp" />
     <ClCompile Include="DestroyTrigger.cpp" />
+    <ClCompile Include="DialogueTrigger.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="FirstCreation.cpp" />
@@ -221,9 +222,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
     <ClCompile Include="Matrix.cpp" />
-
+    <ClCompile Include="MoveDownTrigger.cpp" />
     <ClCompile Include="MoveUp.cpp" />
-
     <ClCompile Include="MoveUpTrigger.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="PhysicsPlayground.cpp" />

@@ -350,12 +350,16 @@
     <ClCompile Include="CanJump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-
     <ClCompile Include="MoveUp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-
     <ClCompile Include="MoveUpTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDownTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogueTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
