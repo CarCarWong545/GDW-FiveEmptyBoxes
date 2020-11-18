@@ -186,6 +186,21 @@
     <ClInclude Include="CanJump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HallLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchScene3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchScene0.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TranslateTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp">
@@ -360,6 +375,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogueTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HallLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchScene3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchScene0.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TranslateTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
