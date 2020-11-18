@@ -201,6 +201,18 @@
     <ClInclude Include="TranslateTrigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SwitchScene2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanDoor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReturnFoyer1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp">
@@ -390,6 +402,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TranslateTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchScene2.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CanDoor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReturnFoyer1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
