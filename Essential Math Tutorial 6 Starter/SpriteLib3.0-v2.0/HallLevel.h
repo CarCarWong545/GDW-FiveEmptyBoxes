@@ -1,12 +1,11 @@
 #pragma once
-
 #include "Scene.h"
 #include "PhysicsPlaygroundListener.h"
 
-class PhysicsPlayground : public Scene
+class HallLevel :public Scene
 {
 public:
-	PhysicsPlayground(std::string name);
+	HallLevel(std::string name);
 
 	void InitScene(float windowWidth, float windowHeight) override;
 
@@ -22,5 +21,6 @@ public:
 protected:
 	PhysicsPlaygroundListener listener;
 
-	int ball = 0;
 };
+
+

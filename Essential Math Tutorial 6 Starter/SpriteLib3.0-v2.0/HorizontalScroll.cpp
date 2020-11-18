@@ -7,7 +7,7 @@ HorizontalScroll::HorizontalScroll()
 void HorizontalScroll::Update()
 {
 	//Above focus
-	if (m_focus->GetPosition().x > m_cam->m_localPosition.x + m_offset + 105 )
+	if (m_focus->GetPosition().x > m_cam->m_localPosition.x + m_offset+105)
 	{
 		//Calculate the amount the focus has "pushed" the camera right by
 		float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x + m_offset + 105);
