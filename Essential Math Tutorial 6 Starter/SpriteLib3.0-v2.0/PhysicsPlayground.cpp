@@ -233,9 +233,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	////Setup static Top Platform
 	Scene::BoxMaker(325, 10, 30.f, -15.f, 0, 0);
 	////Setup static Wall
-	Scene::BoxMaker(75, 15, 185.f, 23.f, 90, 0);
+	Scene::BoxMaker(100, 15, 185.f, 23.f, 90, 0);
 	////Setup static Wall
-	Scene::BoxMaker(75, 15, -125.f, 23.f, 90, 0);
+	Scene::BoxMaker(100, 15, -125.f, 23.f, 90, 0);
 	//Setup trigger
 	{
 		//Creates entity
