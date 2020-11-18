@@ -104,7 +104,7 @@ void Scene::BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float po
 	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS, friction, density);
 	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.f));
 }
-void Scene::EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency)
+void Scene::EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency,std::string name)
 {
 	auto entity = ECS::CreateEntity();
 
@@ -114,9 +114,9 @@ void Scene::EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float
 	ECS::AttachComponent<PhysicsBody>(entity);
 
 	//Sets up components 
-	std::string fileName = "boxSprite.jpg";
+	std::string fileName = name;
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, spriteSizeX, spriteSizeY);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(10.f, 10.f, 2.f));
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(10.f, 10.f, 0.f));
 
 	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -133,7 +133,7 @@ void Scene::EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float
 
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | ENEMY | OBJECTS);
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, OBJECTS);
 	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 
 }

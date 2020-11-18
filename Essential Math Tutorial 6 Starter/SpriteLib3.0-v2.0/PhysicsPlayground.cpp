@@ -3,6 +3,7 @@
 #include "Utilities.h"
 
 
+
 #include <random>
 
 PhysicsPlayground::PhysicsPlayground(std::string name)
@@ -157,6 +158,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<Dialouge>(entity);
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -207,7 +209,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
 
-		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger();
+		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger(0);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -467,6 +469,8 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
+	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	
 
 	if (Input::GetKeyDown(Key::T))
@@ -497,6 +501,15 @@ void PhysicsPlayground::KeyboardDown()
 			canMoveD.moveDown = false;
 		}
 
+		
+
+	}
+	if (Input::GetKeyDown(Key::F))
+	{
+		if (isdialogue.dialouge) {
+			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
+			equip.m_equip = true;
+		}
 	}
 
 

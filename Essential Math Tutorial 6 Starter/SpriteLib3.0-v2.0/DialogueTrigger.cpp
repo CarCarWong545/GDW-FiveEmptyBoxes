@@ -1,6 +1,8 @@
 #include "DialogueTrigger.h"
 #include "ECS.h"
 #include "Player.h"
+#include "Game.h"
+#
 
 void DialogueTrigger::OnTrigger()
 {
@@ -9,13 +11,24 @@ void DialogueTrigger::OnTrigger()
 
 void DialogueTrigger::OnEnter()
 {
+	
 	Trigger::OnEnter();
-	auto& object = ECS::GetComponent<Player>(m_targetEntities[0]);
-	object.m_equip = true;
+	
+	if (d == 0) {
+		auto& object = ECS::GetComponent<Dialouge>(m_targetEntities[0]);
+		object.dialouge = true;
+	}
+
+	
 }
 
 void DialogueTrigger::OnExit()
 {
 	Trigger::OnExit();
+}
+
+ DialogueTrigger::DialogueTrigger(int dialouge) {
+
+	d = dialouge;
 }
 

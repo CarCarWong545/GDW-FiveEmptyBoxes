@@ -8,5 +8,11 @@ public:
 
 	void OnEnter() override;
 	void OnExit() override;
+	DialogueTrigger(int dialogue);
+
+private:
+	int d;
 };
+
+
 

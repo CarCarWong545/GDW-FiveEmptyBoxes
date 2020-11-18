@@ -28,7 +28,7 @@ public:
 	//for basic platforms
 	void BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency, float friction = (1.0f), float density = (1.0f));
 	//make environment objects (cant jump)
-	void EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency);
+	void EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency,std::string name = "boxSprite.jpg");
 
 	virtual void Update();
 
