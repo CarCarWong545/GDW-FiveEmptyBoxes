@@ -468,7 +468,6 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
 	
-
 	if (Input::GetKeyDown(Key::T))
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
@@ -496,7 +495,6 @@ void PhysicsPlayground::KeyboardDown()
 			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y - 70), 0);
 			canMoveD.moveDown = false;
 		}
-
 	}
 
 
