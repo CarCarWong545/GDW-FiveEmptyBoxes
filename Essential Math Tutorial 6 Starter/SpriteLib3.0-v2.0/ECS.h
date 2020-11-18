@@ -23,6 +23,7 @@
 #include "SwitchScene0.h"
 #include "SceneTrigger.h"
 #include "DialogueTrigger.h"
+#include "Dialouge.h"
 #include "CanDoor.h"
 
 

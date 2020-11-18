@@ -3,6 +3,7 @@
 #include "Utilities.h"
 
 
+
 #include <random>
 
 PhysicsPlayground::PhysicsPlayground(std::string name)
@@ -157,6 +158,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
 		ECS::AttachComponent<SwitchScene0>(entity);
 		ECS::AttachComponent<SwitchScene3>(entity);
@@ -210,7 +212,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
 
-		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger();
+		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger(0);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -470,6 +472,8 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
+	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
@@ -509,6 +513,8 @@ void PhysicsPlayground::KeyboardDown()
 		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
 		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
 
+		
+
 		if (Input::GetKeyDown(Key::E))
 		{
 			if (object.can_switch)
@@ -529,6 +535,15 @@ void PhysicsPlayground::KeyboardDown()
 			}
 		}
 	}
+	if (Input::GetKeyDown(Key::F))
+	{
+		if (isdialogue.dialouge) {
+			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
+			equip.m_equip = true;
+		}
+	}
+
+
 }
 
 void PhysicsPlayground::KeyboardUp()

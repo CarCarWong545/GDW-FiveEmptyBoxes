@@ -76,6 +76,7 @@ public:
 	void AnimationUpdate();
 	//does luigi have equipment
 	bool m_equip = false;
+	bool dialogue = false;
 
 private:
 	void SetActiveAnimation(int anim);
