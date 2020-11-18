@@ -157,6 +157,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<CanDoor>(entity);
+		ECS::AttachComponent<SwitchScene0>(entity);
+		ECS::AttachComponent<SwitchScene3>(entity);
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -467,6 +470,9 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+
+	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
+	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -496,8 +502,33 @@ void PhysicsPlayground::KeyboardDown()
 			canMoveD.moveDown = false;
 		}
 	}
+	if (canDoor.m_door)
+	{
+		auto& object = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
+		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
 
-
+		if (Input::GetKeyDown(Key::E))
+		{
+			if (object.can_switch)
+			{
+				object.m_switch = true;
+			}
+			else if (object1.can_switch)
+			{
+				object1.m_switch = true;
+			}
+			else if (object2.can_switch)
+			{
+				object2.m_switch = true;
+			}
+			else if (object3.can_switch)
+			{
+				object3.m_switch = true;
+			}
+		}
+	}
 }
 
 void PhysicsPlayground::KeyboardUp()
