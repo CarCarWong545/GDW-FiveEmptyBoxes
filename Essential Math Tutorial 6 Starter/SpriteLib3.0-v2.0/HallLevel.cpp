@@ -7,14 +7,13 @@ HallLevel::HallLevel(std::string name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
-	m_physicsWorld->SetGravity(m_gravity);
-
-	m_physicsWorld->SetContactListener(&listener);
+	
 }
 
 int HallLevel::ChangeScene()
 {
 	auto& scene4 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+	auto& scene3 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
 	auto& scene1 = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
 	if (scene4.m_switch)
 	{
@@ -25,6 +24,11 @@ int HallLevel::ChangeScene()
 	{
 		scene1.m_switch = false;
 		return 0;
+	}
+	else if (scene3.m_switch)
+	{
+		scene3.m_switch = false;
+		return 2;
 	}
 	else
 	{
@@ -37,6 +41,10 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
+	m_physicsWorld = new b2World(m_gravity);
+	m_physicsWorld->SetGravity(m_gravity);
+
+	m_physicsWorld->SetContactListener(&listener);
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
@@ -117,10 +125,11 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		//ECS::AttachComponent<MoveUp>(entity);
 		ECS::AttachComponent<AnimationController>(entity);
 		//ECS::AttachComponent<MoveDown>(entity);
-		//ECS::AttachComponent<SwitchScene>(entity);
-		//ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<SwitchScene>(entity);
+		ECS::AttachComponent<SwitchScene2>(entity);
 		ECS::AttachComponent<SwitchScene3>(entity);
 		ECS::AttachComponent<SwitchScene0>(entity);
+		ECS::AttachComponent<CanDoor>(entity);
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -143,7 +152,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(34.f), float32(30.f));
+		tempDef.position.Set(float32(34.f), float32(0.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -181,9 +190,9 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		//ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
-		//ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -216,7 +225,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(0);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -252,9 +261,9 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		//ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(0);
-		//ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(0);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -287,9 +296,9 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		//ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
-		//ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -321,6 +330,7 @@ void HallLevel::Update()
 void HallLevel::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 
 	float speed = 1.f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
@@ -347,6 +357,35 @@ void HallLevel::KeyboardHold()
 	else if (Input::GetKey(Key::I))
 	{
 		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+	}
+	if (canDoor.m_door)
+	{
+		auto& object = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
+		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+
+
+
+		if (Input::GetKeyDown(Key::E))
+		{
+			if (object.can_switch)
+			{
+				object.m_switch = true;
+			}
+			else if (object1.can_switch)
+			{
+				object1.m_switch = true;
+			}
+			else if (object2.can_switch)
+			{
+				object2.m_switch = true;
+			}
+			else if (object3.can_switch)
+			{
+				object3.m_switch = true;
+			}
+		}
 	}
 }
 

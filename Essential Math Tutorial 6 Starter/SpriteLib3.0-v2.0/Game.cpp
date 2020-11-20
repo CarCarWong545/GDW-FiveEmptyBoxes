@@ -37,6 +37,13 @@ void Game::InitGame()
 	//Replace this with your own scene.
 	m_scenes.push_back(new PhysicsPlayground("PHYSICS PLAYGROUND TIEM!!!"));
 	m_scenes.push_back(new HallLevel("Animation TIEM!!!!"));
+	m_scenes.push_back(new ReturnFoyer1("Foyer")); //2
+	m_scenes.push_back(new StudyLevel("Study"));
+
+	for (int i = 0; i < m_scenes.size(); i++)
+	{
+		activated[i] = false;
+	}
 	 
 	//Sets active scene reference to our scene
 	m_activeScene = m_scenes[0];
@@ -95,13 +102,19 @@ void Game::Update()
 	//Update Physics System
 	PhysicsSystem::Update(m_register, m_activeScene->GetPhysicsWorld());
 
+	
+	
 	unsigned int index = m_activeScene->ChangeScene();
 	if (index != -1) {
 		m_activeScene->Unload();
+
+		//MainEntities::ClearUI();
+		//MainEntities::ClearObjects();
 		m_activeScene = m_scenes[index];
 		m_activeScene->InitScene(BackEnd::GetWindowWidth(), BackEnd::GetWindowHeight());
 		m_register = m_activeScene->GetScene();
 		m_window->SetWindowName(m_activeScene->GetName());
+		PhysicsSystem::Init();
 	}
 
 

@@ -11,9 +11,7 @@ PhysicsPlayground::PhysicsPlayground(std::string name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
-	m_physicsWorld->SetGravity(m_gravity);
-
-	m_physicsWorld->SetContactListener(&listener);
+	
 }
 int PhysicsPlayground::ChangeScene() {
 	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
@@ -40,6 +38,11 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
+
+	m_physicsWorld = new b2World(m_gravity);
+	m_physicsWorld->SetGravity(m_gravity);
+
+	m_physicsWorld->SetContactListener(&listener);
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);

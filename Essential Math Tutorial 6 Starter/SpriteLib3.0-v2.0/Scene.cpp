@@ -15,11 +15,11 @@ void Scene::Unload()
 		m_sceneReg = nullptr;
 	}
 
-	if (m_physicsWorld != nullptr)
+	/*if (m_physicsWorld != nullptr)
 	{
 		delete m_physicsWorld;
 		m_physicsWorld = nullptr;
-	}
+	}*/
 }
 
 void Scene::InitScene(float windowWidth, float windowHeight)

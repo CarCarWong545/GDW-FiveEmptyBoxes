@@ -10,9 +10,7 @@ ReturnFoyer1::ReturnFoyer1(std::string name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
-	m_physicsWorld->SetGravity(m_gravity);
-
-	m_physicsWorld->SetContactListener(&listener);
+	
 }
 int ReturnFoyer1::ChangeScene() {
 	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
@@ -42,6 +40,12 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
+
+
+	m_physicsWorld = new b2World(m_gravity);
+	m_physicsWorld->SetGravity(m_gravity);
+
+	m_physicsWorld->SetContactListener(&listener);
 
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
@@ -182,7 +186,7 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(-100.f), float32(100.f));
+		tempDef.position.Set(float32(-100.f), float32(50.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
