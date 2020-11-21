@@ -213,6 +213,12 @@
     <ClInclude Include="ReturnFoyer1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FlashlightTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CanDamage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp">
@@ -420,6 +426,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FlashlightTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CanDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

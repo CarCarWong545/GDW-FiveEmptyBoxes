@@ -26,7 +26,8 @@
 #include "Dialouge.h"
 #include "CanDoor.h"
 #include "EnemyTrigger.h"
-
+#include "FlashlightTrigger.h"
+#include "CanDamage.h"
 
 class ECS abstract
 {
@@ -64,6 +65,8 @@ public:
 	//Side stuff for entity identifier
 	static void SetIsMainCamera(unsigned entity, bool mainCamera);
 	static void SetIsMainPlayer(unsigned entity, bool mainPlayer);
+
+	static void SetIsFlashlight(unsigned entity, bool flash);
 
 private:
 	static entt::registry* m_reg;

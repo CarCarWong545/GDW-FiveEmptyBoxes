@@ -77,6 +77,9 @@ public:
 	//does luigi have equipment
 	bool m_equip = false;
 	bool dialogue = false;
+	//is luigi holding his flashlight
+	bool m_flashlight = true;
+
 	AnimDir m_facing = LEFT;
 
 private:
@@ -88,8 +91,7 @@ private:
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
 	bool m_locked = false;
-	//is luigi holding his flashlight
-	bool m_flashlight = true;
+	
 	
 
 	//A reference to our sprite

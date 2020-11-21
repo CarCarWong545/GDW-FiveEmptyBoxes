@@ -21,6 +21,10 @@ public:
 
 protected:
 	PhysicsPlaygroundListener listener;
+
 	int ghost1 = 0;
+	int ghost2 = 0;
+	int flashlight = 0;
+	
 };
 

@@ -47,4 +47,11 @@ void ECS::SetIsMainPlayer(unsigned entity, bool mainPlayer)
 		MainEntities::MainPlayer(entity);
 	}
 }
+void ECS::SetIsFlashlight(unsigned entity, bool flash)
+{
+	if (flash)
+	{
+		MainEntities::Flashlight(entity);
+	}
+}
 

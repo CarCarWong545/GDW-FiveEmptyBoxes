@@ -39,6 +39,7 @@ void Game::InitGame()
 	m_scenes.push_back(new HallLevel("Animation TIEM!!!!"));
 	m_scenes.push_back(new ReturnFoyer1("Foyer")); //2
 	m_scenes.push_back(new StudyLevel("Study"));
+	
 
 	for (int i = 0; i < m_scenes.size(); i++)
 	{

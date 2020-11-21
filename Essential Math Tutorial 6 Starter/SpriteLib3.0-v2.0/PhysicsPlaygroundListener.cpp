@@ -2,6 +2,7 @@
 
 #include "ECS.h"
 
+
 PhysicsPlaygroundListener::PhysicsPlaygroundListener()
 	: b2ContactListener()
 {
@@ -16,6 +17,38 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 	bool sensorA = fixtureA->IsSensor();
 	bool sensorB = fixtureB->IsSensor();
 
+
+	int entityA = (int)fixtureA->GetBody()->GetUserData();
+	int entityB = (int)fixtureB->GetBody()->GetUserData();
+
+
+	b2Filter filterA = fixtureA->GetFilterData();
+	b2Filter filterB = fixtureB->GetFilterData();
+
+
+	//no contact events if flashlight/main player
+	if (entityA == MainEntities::Flashlight() && filterB.categoryBits == ENEMY)
+	{
+		TriggerEnter(fixtureA);
+	}
+	else if (entityB == MainEntities::Flashlight() && filterA.categoryBits == ENEMY)
+	{
+		TriggerEnter(fixtureB);
+	}
+	if (entityA == MainEntities::MainPlayer() && entityB == MainEntities::Flashlight())
+	{
+		return;
+	}
+	else if (entityB == MainEntities::MainPlayer() && entityA == MainEntities::Flashlight())
+	{
+		return;
+	}
+	if ((filterA.categoryBits == ETRIGGER && filterB.categoryBits == ENEMY) || (filterB.categoryBits == ETRIGGER && filterA.categoryBits == ENEMY))
+	{
+		return;
+	}
+	
+
 	//if neither or both are sensors, will be false
 	if ((sensorA ^ sensorB))
 	{
@@ -28,9 +61,6 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 			TriggerEnter(fixtureB);
 		}
 	}
-
-	b2Filter filterA = fixtureA->GetFilterData();
-	b2Filter filterB = fixtureB->GetFilterData();
 
 	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == GROUND) || (filterB.categoryBits == PLAYER && filterA.categoryBits == GROUND))
 	{
