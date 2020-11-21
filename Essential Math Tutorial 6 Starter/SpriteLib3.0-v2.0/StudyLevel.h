@@ -21,6 +21,7 @@ public:
 
 protected:
 	PhysicsPlaygroundListener listener;
+	int ghost1 = 0;
 
 };
 

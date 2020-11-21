@@ -1,39 +1,4 @@
-#ifndef __PLAYER_H__
-#define __PLAYER_H__
-
-#include "BackEnd.h"
-
-
-
-enum AnimEnums
-{
-	IDLELEFT,
-	IDLERIGHT,
-
-	//Only in Top down
-#ifdef TOPDOWN
-	IDLEUP,
-	IDLEDOWN,
-#endif
-
-	WALKLEFT,
-	WALKRIGHT,
-
-	//Only in Top down
-#ifdef TOPDOWN
-	WALKUP,
-	WALKDOWN,
-#endif
-
-	ATTACKLEFT,
-	ATTACKRIGHT,
-
-	//Only in Top down
-#ifdef TOPDOWN
-	ATTACKUP,
-	ATTACKDOWN
-#endif
-};
+#include "Player.h"
 
 enum AnimTypes
 {
@@ -44,12 +9,9 @@ enum AnimTypes
 #endif
 #ifndef TOPDOWN
 	IDLE = 0,
-	EQUIP = 2,
-	LIGHT = 4,
-	WALK = 6
+	ATTACK = 2
 #endif
 };
-
 enum AnimDir
 {
 	LEFT,
@@ -60,12 +22,11 @@ enum AnimDir
 	DOWN
 #endif
 };
-
-class Player
+class EnemyBlue
 {
 public:
-	Player();
-	Player(std::string& fileName, std::string& animationJSON, int width, int height,
+
+	EnemyBlue(std::string& fileName, std::string& animationJSON, int width, int height,
 		Sprite* sprite, AnimationController* controller, Transform* transform, bool hasPhys = false, PhysicsBody* body = nullptr);
 
 	void InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height,
@@ -74,6 +35,7 @@ public:
 	void Update();
 	void MovementUpdate();
 	void AnimationUpdate();
+	
 
 private:
 	void SetActiveAnimation(int anim);
@@ -84,10 +46,7 @@ private:
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
 	bool m_locked = false;
-	//is luigi holding his flashlight
-	bool m_flashlight = true;
-	//does luigi have equipment
-	bool m_equip = false;
+
 
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;
@@ -106,4 +65,3 @@ private:
 	AnimDir m_facing = LEFT;
 };
 
-#endif // !__PLAYER_H__

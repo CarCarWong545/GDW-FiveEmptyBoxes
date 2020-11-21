@@ -163,6 +163,51 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetGravityScale(1.f);
 
 	}
+	//ghost entity
+	{
+		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
+
+		auto entity = ECS::CreateEntity();
+		ghost1 = entity;
+
+		//Add components
+		ECS::AttachComponent<EnemyBlue>(entity);
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<AnimationController>(entity);
+		//Sets up the components
+		std::string fileName = "spritesheets/BLUETWRLSHEET.png";
+		std::string animations = "BLUETWRL.json";
+		//ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<EnemyBlue>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
+			&ECS::GetComponent<AnimationController>(entity),
+			&ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(33.f), float32(100.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+
+		tempPhsBody.SetRotationAngleDeg(0.f);
+		tempPhsBody.SetFixedRotation(true);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+		tempPhsBody.SetGravityScale(1.f);
+
+	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
 	Scene::BoxMaker(200, 10, -146, -20, 90, 1);
 	Scene::BoxMaker(200, 10, 207, -20, 90, 1);
@@ -175,7 +220,8 @@ void StudyLevel::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
-
+	auto& ghost = ECS::GetComponent<EnemyBlue>(ghost1);
+	ghost.Update();
 }
 
 
