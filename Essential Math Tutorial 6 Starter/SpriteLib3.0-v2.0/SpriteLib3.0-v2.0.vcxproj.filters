@@ -213,6 +213,9 @@
     <ClInclude Include="ReturnFoyer1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyBlue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp">
@@ -414,6 +417,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ReturnFoyer1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StudyLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBlue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

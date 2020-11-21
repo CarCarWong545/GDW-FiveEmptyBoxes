@@ -25,7 +25,7 @@
 #include "DialogueTrigger.h"
 #include "Dialouge.h"
 #include "CanDoor.h"
-
+#include "EnemyBlue.h"
 
 
 class ECS abstract

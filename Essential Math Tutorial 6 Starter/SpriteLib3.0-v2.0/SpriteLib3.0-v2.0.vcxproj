@@ -148,6 +148,7 @@
     <ClInclude Include="DestroyTrigger.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EnemyBlue.h" />
     <ClInclude Include="FirstCreation.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Game.h" />
@@ -216,6 +217,8 @@
     <ClCompile Include="DialogueTrigger.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="EnemyBlue.cpp" />
+    <ClCompile Include="EnemyTrigger.cpp" />
     <ClCompile Include="FirstCreation.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -252,6 +255,7 @@
     <ClCompile Include="SepiaEffect.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="StudyLevel.cpp" />
     <ClCompile Include="SwitchScene.cpp" />
     <ClCompile Include="SwitchScene0.cpp" />
     <ClCompile Include="SwitchScene2.cpp" />

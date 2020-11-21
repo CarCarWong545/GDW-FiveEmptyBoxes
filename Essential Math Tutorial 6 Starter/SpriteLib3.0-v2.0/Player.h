@@ -4,7 +4,6 @@
 #include "BackEnd.h"
 
 
-
 enum AnimEnums
 {
 	IDLELEFT,
@@ -68,12 +67,12 @@ public:
 	Player(std::string& fileName, std::string& animationJSON, int width, int height, 
 		Sprite* sprite, AnimationController* controller, Transform* transform, bool hasPhys = false, PhysicsBody* body = nullptr);
 
-	void InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, 
+	virtual void InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, 
 		Sprite* sprite, AnimationController* controller, Transform* transform, bool hasPhys = false, PhysicsBody* body = nullptr);
 
-	void Update();
-	void MovementUpdate();
-	void AnimationUpdate();
+	virtual void Update();
+	virtual void MovementUpdate();
+	virtual void AnimationUpdate();
 	//does luigi have equipment
 	bool m_equip = false;
 	bool dialogue = false;
@@ -90,7 +89,6 @@ private:
 	//is luigi holding his flashlight
 	bool m_flashlight = true;
 	
-
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;
 	//A reference to our animation controller
