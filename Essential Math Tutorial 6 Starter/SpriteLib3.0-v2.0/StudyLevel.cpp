@@ -16,6 +16,12 @@ StudyLevel::StudyLevel(std::string name)
 int StudyLevel::ChangeScene() {
 	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 	auto& scene3 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+	//return to beginning
+	if (MainEntities::Health() <= 0)
+	{
+		return 0;
+	}
+
 	if (scene2.m_switch)
 	{
 		scene2.m_switch = false;
@@ -30,8 +36,6 @@ int StudyLevel::ChangeScene() {
 	{
 		return -1;
 	}
-
-
 }
 
 void StudyLevel::InitScene(float windowWidth, float windowHeight)
@@ -160,7 +164,56 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetRotationAngleDeg(0.f);
 		tempPhsBody.SetFixedRotation(true);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-		tempPhsBody.SetGravityScale(1.f);
+		tempPhsBody.SetGravityScale(1.2f);
+
+	}
+	//ghost entity  
+	{
+		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
+
+		auto entity = ECS::CreateEntity();
+		ghost1 = entity;
+
+		//Add components  
+		//ECS::AttachComponent<EnemyBlue>(entity);
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		//ECS::AttachComponent<AnimationController>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+
+		//Sets up the components  
+		std::string fileName = "blueghost.png";
+		//std::string animations = "BLUETWRL.json";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);  
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		//ECS::GetComponent<EnemyBlue>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
+			//&ECS::GetComponent<AnimationController>(entity),
+			//&ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_kinematicBody;
+		tempDef.position.Set(float32(33.f), float32(70.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 
 	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
@@ -176,6 +229,16 @@ void StudyLevel::Update()
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 
+	auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
+
+	if (ghost.GetPosition().x >= -5)
+	{
+		ghost.GetBody()->SetLinearVelocity(b2Vec2(-15.f, 0.f));
+	}
+	if (ghost.GetPosition().x <= -35)
+	{
+		ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
+	}
 }
 
 

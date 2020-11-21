@@ -1,5 +1,6 @@
 #include "EnemyTrigger.h"
 #include "ECS.h"
+#include "Player.h"
 
 void EnemyTrigger::OnTrigger()
 {
@@ -12,7 +13,17 @@ void EnemyTrigger::OnEnter()
 	//take health - 5
 	MainEntities::Health(MainEntities::Health() - 5);
 	//push player back
-	ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetPosition() - b2Vec2(5, 0), true);
+	auto& position = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]);
+	auto& player = ECS::GetComponent<Player>(m_targetEntities[0]);
+
+	if (player.m_facing == 0)
+	{
+		ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x + 30, position.GetPosition().y-10), true);
+	}
+	else
+	{
+		ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x - 30, position.GetPosition().y-10), true);
+	}
 }
 
 void EnemyTrigger::OnExit()

@@ -1,4 +1,6 @@
 #include "MainEntities.h"
+#include <iostream>
+#include <cstdlib>
 
 int MainEntities::m_mainCamera = 0;
 int MainEntities::m_mainPlayer = 0;
@@ -39,5 +41,6 @@ void MainEntities::Health(int n)
 	if (health <= 0)
 	{
 		//end game somehow
+		//std::exit(0);
 	}
 }
