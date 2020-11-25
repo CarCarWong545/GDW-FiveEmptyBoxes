@@ -4,9 +4,6 @@
 #include "Scene.h"
 #include "FirstCreation.h"
 #include "PhysicsPlayground.h"
-#include "HallLevel.h"
 #include "AnimationSpritePlayground.h"
-#include "ReturnFoyer1.h"
-#include "StudyLevel.h"
 
 #endif // !__SCENES_H__

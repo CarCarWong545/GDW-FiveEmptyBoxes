@@ -7,20 +7,14 @@ public:
 	//Getters
 	static int MainCamera();
 	static int MainPlayer();
-	static int Health();
-	static int Flashlight();
 
 	//Setters
 	static void MainCamera(int main);
 	static void MainPlayer(int main);
-	static void Health(int n);
-	static void Flashlight(int main);
 
 private:
 	static int m_mainCamera;
 	static int m_mainPlayer;
-	static int health;
-	static int m_flashlight;
 };
 
 #endif // !__MAINENTITIES_H__

@@ -3,7 +3,7 @@
 
 #include "BackEnd.h"
 
-
+#define TOPDOWN
 
 enum AnimEnums
 {
@@ -44,9 +44,8 @@ enum AnimTypes
 #endif
 #ifndef TOPDOWN
 	IDLE = 0,
-	EQUIP = 2,
-	LIGHT = 4,
-	WALK = 6
+	WALK = 2,
+	ATTACK = 4
 #endif
 };
 
@@ -74,13 +73,6 @@ public:
 	void Update();
 	void MovementUpdate();
 	void AnimationUpdate();
-	//does luigi have equipment
-	bool m_equip = false;
-	bool dialogue = false;
-	//is luigi holding his flashlight
-	bool m_flashlight = true;
-
-	AnimDir m_facing = LEFT;
 
 private:
 	void SetActiveAnimation(int anim);
@@ -91,8 +83,6 @@ private:
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
 	bool m_locked = false;
-	
-	
 
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;
@@ -108,7 +98,7 @@ private:
 	bool m_hasPhysics = false;
 
 	//Default animation direction (feel free to change this to suit your game. If you're making a side-scroller, left or right would be better
-	
+	AnimDir m_facing = LEFT;
 };
 
 #endif // !__PLAYER_H__

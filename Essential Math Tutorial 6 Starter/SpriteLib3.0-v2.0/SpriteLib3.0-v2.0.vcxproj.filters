@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -13,32 +13,11 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{235e8507-d198-43ae-a1f6-dcb43fcaa2f9}</UniqueIdentifier>
+    <Filter Include="Resource Files\ImGUi">
+      <UniqueIdentifier>{a0fae234-1328-4004-9aa4-426e500481fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\imgui\imconfig.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui_impl.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_truetype.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="AnimationController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -186,56 +165,35 @@
     <ClInclude Include="CanJump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HallLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneTrigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwitchScene3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwitchScene0.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TranslateTrigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SwitchScene2.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imconfig.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="SwitchScene.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imgui.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="CanDoor.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="ReturnFoyer1.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imgui_impl_sdl.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="FlashlightTrigger.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imgui_internal.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="CanDamage.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\imgui\imstb_rectpack.h">
+      <Filter>Resource Files\ImGUi</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_textedit.h">
+      <Filter>Resource Files\ImGUi</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_truetype.h">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\imgui\imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_impl.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -383,56 +341,26 @@
     <ClCompile Include="CanJump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MoveUp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveUpTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveDownTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogueTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HallLevel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SwitchScene3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SwitchScene0.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TranslateTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SwitchScene2.cpp">
-      <Filter>Header Files</Filter>
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
-    <ClCompile Include="SwitchScene.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="include\imgui\imgui_demo.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
-    <ClCompile Include="CanDoor.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
-    <ClCompile Include="ReturnFoyer1.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
-    <ClCompile Include="StudyLevel.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="include\imgui\imgui_impl_sdl.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FlashlightTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CanDamage.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="include\imgui\imgui_widgets.cpp">
+      <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

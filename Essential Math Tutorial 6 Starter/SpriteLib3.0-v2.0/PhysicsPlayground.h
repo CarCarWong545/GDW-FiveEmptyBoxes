@@ -2,6 +2,7 @@
 
 #include "Scene.h"
 #include "PhysicsPlaygroundListener.h"
+#include <string>
 
 class PhysicsPlayground : public Scene
 {
@@ -12,7 +13,12 @@ public:
 
 	void Update() override;
 
-	int ChangeScene() override;
+	void GUI() override;
+
+	void GUIWindowUI();
+	void GUIWindowOne();
+	void GUIWindowTwo();
+
 
 	//Input overrides
 	void KeyboardHold() override;
@@ -20,7 +26,19 @@ public:
 	void KeyboardUp() override;
 
 protected:
+	bool m_firstWindow = false;
+	bool m_secondWindow = false;
+
+	bool m_lerpEnabled = false;
+	float m_lerpVal = 0.f;
+	float m_tVal = 0.f;
+	float m_Val1 = 0.f;
+	float m_Val2 = 1.f;
+
+	std::string m_fileInput;
+
 	PhysicsPlaygroundListener listener;
 
-	int ball = 0;
+	int puzzleWall1;
+	int puzzleWall2;
 };

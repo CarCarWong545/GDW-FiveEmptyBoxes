@@ -15,11 +15,11 @@ void Scene::Unload()
 		m_sceneReg = nullptr;
 	}
 
-	/*if (m_physicsWorld != nullptr)
+	if (m_physicsWorld != nullptr)
 	{
 		delete m_physicsWorld;
 		m_physicsWorld = nullptr;
-	}*/
+	}
 }
 
 void Scene::InitScene(float windowWidth, float windowHeight)
@@ -72,77 +72,17 @@ void Scene::InitScene(float windowWidth, float windowHeight)
 	}
 }
 
-
-void Scene::BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency, float friction, float density)
-{
-	auto entity = ECS::CreateEntity();
-
-	//Add components 
-	ECS::AttachComponent<Sprite>(entity);
-	ECS::AttachComponent<Transform>(entity);
-	ECS::AttachComponent<PhysicsBody>(entity);
-
-	//Sets up components 
-	std::string fileName = "boxSprite.jpg";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, spriteSizeX, spriteSizeY);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(10.f, 10.f, 2.f));
-
-	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-	float shrinkX = 0.f;
-	float shrinkY = 0.f;
-	b2Body* tempBody;
-	b2BodyDef tempDef;
-	tempDef.type = b2_staticBody;
-	tempDef.position.Set(float32(positionX), float32(positionY));
-	ECS::GetComponent<Sprite>(entity).SetTransparency(transparency);
-	tempDef.angle = Transform::ToRadians(angle);
-
-	tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS, friction, density);
-	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.f));
-}
-void Scene::EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency,std::string name)
-{
-	auto entity = ECS::CreateEntity();
-
-	//Add components 
-	ECS::AttachComponent<Sprite>(entity);
-	ECS::AttachComponent<Transform>(entity);
-	ECS::AttachComponent<PhysicsBody>(entity);
-
-	//Sets up components 
-	std::string fileName = name;
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, spriteSizeX, spriteSizeY);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(10.f, 10.f, 0.f));
-
-	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-	float shrinkX = 0.f;
-	float shrinkY = 0.f;
-	b2Body* tempBody;
-	b2BodyDef tempDef;
-	tempDef.type = b2_staticBody;
-	tempDef.position.Set(float32(positionX), float32(positionY));
-	ECS::GetComponent<Sprite>(entity).SetTransparency(transparency);
-	tempDef.angle = Transform::ToRadians(angle);
-
-
-	tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, OBJECTS);
-	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-
-}
-
 void Scene::Update()
 {
 	auto& tempSpr = m_sceneReg->get<Sprite>(m_helloWorldSign);
-
+	
 	tempSpr.SetTransparency((0.5 * sin(Timer::time * 3.f)) + 0.5f);
+}
+
+void Scene::GUI()
+{
+	//Does nothin
+
 }
 
 void Scene::AdjustScrollOffset()
@@ -156,8 +96,8 @@ void Scene::AdjustScrollOffset()
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize);
 }
 
-void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
-	float zNear, float zFar, float aspectRatio, bool vertScroll, bool horizScroll)
+void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
+									float zNear, float zFar, float aspectRatio, bool vertScroll, bool horizScroll)
 {
 	//Setup main camera
 	{
@@ -231,7 +171,7 @@ void Scene::SetGravity(b2Vec2 grav)
 	m_gravity = grav;
 }
 
-b2World& Scene::GetPhysicsWorld()
+b2World & Scene::GetPhysicsWorld()
 {
 	return *m_physicsWorld;
 }
@@ -240,9 +180,9 @@ void Scene::SetWindowSize(float windowWidth, float windowHeight)
 {
 	//TODO: Find new way to get the main camera
 	auto& tempCam = m_sceneReg->get<Camera>(MainEntities::MainCamera());
-
+	
 	tempCam.SetWindowSize(vec2(windowWidth, windowHeight));
 	tempCam.Orthographic(float(windowWidth / windowHeight), tempCam.GetOrthoSize().x, tempCam.GetOrthoSize().y,
-		tempCam.GetOrthoSize().z, tempCam.GetOrthoSize().w,
-		tempCam.GetNear(), tempCam.GetFar());
+															tempCam.GetOrthoSize().z, tempCam.GetOrthoSize().w,
+															tempCam.GetNear(), tempCam.GetFar());
 }

@@ -11,23 +11,10 @@
 #include "VerticalScroll.h"
 #include "MainEntities.h"
 #include "DestroyTrigger.h"
+#include "TranslateTrigger.h"
 #include "HorizontalScroll.h"
 #include "CanJump.h"
-#include "MoveUp.h"
-#include "MoveUpTrigger.h"
-#include "MoveDownTrigger.h"
-#include "MoveDown.h"
-#include "SwitchScene.h"
-#include "SwitchScene2.h"
-#include "SwitchScene3.h"
-#include "SwitchScene0.h"
-#include "SceneTrigger.h"
-#include "DialogueTrigger.h"
-#include "Dialouge.h"
-#include "CanDoor.h"
-#include "EnemyTrigger.h"
-#include "FlashlightTrigger.h"
-#include "CanDamage.h"
+
 
 class ECS abstract
 {
@@ -66,9 +53,6 @@ public:
 	static void SetIsMainCamera(unsigned entity, bool mainCamera);
 	static void SetIsMainPlayer(unsigned entity, bool mainPlayer);
 
-	static void SetIsFlashlight(unsigned entity, bool flash);
-
-private:
 	static entt::registry* m_reg;
 };
 

@@ -37,30 +37,44 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	//IDLE ANIMATIONS\\
 	
 	//Idle Left
-	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleLeft"].get<Animation>()); //Idle + left = 0
-	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleRight"].get<Animation>()); //idle + right = 1
-	m_animController->AddAnimation(animations["LuigiFlashlightOffIdleLeft"].get<Animation>()); //idle + equip + left= 0+0+2
-	m_animController->AddAnimation(animations["LuigiFlashlightoffIdleRight"].get<Animation>()); //idle + equip + right =0+2+1 = 3
-	m_animController->AddAnimation(animations["LuigiIdleLeft"].get<Animation>());//idle + light + left = 0+4+1 = 4;
-	m_animController->AddAnimation(animations["LuigiIdleRight"].get<Animation>());//idle + light+ right = 5
+	m_animController->AddAnimation(animations["IdleLeft"].get<Animation>());
+	//Idle Right
+	m_animController->AddAnimation(animations["IdleRight"].get<Animation>());
+#ifdef TOPDOWN
+	//Idle Up
+	m_animController->AddAnimation(animations["IdleUp"].get<Animation>());
+	//Idle Down
+	m_animController->AddAnimation(animations["IdleDown"].get<Animation>());
+#endif
 
 	//Walk Animations\\
 
-	m_animController->AddAnimation(animations["LuigiNoEquipmentLeft"].get<Animation>()); //walk + left = 6
-	
-	m_animController->AddAnimation(animations["LuigiNoEquipmentRight"].get<Animation>()); //7
-
-	//turn off flashlight
-	m_animController->AddAnimation(animations["LuigiFlashlightOffWalkingLeft"].get<Animation>());//walk + left + equip = 6+0+2 = 8
-	m_animController->AddAnimation(animations["LuigiFlashlightoffWalkingRight"].get<Animation>()); //9
-
 	//WalkLeft
-	m_animController->AddAnimation(animations["LuigiWalkingLeft"].get<Animation>());//walk+left+light = 6+0+4 = 10 
+	m_animController->AddAnimation(animations["WalkLeft"].get<Animation>());
 	//WalkRight
-	m_animController->AddAnimation(animations["LuigiWalkingRight"].get<Animation>()); //11
+	m_animController->AddAnimation(animations["WalkRight"].get<Animation>());
+#ifdef TOPDOWN
+	//WalkUP
+	m_animController->AddAnimation(animations["WalkUp"].get<Animation>());
+	//WalkDown
+	m_animController->AddAnimation(animations["WalkDown"].get<Animation>());
+#endif
+
+	//Attack Animations\\
+
+	//AttackLeft
+	m_animController->AddAnimation(animations["AttackLeft"].get<Animation>());
+	//AttackRight
+	m_animController->AddAnimation(animations["AttackRight"].get<Animation>());
+#ifdef TOPDOWN
+	//AttackUp
+	m_animController->AddAnimation(animations["AttackUp"].get<Animation>());
+	//AttackDown
+	m_animController->AddAnimation(animations["AttackDown"].get<Animation>());
+#endif
 
 	//Set Default Animation
-	m_animController->SetActiveAnim(IDLERIGHT);
+	m_animController->SetActiveAnim(IDLELEFT);
 
 
 }
@@ -79,32 +93,92 @@ void Player::MovementUpdate()
 {
 	m_moving = false;
 
-	
-	if (Input::GetKey(Key::A))
+	if (m_hasPhysics)
 	{
-			//m_transform->SetPositionX(m_transform->GetPositionX() - (speed * Timer::deltaTime));
-		m_facing = LEFT;
-		m_moving = true;
+		float speed = 10.f;
+		vec3 vel = vec3(0.f, 0.f, 0.f);
+
+		if (Input::GetKey(Key::Shift))
+		{
+			speed *= 7.f;
+		}
+
+#ifdef TOPDOWN
+		if (Input::GetKey(Key::W))
+		{
+			vel = vel + vec3(0.f, 1.f, 0.f);
+			m_facing = UP;
+			m_moving = true;
+		}
+		if (Input::GetKey(Key::S))
+		{
+			vel = vel + vec3(0.f, -1.f, 0.f);
+			m_facing = DOWN;
+			m_moving = true;
+		}
+#endif
+
+		if (Input::GetKey(Key::A))
+		{
+			vel = vel + vec3(-1.f, 0.f, 0.f);
+			m_facing = LEFT;
+			m_moving = true;
+		}
+		if (Input::GetKey(Key::D))
+		{
+			vel = vel + vec3(1.f, 0.f, 0.f);
+			m_facing = RIGHT;
+			m_moving = true;
+		}
+
+		m_physBody->SetVelocity(vel * speed);
 	}
-	if (Input::GetKey(Key::D))
+	else
 	{
-			//m_transform->SetPositionX(m_transform->GetPositionX() + (speed * Timer::deltaTime));
-		m_facing = RIGHT;
-		m_moving = true;
+		//Regular Movement
+		float speed = 15.f;
+
+#ifdef TOPDOWN
+		if (Input::GetKey(Key::W))
+		{
+			m_transform->SetPositionY(m_transform->GetPositionY() + (speed * Timer::deltaTime));
+			m_facing = UP;
+			m_moving = true;
+		}
+		if (Input::GetKey(Key::S))
+		{
+			m_transform->SetPositionY(m_transform->GetPositionY() - (speed * Timer::deltaTime));
+			m_facing = DOWN;
+			m_moving = true;
+		}
+#endif
+
+		if (Input::GetKey(Key::A))
+		{
+			m_transform->SetPositionX(m_transform->GetPositionX() - (speed * Timer::deltaTime));
+			m_facing = LEFT;
+			m_moving = true;
+		}
+		if (Input::GetKey(Key::D))
+		{
+			m_transform->SetPositionX(m_transform->GetPositionX() + (speed * Timer::deltaTime));
+			m_facing = RIGHT;
+			m_moving = true;
+		}
 	}
 
 	if (Input::GetKeyDown(Key::Space))
 	{
-		
+		m_moving = false;
+
+		if (m_hasPhysics)
+		{
+			m_physBody->SetVelocity(vec3());
+		}
+
+		m_attacking = true;
+		m_locked = true;
 	}
-	if (Input::GetKeyDown(Key::Z))
-	{
-		m_flashlight = !m_flashlight;
-	}
-	/*if (Input::GetKeyDown(Key::X))
-	{
-		m_equip = !m_equip;
-	}*/
 }
 
 void Player::AnimationUpdate()
@@ -116,17 +190,25 @@ void Player::AnimationUpdate()
 		//Puts it into the WALK category
 		activeAnimation = WALK;
 	}
+	else if (m_attacking)
+	{
+		activeAnimation = ATTACK;
+
+		//Check if the attack animation is done
+		if (m_animController->GetAnimation(m_animController->GetActiveAnim()).GetAnimationDone())
+		{
+			//Will auto set to idle
+			m_locked = false;
+			m_attacking = false;
+			//Resets the attack animation
+			m_animController->GetAnimation(m_animController->GetActiveAnim()).Reset();
+
+			activeAnimation = IDLE;
+		}
+	}
 	else
 	{
 		activeAnimation = IDLE;
-	}
-	if (m_flashlight && m_equip)
-	{
-		activeAnimation += LIGHT;
-	}
-	else if (m_equip)
-	{
-		activeAnimation += EQUIP;
 	}
 
 	SetActiveAnimation(activeAnimation + (int)m_facing);

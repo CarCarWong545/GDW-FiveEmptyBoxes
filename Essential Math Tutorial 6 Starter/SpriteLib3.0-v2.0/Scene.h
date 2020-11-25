@@ -22,19 +22,13 @@ public:
 	//init, as each scene's contents will be different
 	virtual void InitScene(float windowWidth, float windowHeight);
 
-	virtual int ChangeScene() { return -1; }
-	//int ChangeScene();
-
-	//for basic platforms
-	void BoxMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency, float friction = (1.0f), float density = (1.0f));
-	//make environment objects (cant jump)
-	void EnviroMaker(int spriteSizeX, int spriteSizeY, float positionX, float positionY, int angle, float transparency,std::string name = "boxSprite.jpg");
-
 	virtual void Update();
 
+	virtual void GUI();
+
 	void AdjustScrollOffset();
-	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
-		float zNear, float zFar, float aspectRatio, bool vertScroll = false, bool horizScroll = false);
+	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
+								float zNear, float zFar, float aspectRatio, bool vertScroll=false, bool horizScroll=false);
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.
@@ -69,7 +63,7 @@ public:
 	std::string GetName() const;
 	//Sets the name of the scene
 	void SetName(std::string name);
-
+	
 	//Gravity
 	b2Vec2 GetGravity() const;
 	void SetGravity(b2Vec2 grav);
@@ -84,7 +78,7 @@ protected:
 
 	vec4 m_clearColor = vec4(0.15f, 0.33f, 0.58f, 1.f);
 
-	entt::registry* m_sceneReg = nullptr;
+	entt::registry* m_sceneReg = nullptr;	
 	std::string m_name = "Default Name";
 private:
 	//Hello world entity number

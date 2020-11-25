@@ -1,6 +1,5 @@
 #include "DestroyTrigger.h"
 #include "ECS.h"
-#include "PhysicsPlayground.h"
 
 void DestroyTrigger::OnTrigger()
 {
@@ -14,7 +13,6 @@ void DestroyTrigger::OnTrigger()
 		}
 
 		triggered = true;
-		
 	}
 }
 
