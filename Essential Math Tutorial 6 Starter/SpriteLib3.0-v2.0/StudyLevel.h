@@ -23,8 +23,9 @@ protected:
 	PhysicsPlaygroundListener listener;
 
 	int ghost1 = 0;
-	int ghost2 = 0;
+	int ghost2 = 0; //ghost 1 physics body
 	int flashlight = 0;
+	bool ghost_1;
 	
 };
 

@@ -36,6 +36,7 @@ int PhysicsPlayground::ChangeScene() {
 
 void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 {
+	MainEntities::Health(100);
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
 
