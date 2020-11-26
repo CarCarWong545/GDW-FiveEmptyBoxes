@@ -3,7 +3,6 @@
 #include "Utilities.h"
 
 
-
 #include <random>
 
 StudyLevel::StudyLevel(std::string name)
@@ -349,6 +348,8 @@ void StudyLevel::Update()
 
 	if (c_ghost.m_candamage)
 	{
+		startstuntime = clock();
+
 		if (ghost.GetPosition().x >= -5)
 		{
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(-15.f, 0.f));
@@ -356,6 +357,22 @@ void StudyLevel::Update()
 		if (ghost.GetPosition().x <= -35)
 		{
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
+		}
+	}
+	else {
+		float elapsedtime;
+		float stuntime = 3.0f;
+		
+		isstunned = true;
+		if (isstunned) {
+			elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
+
+			if (elapsedtime >= stuntime) {
+				c_ghost.m_candamage = true;
+				c_ghost.m_stun = false;
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+				isstunned = false;
+			}
 		}
 	}
 }

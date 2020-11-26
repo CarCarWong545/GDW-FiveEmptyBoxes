@@ -2,6 +2,8 @@
 
 #include "Scene.h"
 #include "PhysicsPlaygroundListener.h"
+#include "timer.h"
+
 
 class PhysicsPlayground : public Scene
 {
@@ -21,6 +23,19 @@ public:
 
 protected:
 	PhysicsPlaygroundListener listener;
+	bool firstdialogue = true;
+	bool secondd = true;
+	bool thirdd = true;
 
-	int ball = 0;
+	clock_t firstdstart;
+	
+	
+	double firstdstop;
+	
+	const double secondspassforfirst = 3;
+
+	bool deletefirstd = true;
+
+	unsigned int fd;
+	unsigned int sd;
 };

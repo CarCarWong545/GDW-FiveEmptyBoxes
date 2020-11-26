@@ -4,6 +4,7 @@
 
 
 
+
 #include <random>
 
 PhysicsPlayground::PhysicsPlayground(std::string name)
@@ -434,6 +435,14 @@ void PhysicsPlayground::Update()
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 
+	if (!firstdialogue && deletefirstd) {
+		firstdstop = (clock() - firstdstart) / CLOCKS_PER_SEC;
+		if (firstdstop >= secondspassforfirst) {
+			PhysicsBody::m_bodiesToDelete.push_back(fd);
+			deletefirstd = false;
+		}
+
+	}
 }
 
 
@@ -480,7 +489,7 @@ void PhysicsPlayground::KeyboardDown()
 
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-	
+
 	if (Input::GetKeyDown(Key::T))
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
@@ -516,7 +525,7 @@ void PhysicsPlayground::KeyboardDown()
 		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
 		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
 
-		
+
 
 		if (Input::GetKeyDown(Key::E))
 		{
@@ -541,12 +550,16 @@ void PhysicsPlayground::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
-			equip.m_equip = true;
+			if (firstdialogue) {
+				firstdstart = clock();
+				fd = Scene::DialogueMaker(50, 20, 5, 90, 20, 0, 1, "PHDialogue.png");
+				equip.m_equip = true;
+				firstdialogue = false;
+			}
 		}
+
+
 	}
-
-
 }
 
 void PhysicsPlayground::KeyboardUp()
