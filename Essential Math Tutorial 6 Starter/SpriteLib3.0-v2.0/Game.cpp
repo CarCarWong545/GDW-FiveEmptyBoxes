@@ -244,19 +244,18 @@ void Game::KeyboardUp()
 {
 	//Active scene now captures this input and can use it
 	//Look at base Scene class for more info.
-	m_activeScene->KeyboardUp();
+	if (!ImGui::GetIO().WantCaptureKeyboard)
+	{
+		m_activeScene->KeyboardUp();
 
-	if (Input::GetKeyUp(Key::F1))
-	{
-		if (!UI::m_isInit)
+		if (Input::GetKeyUp(Key::F1))
 		{
-			UI::InitImGUI();
+			m_guiActive = !m_guiActive;
 		}
-		m_guiActive = !m_guiActive;
-	}
-	if (Input::GetKeyUp(Key::P))
-	{
-		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
+		if (Input::GetKeyUp(Key::P))
+		{
+			PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
+		}
 	}
 }
 

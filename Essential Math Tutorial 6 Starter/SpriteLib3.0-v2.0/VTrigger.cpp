@@ -26,8 +26,12 @@ void VTrigger::OnEnter()
 void VTrigger::OnExit()
 {
 	Trigger::OnExit();
-	auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]);
-	auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[0]);
-	ghost.m_suck = false;
+	int* enemies = MainEntities::Enemies();
+	if (enemies[0] != 0)
+	{
+		auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]);
+		auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[0]);
+		ghost.m_suck = false;
+	}
 
 }

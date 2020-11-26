@@ -443,25 +443,29 @@ void StudyLevel::Update()
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
 			}
 		}
-		//temporary check
-		if (!c_ghost.m_candamage)
-		{
-			enemies[0] = 0;
-			MainEntities::Enemies(enemies);
-		}
-		if (c_ghost.m_suck)
+		if (c_ghost.m_suck &&player.m_suck)
 		{
 			c_ghost.m_candamage = false;
-			b2Vec2 direction = b2Vec2(-playerb.GetVelocity().x, -playerb.GetVelocity().y);
+			
+			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y-ghost.GetPosition().y);
 			
 			ghost.GetBody()->SetLinearVelocity(direction);
 			//ghost comes within 5~ of contact with vacuum
-			if ((v.GetPosition().x - 5 <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + 5)&&(v.GetPosition().y - 5 <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + 5))
+			if ((v.GetPosition().x - 10 <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + 10)&&(v.GetPosition().y - 10 <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + 10))
 			{
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
+				ghost_1 = false;
+
+				enemies[0] = 0;
+				MainEntities::Enemies(enemies);
+				MainEntities::Capture(MainEntities::Captured() + 1);
 			}
 			
+		}
+		else if (c_ghost.m_suck)
+		{
+			ghost.GetBody()->SetLinearVelocity(b2Vec2(0,0));
 		}
 	}
 
