@@ -40,6 +40,9 @@ public:
 	//*Sets all SDL attriutes
 	static void InitSDL();
 
+	//Filters out modifier keys and sends input to imgui
+	static void FilterKeys(SDL_KeyboardEvent* keyEvnt);
+
 	//Polls SDL events
 	static void PollEvents(entt::registry* mainReg, bool* closeWindow, 
 							bool * mouseMotion, bool * mouseClick, 

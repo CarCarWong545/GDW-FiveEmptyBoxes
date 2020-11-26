@@ -3,6 +3,7 @@
 #include "Utilities.h"
 
 
+
 #include <random>
 
 ReturnFoyer1::ReturnFoyer1(std::string name)
@@ -10,7 +11,7 @@ ReturnFoyer1::ReturnFoyer1(std::string name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
-	
+
 }
 int ReturnFoyer1::ChangeScene() {
 	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
@@ -35,17 +36,17 @@ int ReturnFoyer1::ChangeScene() {
 
 void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 {
+	//MainEntities::Health(100);
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
-
-	//Attach the register
-	ECS::AttachRegister(m_sceneReg);
-
 
 	m_physicsWorld = new b2World(m_gravity);
 	m_physicsWorld->SetGravity(m_gravity);
 
 	m_physicsWorld->SetContactListener(&listener);
+
+	//Attach the register
+	ECS::AttachRegister(m_sceneReg);
 
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
@@ -161,9 +162,13 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
 		ECS::AttachComponent<SwitchScene0>(entity);
 		ECS::AttachComponent<SwitchScene3>(entity);
+
+		ECS::GetComponent<Dialouge>(entity).dialouge = false;
+		ECS::GetComponent<Player>(entity).m_equip = true;
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -175,8 +180,6 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 			&ECS::GetComponent<AnimationController>(entity),
 			&ECS::GetComponent<Transform>(entity));
 
-		ECS::GetComponent<Player>(entity).m_equip = true;
-
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
@@ -186,7 +189,7 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(-100.f), float32(50.f));
+		tempDef.position.Set(float32(-80.f), float32(70.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -208,13 +211,17 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
-		
+		ECS::AttachComponent<Trigger*>(entity);
 
 		//Set up the components
 		std::string fileName = "E.Gadd.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
+
+		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger(0);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -238,9 +245,9 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 	////Setup static Top Platform
 	Scene::BoxMaker(325, 10, 30.f, -15.f, 0, 0);
 	////Setup static Wall
-	Scene::BoxMaker(75, 15, 185.f, 23.f, 90, 0);
+	Scene::BoxMaker(100, 15, 185.f, 23.f, 90, 0);
 	////Setup static Wall
-	Scene::BoxMaker(75, 15, -125.f, 23.f, 90, 0);
+	Scene::BoxMaker(100, 15, -125.f, 23.f, 90, 0);
 	//Setup trigger
 	{
 		//Creates entity
@@ -472,10 +479,11 @@ void ReturnFoyer1::KeyboardDown()
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
+	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -504,7 +512,6 @@ void ReturnFoyer1::KeyboardDown()
 			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y - 70), 0);
 			canMoveD.moveDown = false;
 		}
-
 	}
 	if (canDoor.m_door)
 	{
@@ -512,6 +519,8 @@ void ReturnFoyer1::KeyboardDown()
 		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
 		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+
+
 
 		if (Input::GetKeyDown(Key::E))
 		{
@@ -533,6 +542,15 @@ void ReturnFoyer1::KeyboardDown()
 			}
 		}
 	}
+	if (Input::GetKeyDown(Key::F))
+	{
+		if (isdialogue.dialouge) {
+			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
+			equip.m_equip = true;
+		}
+	}
+
+
 }
 
 void ReturnFoyer1::KeyboardUp()

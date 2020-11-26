@@ -25,7 +25,7 @@ protected:
 	PhysicsPlaygroundListener listener;
 
 	int ghost1 = 0;
-	int ghost2 = 0;
+	int ghost2 = 0; //ghost 1 physics body
 	int flashlight = 0;
 
 	float elapsedtime = 0.f;
@@ -34,6 +34,8 @@ protected:
 	bool isstunned = false;
 
 	clock_t startstuntime;
+	int vacuum = 0;
+	bool ghost_1;
 	
 };
 

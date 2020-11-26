@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -13,30 +13,165 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="ImGui">
-      <UniqueIdentifier>{235e8507-d198-43ae-a1f6-dcb43fcaa2f9}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationSpritePlayground.cpp" />
+    <ClCompile Include="AnimationSystem.cpp" />
+    <ClCompile Include="BackEnd.cpp" />
+    <ClCompile Include="BloomEffect.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraSystem.cpp" />
+    <ClCompile Include="CanDamage.cpp" />
+    <ClCompile Include="CanDoor.cpp" />
+    <ClCompile Include="CanJump.cpp" />
+    <ClCompile Include="DestroyTrigger.cpp" />
+    <ClCompile Include="DialogueTrigger.cpp" />
+    <ClCompile Include="Dialouge.cpp" />
+    <ClCompile Include="ECS.cpp" />
+    <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="EnemyTrigger.cpp" />
+    <ClCompile Include="FirstCreation.cpp" />
+    <ClCompile Include="FlashlightTrigger.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GrainEffect.cpp" />
+    <ClCompile Include="GreyscaleEffect.cpp" />
+    <ClCompile Include="HallLevel.cpp" />
+    <ClCompile Include="HorizontalScroll.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="JSON.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainEntities.cpp" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MoveDown.cpp" />
+    <ClCompile Include="MoveDownTrigger.cpp" />
+    <ClCompile Include="MoveUp.cpp" />
+    <ClCompile Include="MoveUpTrigger.cpp" />
+    <ClCompile Include="PhysicsBody.cpp" />
+    <ClCompile Include="PhysicsPlayground.cpp" />
+    <ClCompile Include="PhysicsPlaygroundListener.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="PixelateEffect.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PostEffect.cpp" />
+    <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="ReturnFoyer1.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneTrigger.cpp" />
+    <ClCompile Include="Selectable.cpp" />
+    <ClCompile Include="SelectiveColorEffect.cpp" />
+    <ClCompile Include="SepiaEffect.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="StudyLevel.cpp" />
+    <ClCompile Include="SwitchScene.cpp" />
+    <ClCompile Include="SwitchScene0.cpp" />
+    <ClCompile Include="SwitchScene2.cpp" />
+    <ClCompile Include="SwitchScene3.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TranslateTrigger.cpp" />
+    <ClCompile Include="Trigger.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Utilities.cpp" />
+    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="VertexManager.cpp" />
+    <ClCompile Include="VerticalScroll.cpp" />
+    <ClCompile Include="VignetteEffect.cpp" />
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="XInput.cpp" />
+    <ClCompile Include="VTrigger.cpp" />
+    <ClCompile Include="include\imgui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_impl_sdl.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="include\imgui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationSpritePlayground.h" />
+    <ClInclude Include="AnimationSystem.h" />
+    <ClInclude Include="BackEnd.h" />
+    <ClInclude Include="BloomEffect.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraSystem.h" />
+    <ClInclude Include="CanDamage.h" />
+    <ClInclude Include="CanDoor.h" />
+    <ClInclude Include="CanJump.h" />
+    <ClInclude Include="DestroyTrigger.h" />
+    <ClInclude Include="DialogueTrigger.h" />
+    <ClInclude Include="Dialouge.h" />
+    <ClInclude Include="ECS.h" />
+    <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EnemyTrigger.h" />
+    <ClInclude Include="FirstCreation.h" />
+    <ClInclude Include="FlashlightTrigger.h" />
+    <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GrainEffect.h" />
+    <ClInclude Include="GreyscaleEffect.h" />
+    <ClInclude Include="HallLevel.h" />
+    <ClInclude Include="HorizontalScroll.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="JSON.h" />
+    <ClInclude Include="MainEntities.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MoveDown.h" />
+    <ClInclude Include="MoveDownTrigger.h" />
+    <ClInclude Include="MoveUp.h" />
+    <ClInclude Include="MoveUpTrigger.h" />
+    <ClInclude Include="PhysicsBody.h" />
+    <ClInclude Include="PhysicsPlayground.h" />
+    <ClInclude Include="PhysicsPlaygroundListener.h" />
+    <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="PixelateEffect.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PostEffect.h" />
+    <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="ReturnFoyer1.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scenes.h" />
+    <ClInclude Include="SceneTrigger.h" />
+    <ClInclude Include="Selectable.h" />
+    <ClInclude Include="SelectiveColorEffect.h" />
+    <ClInclude Include="SepiaEffect.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StudyLevel.h" />
+    <ClInclude Include="SwitchScene.h" />
+    <ClInclude Include="SwitchScene0.h" />
+    <ClInclude Include="SwitchScene2.h" />
+    <ClInclude Include="SwitchScene3.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="Timer.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="TranslateTrigger.h" />
+    <ClInclude Include="Trigger.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Utilities.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="VertexManager.h" />
+    <ClInclude Include="VerticalScroll.h" />
+    <ClInclude Include="VignetteEffect.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="Xinput.h" />
+    <ClInclude Include="VTrigger.h" />
     <ClInclude Include="include\imgui\imconfig.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui_impl.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imgui_internal.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_rectpack.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_textedit.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="AnimationController.h">
@@ -219,22 +354,53 @@
     <ClInclude Include="CanDamage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DialogueTrigger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialouge.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyTrigger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDown.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveDownTrigger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUp.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveUpTrigger.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StudyLevel.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_impl_sdl.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="include\imgui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\imgui\imgui.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_demo.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_draw.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_impl.cpp">
-      <Filter>ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="include\imgui\imgui_widgets.cpp">
-      <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="AnimationController.cpp">
       <Filter>Source Files</Filter>
@@ -434,5 +600,35 @@
     <ClCompile Include="CanDamage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dialouge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveDown.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <None Include="include\imgui\.travis.yml" />
+    <None Include="include\imgui\LICENSE" />
+    <None Include="include\imgui\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="glew32.dll">
+      <Filter>Source Files</Filter>
+    </None>
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Matrix.dll">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="SDL2.dll">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Vector.dll">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{ef823e34-460e-4ed1-b3c0-de0c5df53d12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

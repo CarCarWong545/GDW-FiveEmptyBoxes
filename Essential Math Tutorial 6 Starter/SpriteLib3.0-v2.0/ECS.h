@@ -28,6 +28,7 @@
 #include "EnemyTrigger.h"
 #include "FlashlightTrigger.h"
 #include "CanDamage.h"
+#include "VTrigger.h"
 
 class ECS abstract
 {

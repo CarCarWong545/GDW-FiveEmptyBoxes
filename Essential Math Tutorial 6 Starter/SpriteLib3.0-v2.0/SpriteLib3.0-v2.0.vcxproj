@@ -147,8 +147,11 @@
     <ClInclude Include="CanDoor.h" />
     <ClInclude Include="CanJump.h" />
     <ClInclude Include="DestroyTrigger.h" />
+    <ClInclude Include="DialogueTrigger.h" />
+    <ClInclude Include="Dialouge.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EnemyTrigger.h" />
     <ClInclude Include="FirstCreation.h" />
     <ClInclude Include="FlashlightTrigger.h" />
     <ClInclude Include="Framebuffer.h" />
@@ -159,7 +162,8 @@
     <ClInclude Include="HorizontalScroll.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
-    <ClInclude Include="include\imgui\imgui_impl.h" />
+    <ClInclude Include="include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="include\imgui\imgui_impl_sdl.h" />
     <ClInclude Include="include\imgui\imgui_internal.h" />
     <ClInclude Include="include\imgui\imstb_rectpack.h" />
     <ClInclude Include="include\imgui\imstb_textedit.h" />
@@ -168,6 +172,10 @@
     <ClInclude Include="JSON.h" />
     <ClInclude Include="MainEntities.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MoveDown.h" />
+    <ClInclude Include="MoveDownTrigger.h" />
+    <ClInclude Include="MoveUp.h" />
+    <ClInclude Include="MoveUpTrigger.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="PhysicsPlayground.h" />
     <ClInclude Include="PhysicsPlaygroundListener.h" />
@@ -185,6 +193,7 @@
     <ClInclude Include="SepiaEffect.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="StudyLevel.h" />
     <ClInclude Include="SwitchScene.h" />
     <ClInclude Include="SwitchScene0.h" />
     <ClInclude Include="SwitchScene2.h" />
@@ -201,6 +210,7 @@
     <ClInclude Include="VertexManager.h" />
     <ClInclude Include="VerticalScroll.h" />
     <ClInclude Include="VignetteEffect.h" />
+    <ClInclude Include="VTrigger.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Xinput.h" />
   </ItemGroup>
@@ -217,6 +227,7 @@
     <ClCompile Include="CanJump.cpp" />
     <ClCompile Include="DestroyTrigger.cpp" />
     <ClCompile Include="DialogueTrigger.cpp" />
+    <ClCompile Include="Dialouge.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
@@ -231,13 +242,15 @@
     <ClCompile Include="include\imgui\imgui.cpp" />
     <ClCompile Include="include\imgui\imgui_demo.cpp" />
     <ClCompile Include="include\imgui\imgui_draw.cpp" />
-    <ClCompile Include="include\imgui\imgui_impl.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="include\imgui\imgui_impl_sdl.cpp" />
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MoveDown.cpp" />
     <ClCompile Include="MoveDownTrigger.cpp" />
     <ClCompile Include="MoveUp.cpp" />
     <ClCompile Include="MoveUpTrigger.cpp" />
@@ -274,8 +287,14 @@
     <ClCompile Include="VertexManager.cpp" />
     <ClCompile Include="VerticalScroll.cpp" />
     <ClCompile Include="VignetteEffect.cpp" />
+    <ClCompile Include="VTrigger.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XInput.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="include\imgui\.travis.yml" />
+    <None Include="include\imgui\LICENSE" />
+    <None Include="include\imgui\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
