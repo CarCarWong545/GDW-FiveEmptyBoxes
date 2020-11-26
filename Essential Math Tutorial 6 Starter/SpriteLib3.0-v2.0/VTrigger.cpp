@@ -10,15 +10,18 @@ void VTrigger::OnTrigger()
 void VTrigger::OnEnter()
 {
 	Trigger::OnEnter();
-	if (ECS::GetComponent<Player>(m_targetEntities[1]).m_suck)
+	if (ECS::GetComponent<Player>(m_targetEntities[0]).m_suck)
 	{
-		auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]);
-		auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[0]);
-		if (ghost.m_stun)
+		for (int i = 1; i < m_targetEntities.size(); i++)
 		{
-			ghost.m_candamage = false;
-			ghost.m_suck = true;
+			auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
+			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
+			if (ghost.m_stun)
+			{
+				ghost.m_candamage = false;
+				ghost.m_suck = true;
 
+			}
 		}
 	}
 }
@@ -27,11 +30,15 @@ void VTrigger::OnExit()
 {
 	Trigger::OnExit();
 	int* enemies = MainEntities::Enemies();
-	if (enemies[0] != 0)
+	for (int i = 1; i < m_targetEntities.size(); i++)
 	{
-		auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]);
-		auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[0]);
-		ghost.m_suck = false;
+		if (enemies[i-1] != 0)
+		{
+			auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
+			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
+			ghost.m_suck = false;
+			//body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
 	}
 
 }
