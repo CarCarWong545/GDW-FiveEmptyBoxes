@@ -170,7 +170,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, OBJECTS | PICKUP | TRIGGER|GROUND|ENVIRONMENT |ENEMY|ETRIGGER, 0.5f, 3.f);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, OBJECTS | PICKUP |TRIGGER|GROUND|ENVIRONMENT |ENEMY|ETRIGGER, 0.5f, 3.f);
 		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
 
 		tempPhsBody.SetRotationAngleDeg(0.f);
@@ -228,7 +228,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | OBJECTS | PICKUP | TRIGGER|PTRIGGER, 0.5f, 3.f);
 			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
 
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
@@ -284,7 +284,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER|PTRIGGER, 0.5f, 3.f);
 			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
 
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
@@ -328,7 +328,45 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, ENEMY | OBJECTS | TRIGGER);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, ENEMY | OBJECTS | ETRIGGER);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
+	// vacuum trigger
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+		vacuum = entity;
+		//ECS::SetIsFlashlight(entity, true);
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+		ECS::GetComponent<Trigger*>(entity) = new VTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = -10.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().x), float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().y));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, ENEMY | OBJECTS | ETRIGGER);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
@@ -382,6 +420,10 @@ void StudyLevel::Update()
 
 	auto& playerb = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& players = ECS::GetComponent<Sprite>(MainEntities::MainPlayer());
+
+	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
+	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
+
 	if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
@@ -407,18 +449,35 @@ void StudyLevel::Update()
 			enemies[0] = 0;
 			MainEntities::Enemies(enemies);
 		}
+		if (c_ghost.m_suck)
+		{
+			c_ghost.m_candamage = false;
+			b2Vec2 direction = b2Vec2(-playerb.GetVelocity().x, -playerb.GetVelocity().y);
+			
+			ghost.GetBody()->SetLinearVelocity(direction);
+			//ghost comes within 5~ of contact with vacuum
+			if ((v.GetPosition().x - 5 <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + 5)&&(v.GetPosition().y - 5 <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + 5))
+			{
+				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
+				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
+			}
+			
+		}
 	}
 
-	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
+	
 
 	if (player.m_facing == 1)//right
 	{
 		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
+		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 	}
 	else
 	{
 		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
+		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 	}
+
 }
 
 

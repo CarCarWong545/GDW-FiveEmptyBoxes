@@ -25,6 +25,7 @@ protected:
 	int ghost1 = 0;
 	int ghost2 = 0; //ghost 1 physics body
 	int flashlight = 0;
+	int vacuum = 0;
 	bool ghost_1;
 	
 };

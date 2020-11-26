@@ -4,14 +4,14 @@ Player::Player()
 {
 }
 
-Player::Player(std::string& fileName, std::string& animationJSON, int width, int height, Sprite* sprite, 
-					AnimationController* controller, Transform* transform, bool hasPhys, PhysicsBody* body)
+Player::Player(std::string& fileName, std::string& animationJSON, int width, int height, Sprite* sprite,
+	AnimationController* controller, Transform* transform, bool hasPhys, PhysicsBody* body)
 {
 	InitPlayer(fileName, animationJSON, width, height, sprite, controller, transform, hasPhys, body);
 }
 
-void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, Sprite* sprite, 
-							AnimationController* controller, Transform* transform, bool hasPhys, PhysicsBody* body)
+void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, Sprite* sprite,
+	AnimationController* controller, Transform* transform, bool hasPhys, PhysicsBody* body)
 {
 	//Store references to the components
 	m_sprite = sprite;
@@ -43,11 +43,14 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	m_animController->AddAnimation(animations["LuigiFlashlightoffIdleRight"].get<Animation>()); //idle + equip + right =0+2+1 = 3
 	m_animController->AddAnimation(animations["LuigiIdleLeft"].get<Animation>());//idle + light + left = 0+4+1 = 4;
 	m_animController->AddAnimation(animations["LuigiIdleRight"].get<Animation>());//idle + light+ right = 5
+	//sucking
+	m_animController->AddAnimation(animations["LuigiSuckingGhostsLeft"].get<Animation>()); // idle + left+ suck =0+0+6
+	m_animController->AddAnimation(animations["LuigiSuckingGhostsRight"].get<Animation>()); //idle+right+suck = 0+1+6=7
 
 	//Walk Animations\\
 
 	m_animController->AddAnimation(animations["LuigiNoEquipmentLeft"].get<Animation>()); //walk + left = 6
-	
+
 	m_animController->AddAnimation(animations["LuigiNoEquipmentRight"].get<Animation>()); //7
 
 	//turn off flashlight
@@ -58,6 +61,7 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	m_animController->AddAnimation(animations["LuigiWalkingLeft"].get<Animation>());//walk+left+light = 6+0+4 = 10 
 	//WalkRight
 	m_animController->AddAnimation(animations["LuigiWalkingRight"].get<Animation>()); //11
+	
 
 	//Set Default Animation
 	m_animController->SetActiveAnim(IDLERIGHT);
@@ -78,24 +82,24 @@ void Player::Update()
 void Player::MovementUpdate()
 {
 	m_moving = false;
+	m_suck = false;
 
-	
 	if (Input::GetKey(Key::A))
 	{
-			//m_transform->SetPositionX(m_transform->GetPositionX() - (speed * Timer::deltaTime));
+		//m_transform->SetPositionX(m_transform->GetPositionX() - (speed * Timer::deltaTime));
 		m_facing = LEFT;
 		m_moving = true;
 	}
 	if (Input::GetKey(Key::D))
 	{
-			//m_transform->SetPositionX(m_transform->GetPositionX() + (speed * Timer::deltaTime));
+		//m_transform->SetPositionX(m_transform->GetPositionX() + (speed * Timer::deltaTime));
 		m_facing = RIGHT;
 		m_moving = true;
 	}
 
 	if (Input::GetKeyDown(Key::Space))
 	{
-		
+
 	}
 	if (Input::GetKeyDown(Key::Z))
 	{
@@ -105,28 +109,40 @@ void Player::MovementUpdate()
 	{
 		m_equip = !m_equip;
 	}*/
+	if (Input::GetKey(Key::Q))
+	{
+		m_suck = true;
+	}
 }
 
 void Player::AnimationUpdate()
 {
 	int activeAnimation = 0;
-
-	if (m_moving)
+	if (m_equip && m_suck)
 	{
-		//Puts it into the WALK category
-		activeAnimation = WALK;
+		activeAnimation += SUCK;
 	}
 	else
+
 	{
-		activeAnimation = IDLE;
-	}
-	if (m_flashlight && m_equip)
-	{
+		if (m_moving)
+		{
+			//Puts it into the WALK category
+			activeAnimation = WALK;
+		}
+		else
+		{
+			activeAnimation = IDLE;
+		}
+
+		if (m_flashlight && m_equip)
+		{
 		activeAnimation += LIGHT;
-	}
-	else if (m_equip)
-	{
+		}
+		else if (m_equip)
+		{
 		activeAnimation += EQUIP;
+		}
 	}
 
 	SetActiveAnimation(activeAnimation + (int)m_facing);

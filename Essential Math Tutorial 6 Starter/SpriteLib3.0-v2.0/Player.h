@@ -9,7 +9,7 @@ enum AnimEnums
 {
 	IDLELEFT,
 	IDLERIGHT,
-	
+
 	//Only in Top down
 #ifdef TOPDOWN
 	IDLEUP,
@@ -24,7 +24,7 @@ enum AnimEnums
 	WALKUP,
 	WALKDOWN,
 #endif
-	
+
 	ATTACKLEFT,
 	ATTACKRIGHT,
 
@@ -46,7 +46,9 @@ enum AnimTypes
 	IDLE = 0,
 	EQUIP = 2,
 	LIGHT = 4,
-	WALK = 6
+	SUCK = 6,
+	WALK = 8,
+	
 #endif
 };
 
@@ -65,10 +67,10 @@ class Player
 {
 public:
 	Player();
-	Player(std::string& fileName, std::string& animationJSON, int width, int height, 
+	Player(std::string& fileName, std::string& animationJSON, int width, int height,
 		Sprite* sprite, AnimationController* controller, Transform* transform, bool hasPhys = false, PhysicsBody* body = nullptr);
 
-	void InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height, 
+	void InitPlayer(std::string& fileName, std::string& animationJSON, int width, int height,
 		Sprite* sprite, AnimationController* controller, Transform* transform, bool hasPhys = false, PhysicsBody* body = nullptr);
 
 	void Update();
@@ -79,6 +81,8 @@ public:
 	bool dialogue = false;
 	//is luigi holding his flashlight
 	bool m_flashlight = true;
+	//is luigi sucking
+	bool m_suck = false;
 
 	AnimDir m_facing = LEFT;
 
@@ -91,8 +95,8 @@ private:
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
 	bool m_locked = false;
-	
-	
+
+
 
 	//A reference to our sprite
 	Sprite* m_sprite = nullptr;
@@ -108,7 +112,7 @@ private:
 	bool m_hasPhysics = false;
 
 	//Default animation direction (feel free to change this to suit your game. If you're making a side-scroller, left or right would be better
-	
+
 };
 
 #endif // !__PLAYER_H__
