@@ -435,6 +435,8 @@ void StudyLevel::Update()
 
 		if (c_ghost.m_candamage)
 		{
+
+			startstuntime = clock();
 			if (ghost.GetPosition().x >= -5)
 			{
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(-15.f, 0.f));
@@ -444,11 +446,27 @@ void StudyLevel::Update()
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
 			}
 		}
-		if (c_ghost.m_suck &&player.m_suck)
+		else {
+			float elapsedtime;
+			float stuntime = 3.0f;
+
+			isstunned = true;
+			if (isstunned) {
+				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
+
+				if (elapsedtime >= stuntime) {
+					c_ghost.m_candamage = true;
+					c_ghost.m_stun = false;
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+					isstunned = false;
+				}
+			}
+		}
+		if (c_ghost.m_suck && player.m_suck)
 		{
 			c_ghost.m_candamage = false;
-			
-			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y-ghost.GetPosition().y);
+
+			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 			direction.Normalize();
 			float scale = 10.f;
 			direction *= scale;
@@ -456,11 +474,11 @@ void StudyLevel::Update()
 			ghost_2.GetBody()->SetLinearVelocity(direction);
 			b2Vec2 force = direction;
 			force *= 1000.f;
-			playerb.GetBody()->ApplyLinearImpulseToCenter(force,true);
+			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
 
 			int offset = 20; //20 is good value
 			//ghost comes within offet~ of contact with vacuum
-			if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset)&&(v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset)|| (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) &&(v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
+			if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
 			{
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
@@ -470,11 +488,11 @@ void StudyLevel::Update()
 				MainEntities::Enemies(enemies);
 				MainEntities::Capture(MainEntities::Captured() + 1);
 			}
-			
+
 		}
 		else if (c_ghost.m_suck)
 		{
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0,0));
+			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 		else if (!c_ghost.m_candamage)
 		{
@@ -482,7 +500,7 @@ void StudyLevel::Update()
 		}
 	}
 
-	
+
 
 	if (player.m_facing == 1)//right
 	{
@@ -495,36 +513,8 @@ void StudyLevel::Update()
 		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 	}
 
-	if (c_ghost.m_candamage)
-	{
-		startstuntime = clock();
-
-		if (ghost.GetPosition().x >= -5)
-		{
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(-15.f, 0.f));
-		}
-		if (ghost.GetPosition().x <= -35)
-		{
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
-		}
-	}
-	else {
-		float elapsedtime;
-		float stuntime = 3.0f;
-		
-		isstunned = true;
-		if (isstunned) {
-			elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
-
-			if (elapsedtime >= stuntime) {
-				c_ghost.m_candamage = true;
-				c_ghost.m_stun = false;
-				ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
-				isstunned = false;
-			}
-		}
-	}
 }
+		
 
 
 void StudyLevel::KeyboardHold()
