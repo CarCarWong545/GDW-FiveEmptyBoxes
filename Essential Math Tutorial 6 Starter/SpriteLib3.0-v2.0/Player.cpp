@@ -61,6 +61,9 @@ void Player::InitPlayer(std::string& fileName, std::string& animationJSON, int w
 	m_animController->AddAnimation(animations["LuigiWalkingLeft"].get<Animation>());//walk+left+light = 6+0+4 = 10 
 	//WalkRight
 	m_animController->AddAnimation(animations["LuigiWalkingRight"].get<Animation>()); //11
+
+	m_animController->AddAnimation(animations["LuigiWalkSuckingGhostsLeft"].get<Animation>()); //walk + left + suck 6+0+6 = 12
+	m_animController->AddAnimation(animations["LuigiWalkSuckingGhostsRight"].get<Animation>());
 	
 
 	//Set Default Animation
@@ -119,13 +122,7 @@ void Player::MovementUpdate()
 void Player::AnimationUpdate()
 {
 	int activeAnimation = 0;
-	if (m_equip && m_suck)
-	{
-		activeAnimation += SUCK;
-	}
-	else
-
-	{
+	
 		if (m_moving)
 		{
 			//Puts it into the WALK category
@@ -135,8 +132,11 @@ void Player::AnimationUpdate()
 		{
 			activeAnimation = IDLE;
 		}
-
-		if (m_flashlight && m_equip)
+		if (m_equip && m_suck)
+		{
+			activeAnimation += SUCK;
+		}
+		else if (m_flashlight && m_equip)
 		{
 		activeAnimation += LIGHT;
 		}
@@ -144,8 +144,6 @@ void Player::AnimationUpdate()
 		{
 		activeAnimation += EQUIP;
 		}
-	}
-
 	SetActiveAnimation(activeAnimation + (int)m_facing);
 }
 

@@ -393,6 +393,8 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
+		
+
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
@@ -473,7 +475,7 @@ void StudyLevel::Update()
 			ghost.GetBody()->SetLinearVelocity(direction);
 			ghost_2.GetBody()->SetLinearVelocity(direction);
 			b2Vec2 force = direction;
-			force *= 1000.f;
+			force *= 300.f;
 			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
 			c_ghost.hp -= 1;
 
