@@ -16,9 +16,9 @@ void VTrigger::OnEnter()
 		{
 			auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
 			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
-			if (ghost.m_stun)
+			if (!ghost.m_candamage)
 			{
-				ghost.m_candamage = false;
+				ghost.m_stun = true;
 				ghost.m_suck = true;
 
 			}
@@ -37,6 +37,7 @@ void VTrigger::OnExit()
 			auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
 			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
 			ghost.m_suck = false;
+			ghost.m_stun = false;
 			//body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	}

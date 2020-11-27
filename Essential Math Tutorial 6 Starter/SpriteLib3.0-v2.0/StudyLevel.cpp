@@ -446,7 +446,7 @@ void StudyLevel::Update()
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
 			}
 		}
-		else {
+		else if (!c_ghost.m_stun) {
 			float elapsedtime;
 			float stuntime = 3.0f;
 
@@ -465,7 +465,7 @@ void StudyLevel::Update()
 		if (c_ghost.m_suck && player.m_suck)
 		{
 			c_ghost.m_candamage = false;
-
+			c_ghost.m_stun = true;
 			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 			direction.Normalize();
 			float scale = 10.f;
@@ -475,10 +475,12 @@ void StudyLevel::Update()
 			b2Vec2 force = direction;
 			force *= 1000.f;
 			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
+			c_ghost.hp -= 1;
 
 			int offset = 20; //20 is good value
 			//ghost comes within offet~ of contact with vacuum
-			if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
+			//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
+			if (c_ghost.hp <=0)
 			{
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
@@ -492,10 +494,12 @@ void StudyLevel::Update()
 		}
 		else if (c_ghost.m_suck)
 		{
+			c_ghost.m_stun = false;
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
-		else if (!c_ghost.m_candamage)
+		else if (!c_ghost.m_candamage &&!c_ghost.m_suck)
 		{
+			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 	}

@@ -20,7 +20,7 @@ void FlashlightTrigger::OnEnter()
 
 			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
 			ghost.m_candamage = false;
-			ghost.m_stun = true;
+			//ghost.m_stun = true;
 		}
 	}
 

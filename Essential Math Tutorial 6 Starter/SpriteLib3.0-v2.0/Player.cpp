@@ -112,6 +112,7 @@ void Player::MovementUpdate()
 	if (Input::GetKey(Key::Q))
 	{
 		m_suck = true;
+		m_flashlight = false;
 	}
 }
 
