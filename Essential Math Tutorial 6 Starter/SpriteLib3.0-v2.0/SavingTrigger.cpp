@@ -47,15 +47,16 @@ void SavingTrigger::SaveData()//saves current states, ignorant of settings
 	output.open("Luigi.txt");
 	if (output.is_open()) {
 		int scene = 0;
-		if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch == true) {
+		if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch0 == true) {
 			scene = 0;
 		}
-		if (ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer()).m_switch == true) {
+		if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch1 == true) {
 			scene = 1;
 		}
-		if (ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer()).m_switch == true) {
+		if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch2 == true) {
 			scene = 2;
 		}
+
 
 		output << scene << std::endl;
 
@@ -199,7 +200,7 @@ void SavingTrigger::defaultSave()//saves the default file, run once for debuggin
 
 		output << 0 << std::endl;
 		output << 30 << std::endl;
-		output << 0 << std::endl;//MainEntities Health 
+		output << 100 << std::endl;//MainEntities Health 
 
 		output << 0 << std::endl;
 
