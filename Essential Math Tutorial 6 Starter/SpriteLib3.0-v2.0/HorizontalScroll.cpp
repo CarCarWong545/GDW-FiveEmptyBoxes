@@ -6,25 +6,25 @@ HorizontalScroll::HorizontalScroll()
 
 void HorizontalScroll::Update()
 {
-	//Above focus
-	if (m_focus->GetPosition().x > m_cam->m_localPosition.x + m_offset+105)
-	{
-		//Calculate the amount the focus has "pushed" the camera right by
-		float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x + m_offset + 105);
-		
-		//Adjust the camera
-		m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
-	}
+    //Above focus 
+    if (m_focus->GetPosition().x > m_cam->m_localPosition.x + m_offset + 0)
+    {
+        //Calculate the amount the focus has "pushed" the camera right by 
+        float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x + m_offset + 0);
 
-	//Below focus
-	if (m_focus->GetPosition().x < m_cam->m_localPosition.x - m_offset - 105)
-	{
-		//Calculate the amount the focus has "pushed" the camera left by
-		float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x - m_offset - 105);
+        //Adjust the camera 
+        m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
+    }
 
-		//Adjust the camera
-		m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
-	}
+    //Below focus 
+    if (m_focus->GetPosition().x < m_cam->m_localPosition.x - m_offset - 0)
+    {
+        //Calculate the amount the focus has "pushed" the camera left by 
+        float difference = m_focus->GetPosition().x - (m_cam->m_localPosition.x - m_offset - 0);
+
+        //Adjust the camera 
+        m_cam->SetPosition(vec3(m_cam->GetPosition().x + difference, m_cam->GetPosition().y, m_cam->GetPosition().z));
+    }
 }
 
 Camera * HorizontalScroll::GetCam() const

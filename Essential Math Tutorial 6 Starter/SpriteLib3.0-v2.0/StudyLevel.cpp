@@ -159,7 +159,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-		float shrinkX = 0.f;
+		float shrinkX = 10.f;
 		float shrinkY = 0.f;
 
 		b2Body* tempBody;
@@ -201,7 +201,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 
 			//Sets up the components  
-			std::string fileName = "blueghost.png";
+			std::string fileName = "neville.png";
 			//std::string animations = "BLUETWRL.json";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
@@ -223,7 +223,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_kinematicBody;
-			tempDef.position.Set(float32(33.f), float32(60.f));
+			tempDef.position.Set(float32(-85.f), float32(25.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -257,7 +257,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 
 			//Sets up the components  
-			std::string fileName = "blueghost.png";
+			std::string fileName = "neville.png";
 			//std::string animations = "BLUETWRL.json";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
@@ -279,7 +279,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(33.f), float32(60.f));
+			tempDef.position.Set(float32(-85.f), float32(25.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -289,6 +289,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 			tempPhsBody.SetGravityScale(0.f);
 			tempPhsBody.SetFixedRotation(true);
+			//tempSpr.SetTransparency(0);
 		}
 
 	}
@@ -371,8 +372,57 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
-	Scene::BoxMaker(200, 10, -146, -20, 90, 1);
-	Scene::BoxMaker(200, 10, 207, -20, 90, 1);
+	Scene::BoxMaker(200, 10, -130, -10, 90, 0);
+	Scene::BoxMaker(200, 10, 190, -10, 90, 0);
+	//book entity
+	{
+		if (ghost_1)
+		{
+		auto entity = ECS::CreateEntity();
+		book = entity;
+
+		//Add components  
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+		ECS::AttachComponent<CanDamage>(entity);
+		
+		//Sets up the components  
+		std::string fileName = "Book.png";
+		
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(80.f), float32(60.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER,PLAYER, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+		tempPhsBody.SetGravityScale(0.f);
+		tempPhsBody.SetFixedRotation(true);
+
+		
+		tempPhsBody.GetBody()->SetLinearVelocity(b2Vec2(-50, -8));
+		}
+	}
 	//door trigger 1
 	{
 		//Creates entity
@@ -432,25 +482,26 @@ void StudyLevel::Update()
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
 		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
 
+		auto& book1 = ECS::GetComponent<PhysicsBody>(book);
+		//book1.GetBody()->SetLinearVelocity(b2Vec2(-50, -5));
+		if (book1.GetBody()->GetPosition().x <= -100)
+		{
+			book1.GetBody()->SetTransform(b2Vec2(float32(80.f), float32(60.f)), 0);
+		}
+
 		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
 		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
+		ghost.GetBody()->SetAwake(true);
+		ghost_2.GetBody()->SetAwake(true);
 
 		if (c_ghost.m_candamage)
 		{
-
+			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			startstuntime = clock();
-			if (ghost.GetPosition().x >= -5)
-			{
-				ghost.GetBody()->SetLinearVelocity(b2Vec2(-15.f, 0.f));
-			}
-			if (ghost.GetPosition().x <= -35)
-			{
-				ghost.GetBody()->SetLinearVelocity(b2Vec2(15.f, 0.f));
-			}
 		}
 		else if (!c_ghost.m_stun) {
 			float elapsedtime;
-			float stuntime = 3.0f;
+			float stuntime = 5.0f;
 
 			isstunned = true;
 			if (isstunned) {
@@ -459,7 +510,7 @@ void StudyLevel::Update()
 				if (elapsedtime >= stuntime) {
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
-					ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 					isstunned = false;
 				}
 			}
@@ -486,8 +537,9 @@ void StudyLevel::Update()
 			{
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
+				PhysicsBody::m_bodiesToDelete.push_back(book);
 				ghost_1 = false;
-
+				
 				enemies[0] = 0;
 				MainEntities::Enemies(enemies);
 				MainEntities::Capture(MainEntities::Captured() + 1);
@@ -527,7 +579,7 @@ void StudyLevel::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
-	float speed = 1.f;
+	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
 	if (Input::GetKey(Key::Shift))

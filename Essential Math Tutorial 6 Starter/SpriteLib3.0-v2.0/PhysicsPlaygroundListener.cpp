@@ -35,19 +35,6 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 	{
 		TriggerEnter(fixtureB);
 	}
-	if (entityA == MainEntities::MainPlayer() && entityB == MainEntities::Flashlight())
-	{
-		return;
-	}
-	else if (entityB == MainEntities::MainPlayer() && entityA == MainEntities::Flashlight())
-	{
-		return;
-	}
-	if ((filterA.categoryBits == ETRIGGER && filterB.categoryBits == ENEMY) || (filterB.categoryBits == ETRIGGER && filterA.categoryBits == ENEMY))
-	{
-		return;
-	}
-	
 
 	//if neither or both are sensors, will be false
 	if ((sensorA ^ sensorB))

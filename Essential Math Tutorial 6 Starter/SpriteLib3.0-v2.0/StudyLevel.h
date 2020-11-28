@@ -36,6 +36,8 @@ protected:
 	clock_t startstuntime;
 	int vacuum = 0;
 	bool ghost_1;
+
+	int book = 0;
 	
 };
 

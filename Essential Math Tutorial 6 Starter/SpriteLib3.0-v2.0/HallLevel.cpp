@@ -333,7 +333,7 @@ void HallLevel::KeyboardHold()
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 
 
-	float speed = 1.f;
+	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
 	if (Input::GetKey(Key::Shift))
