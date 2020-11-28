@@ -29,6 +29,7 @@
 #include "FlashlightTrigger.h"
 #include "CanDamage.h"
 #include "VTrigger.h"
+#include "SavingTrigger.h"
 
 class ECS abstract
 {
