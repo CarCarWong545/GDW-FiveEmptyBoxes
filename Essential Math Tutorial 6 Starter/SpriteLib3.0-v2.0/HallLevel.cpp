@@ -245,7 +245,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
-	//door trigger back to MasterBedroom
+	//door trigger to MasterBedroom
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();

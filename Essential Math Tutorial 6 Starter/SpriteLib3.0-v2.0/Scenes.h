@@ -8,5 +8,7 @@
 #include "AnimationSpritePlayground.h"
 #include "ReturnFoyer1.h"
 #include "StudyLevel.h"
+#include "MasterBedLevel.h"
+#include "NurseryLevel.h"
 
 #endif // !__SCENES_H__
