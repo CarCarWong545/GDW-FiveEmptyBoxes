@@ -7,32 +7,34 @@ HallLevel::HallLevel(std::string name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
-
+	
 }
 
 int HallLevel::ChangeScene()
 {
-	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-	if (scene.m_switch3)
+	auto& scene4 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+	auto& scene3 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+	auto& scene1 = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
+	if (scene4.m_switch)
 	{
-		scene.m_switch3 = false;
+		scene4.m_switch = false;
 		return 3;
 	}
-	else if (scene.m_switch0)
+	else if (scene1.m_switch)
 	{
-		scene.m_switch0 = false;
+		scene1.m_switch = false;
 		return 0;
 	}
-	else if (scene.m_switch2)
+	else if (scene3.m_switch)
 	{
-		scene.m_switch2 = false;
+		scene3.m_switch = false;
 		return 2;
 	}
 	else
 	{
 		return -1;
 	}
-
+	
 }
 
 void HallLevel::InitScene(float windowWidth, float windowHeight)
@@ -124,6 +126,9 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<AnimationController>(entity);
 		//ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
+		ECS::AttachComponent<SwitchScene2>(entity);
+		ECS::AttachComponent<SwitchScene3>(entity);
+		ECS::AttachComponent<SwitchScene0>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
 
 		//Sets up the components
@@ -169,7 +174,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 	Scene::BoxMaker(325, 2, -120.f, 50.f, 90, 0);
 
 	//Scene::BoxMaker(325, 2, 30.f, 52.f, 0, 0);
-	//door trigger to FOYER
+	//door trigger to Study Room
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -185,7 +190,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -204,7 +209,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
-	//door trigger back to IDK
+	//door trigger back to Foyer
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -256,7 +261,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(0);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -275,7 +280,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
-	//door trigger to STUDY
+	//door trigger to Nursery
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -310,7 +315,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
-
+	
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
@@ -356,25 +361,30 @@ void HallLevel::KeyboardHold()
 	}
 	if (canDoor.m_door)
 	{
-		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
+		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+
+
 
 		if (Input::GetKeyDown(Key::E))
 		{
-			if (scene.can_switch0)
+			if (object.can_switch)
 			{
-				scene.m_switch0 = true;
+				object.m_switch = true;
 			}
-			else if (scene.can_switch1)
+			else if (object1.can_switch)
 			{
-				scene.m_switch1 = true;
+				object1.m_switch = true;
 			}
-			else if (scene.can_switch2)
+			else if (object2.can_switch)
 			{
-				scene.m_switch2 = true;
+				object2.m_switch = true;
 			}
-			else if (scene.can_switch3)
+			else if (object3.can_switch)
 			{
-				scene.m_switch3 = true;
+				object3.m_switch = true;
 			}
 		}
 	}

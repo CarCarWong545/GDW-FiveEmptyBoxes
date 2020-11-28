@@ -1,7 +1,6 @@
 #include "MainEntities.h"
 #include <iostream>
 #include <cstdlib>
-#include "ECS.h"
 
 int MainEntities::m_mainCamera = 0;
 int MainEntities::m_mainPlayer = 0;
@@ -60,43 +59,8 @@ void MainEntities::Health(int n)
 	}
 	if (health <= 0)
 	{
-		SavingTrigger st;
-		st.defaultSave();
-		st.LoadData();
-		int scene = st.getLuigiScene();
-		auto& object = ECS::GetComponent<SwitchScene>(MainPlayer());
-		if (scene == 0)
-		{
-			object.m_switch0 = true;
-		}
-		if (scene == 1)
-		{
-
-			object.m_switch1 = true;
-		}
-		else if (scene == 2)
-		{
-
-			object.m_switch2 = true;
-		}
-		else if (scene == 3)
-		{
-
-			object.m_switch3 = true;
-		}
-		ECS::GetComponent<PhysicsBody>(MainPlayer()).GetBody()->SetTransform(b2Vec2(st.getLuigiX(), st.getLuigiY()), 0);
-		health = 100;
-		//health = st.getLuigiHP();
-		/*int n = 0;
-		for (int i = 0; i < 10; i++)
-		{
-			if (st.isGhostDefeated(i))
-			{
-				enemies[i] = 0;
-				n++;
-			}
-		}
-		captured = n;*/
+		//end game somehow
+		//std::exit(0);
 	}
 }
 

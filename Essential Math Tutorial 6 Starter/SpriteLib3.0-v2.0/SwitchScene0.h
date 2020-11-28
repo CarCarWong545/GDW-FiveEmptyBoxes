@@ -1,5 +1,5 @@
 #pragma once
-class SwitchScene
+class SwitchScene0
 {
 public:
 	bool can_switch = false;

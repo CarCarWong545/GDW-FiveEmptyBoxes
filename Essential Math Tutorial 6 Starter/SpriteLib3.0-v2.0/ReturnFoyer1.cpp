@@ -14,16 +14,16 @@ ReturnFoyer1::ReturnFoyer1(std::string name)
 
 }
 int ReturnFoyer1::ChangeScene() {
-	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-	
-	if (scene.m_switch1)
+	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+	auto& scene3 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+	if (scene2.m_switch)
 	{
-		scene.m_switch1 = false;
+		scene2.m_switch = false;
 		return 1;
 	}
-	else if (scene.m_switch2)
+	else if (scene3.m_switch)
 	{
-		scene.m_switch2 = false;
+		scene3.m_switch = false;
 		return 2;
 	}
 	else
@@ -161,9 +161,11 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<AnimationController>(entity);
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
+		ECS::AttachComponent<SwitchScene2>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
-		
+		ECS::AttachComponent<SwitchScene0>(entity);
+		ECS::AttachComponent<SwitchScene3>(entity);
 
 		ECS::GetComponent<Dialouge>(entity).dialouge = false;
 		ECS::GetComponent<Player>(entity).m_equip = true;
@@ -513,25 +515,30 @@ void ReturnFoyer1::KeyboardDown()
 	}
 	if (canDoor.m_door)
 	{
-		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
+		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
+
+
 
 		if (Input::GetKeyDown(Key::E))
 		{
-			if (scene.can_switch0)
+			if (object.can_switch)
 			{
-				scene.m_switch0 = true;
+				object.m_switch = true;
 			}
-			else if (scene.can_switch1)
+			else if (object1.can_switch)
 			{
-				scene.m_switch1 = true;
+				object1.m_switch = true;
 			}
-			else if (scene.can_switch2)
+			else if (object2.can_switch)
 			{
-				scene.m_switch2 = true;
+				object2.m_switch = true;
 			}
-			else if (scene.can_switch3)
+			else if (object3.can_switch)
 			{
-				scene.m_switch3 = true;
+				object3.m_switch = true;
 			}
 		}
 	}
