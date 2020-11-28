@@ -183,6 +183,7 @@
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="ReturnFoyer1.h" />
+    <ClInclude Include="SavingTrigger.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="SceneTrigger.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="ReturnFoyer1.cpp" />
+    <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTrigger.cpp" />
     <ClCompile Include="Selectable.cpp" />

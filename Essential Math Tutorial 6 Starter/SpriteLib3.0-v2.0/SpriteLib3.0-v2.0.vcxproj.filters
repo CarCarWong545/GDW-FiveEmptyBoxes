@@ -70,6 +70,7 @@
     <ClCompile Include="VTrigger.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XInput.cpp" />
+    <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="HallLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="VTrigger.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Xinput.h" />
+    <ClInclude Include="SavingTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />
