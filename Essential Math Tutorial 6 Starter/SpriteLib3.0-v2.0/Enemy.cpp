@@ -35,17 +35,17 @@ void Enemy::InitEnemy(std::string& fileName, std::string& animationJSON, int wid
 	//IDLE ANIMATIONS\\
 	
 	//Idle Left
-	//m_animController->AddAnimation(animations["IDLELEFT"].get<Animation>()); //Idle + left = 0
-	//m_animController->AddAnimation(animations["IDLERIGHT"].get<Animation>()); //Idle + right = 1
+	m_animController->AddAnimation(animations["IDLELEFT"].get<Animation>()); //Idle + left = 0
+	m_animController->AddAnimation(animations["IDLERIGHT"].get<Animation>()); //Idle + right = 1
 
 	//attack
-	//m_animController->AddAnimation(animations["ATKLEFT"].get<Animation>()); //attack + left = 2
-	//m_animController->AddAnimation(animations["ATKRIGHT"].get<Animation>()); //
+	m_animController->AddAnimation(animations["ATKLEFT"].get<Animation>()); //attack + left = 2
+	m_animController->AddAnimation(animations["ATKRIGHT"].get<Animation>()); //
 
-	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleLeft"].get<Animation>()); //Idle + left = 0
-	m_animController->AddAnimation(animations["LuigiNoEquipmentIdleRight"].get<Animation>()); //idle + right = 1
-	m_animController->AddAnimation(animations["LuigiFlashlightOffIdleLeft"].get<Animation>()); //idle + equip + left= 0+0+2
-	m_animController->AddAnimation(animations["LuigiFlashlightoffIdleRight"].get<Animation>()); //idle + equip + right =0+2+1 = 3
+	//m_animController->AddAnimation(animations["LuigiNoEquipmentIdleLeft"].get<Animation>()); //Idle + left = 0
+	//m_animController->AddAnimation(animations["LuigiNoEquipmentIdleRight"].get<Animation>()); //idle + right = 1
+	//m_animController->AddAnimation(animations["LuigiFlashlightOffIdleLeft"].get<Animation>()); //idle + equip + left= 0+0+2
+	//m_animController->AddAnimation(animations["LuigiFlashlightoffIdleRight"].get<Animation>()); //idle + equip + right =0+2+1 = 3
 
 	m_animController->SetActiveAnim(IDLERIGHT);
 }
