@@ -18,6 +18,7 @@ void EnemyTrigger::OnEnter()
 	auto& ghost = ECS::GetComponent<CanDamage>(m_triggerEntity);
 	if (ghost.m_candamage && !ghost.m_stun)
 	{
+		ghost.is_damaging = true;
 		//take health - 5
 		MainEntities::Health(MainEntities::Health() - 5);
 		if (player.m_facing == 0)
@@ -34,4 +35,6 @@ void EnemyTrigger::OnEnter()
 void EnemyTrigger::OnExit()
 {
 	Trigger::OnExit();
+	auto& ghost = ECS::GetComponent<CanDamage>(m_triggerEntity);
+	ghost.is_damaging = false;
 }

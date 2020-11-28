@@ -90,31 +90,31 @@
     "SecsPerFrame": 0.30000001192092896
   },
   "LuigiSuckingGhostsRight": {
-    "Frame0": [ 300.0, 64.0, 356.0, 0.0 ],
+    "Frame0": [ 300.0, 60.0, 350.0, 0.0 ],
     "NumFrames": 1,
     "Repeating": true,
     "SecsPerFrame": 0.30000001192092896
   },
   "LuigiSuckingGhostsLeft": {
-    "Frame0": [ 300.0, 128.0, 356.0, 64.0 ],
+    "Frame0": [ 500.0, 60.0, 550.0, 0.0 ],
     "NumFrames": 1,
     "Repeating": true,
     "SecsPerFrame": 0.30000001192092896
   },
   "LuigiWalkSuckingGhostsRight": {
-    "Frame0": [ 300.0, 64.0, 356.0, 0.0 ],
-    "Frame1": [ 156.0, 304.0, 209.0, 245.0 ],
-    "Frame2": [209.0, 304.0, 262.0, 245.0],
-    "Frame3": [262.0, 304.0, 262.0, 245.0],
+    "Frame0": [ 300.0, 60.0, 350.0, 0.0 ],
+    "Frame1": [ 350.0, 60.0, 400.0, 0.0 ], 
+    "Frame2": [400.0, 60.0, 450.0, 0.0], 
+    "Frame3": [450.0, 60.0, 500.0, 0.0], 
     "NumFrames": 4,
     "Repeating": true,
     "SecsPerFrame": 0.30000001192092896
   },
   "LuigiWalkSuckingGhostsLeft": {
-    "Frame0": [ 300.0, 128.0, 356.0, 64.0 ],
-    "Frame1": [0.0, 304.0, 50.0, 245.0],
-    "Frame2": [50.0, 304.0, 103.0, 245.0],
-    "Frame3": [103.0, 304.0, 156.0, 245.0],
+    "Frame0": [ 500.0, 60.0, 550.0, 0.0 ],
+    "Frame1": [ 550.0, 60.0, 600.0, 0.0 ],
+    "Frame2": [ 600.0, 60.0, 650.0, 0.0 ],
+    "Frame3": [ 650.0, 60.0, 700.0, 0.0 ], 
     "NumFrames": 4,
     "Repeating": true,
     "SecsPerFrame": 0.30000001192092896

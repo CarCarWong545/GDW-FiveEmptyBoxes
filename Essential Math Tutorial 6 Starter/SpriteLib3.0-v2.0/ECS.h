@@ -30,6 +30,7 @@
 #include "CanDamage.h"
 #include "VTrigger.h"
 
+
 class ECS abstract
 {
 public:

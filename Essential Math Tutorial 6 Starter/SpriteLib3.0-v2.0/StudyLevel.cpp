@@ -189,11 +189,11 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			ghost1 = entity;
 
 			//Add components  
-			//ECS::AttachComponent<EnemyBlue>(entity);
+			ECS::AttachComponent<Enemy>(entity);
 			ECS::AttachComponent<Sprite>(entity);
 			ECS::AttachComponent<Transform>(entity);
 			ECS::AttachComponent<PhysicsBody>(entity);
-			//ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<AnimationController>(entity);
 			ECS::AttachComponent<Trigger*>(entity);
 			ECS::AttachComponent<CanDamage>(entity);
 
@@ -201,21 +201,23 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 
 			//Sets up the components  
-			std::string fileName = "blueghost.png";
+			//std::string fileName = "spritesheets/BLUETWRLSHEET.png";
 			//std::string animations = "BLUETWRL.json";
+			std::string fileName = "spritesheets/luigi.png";
+			std::string animations = "Luigi.json";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 4.f));
-			//ECS::GetComponent<EnemyBlue>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
-				//&ECS::GetComponent<AnimationController>(entity),
-				//&ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));
+			ECS::GetComponent<Enemy>(entity).InitEnemy(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
+				&ECS::GetComponent<AnimationController>(entity),
+				&ECS::GetComponent<Transform>(entity), &ECS::GetComponent<CanDamage>(entity));
 			ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
-
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+			//tempSpr.SetTransparency(0);
 
 			float shrinkX = 0.f;
 			float shrinkY = 0.f;
@@ -254,11 +256,13 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			//ECS::AttachComponent<CanDamage>(entity);
 
 			//ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+			//ECS::AttachComponent<AnimationController>(entity);
+			//ECS::AttachComponent<Enemy>(entity);
 
 
 			//Sets up the components  
 			std::string fileName = "blueghost.png";
-			//std::string animations = "BLUETWRL.json";
+			std::string animations = "BLUETWRL.json";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
@@ -269,9 +273,12 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 			//ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
+			
+
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+			tempSpr.SetTransparency(0);
 
 			float shrinkX = 0.f;
 			float shrinkY = 0.f;
@@ -419,6 +426,8 @@ void StudyLevel::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
+	
+
 	int* enemies = MainEntities::Enemies();
 
 	auto& playerb = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
@@ -429,6 +438,9 @@ void StudyLevel::Update()
 
 	if (ghost_1)
 	{
+		auto& enemy = ECS::GetComponent<Enemy>(ghost1);
+		enemy.Update();
+
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
 		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
 
@@ -461,11 +473,14 @@ void StudyLevel::Update()
 					c_ghost.m_stun = false;
 					ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 					isstunned = false;
+					enemy.m_locked = false;
 				}
 			}
 		}
 		if (c_ghost.m_suck && player.m_suck)
 		{
+			enemy.m_locked = true;
+
 			c_ghost.m_candamage = false;
 			c_ghost.m_stun = true;
 			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
@@ -478,6 +493,15 @@ void StudyLevel::Update()
 			force *= 300.f;
 			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
 			c_ghost.hp -= 1;
+
+			if (ghost.GetBody()->GetLinearVelocity().x >= 0)
+			{
+				enemy.m_facing = 0; //left
+			}
+			else
+			{
+				enemy.m_facing = 1;
+			}
 
 			int offset = 20; //20 is good value
 			//ghost comes within offet~ of contact with vacuum

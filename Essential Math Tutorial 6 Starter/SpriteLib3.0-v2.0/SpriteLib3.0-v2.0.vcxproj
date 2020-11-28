@@ -137,7 +137,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="AnimationSpritePlayground.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BackEnd.h" />
     <ClInclude Include="BloomEffect.h" />
@@ -151,8 +150,8 @@
     <ClInclude Include="Dialouge.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyTrigger.h" />
-    <ClInclude Include="FirstCreation.h" />
     <ClInclude Include="FlashlightTrigger.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Game.h" />
@@ -216,7 +215,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="AnimationSpritePlayground.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="BackEnd.cpp" />
     <ClCompile Include="BloomEffect.cpp" />
@@ -230,8 +228,8 @@
     <ClCompile Include="Dialouge.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
-    <ClCompile Include="FirstCreation.cpp" />
     <ClCompile Include="FlashlightTrigger.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Game.cpp" />

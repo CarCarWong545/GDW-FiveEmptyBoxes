@@ -3,8 +3,6 @@
 
 #include "BackEnd.h"
 
-
-
 enum AnimEnums
 {
 	IDLELEFT,
