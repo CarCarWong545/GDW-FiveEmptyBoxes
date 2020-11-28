@@ -57,6 +57,7 @@ void SavingTrigger::SaveData()//saves current states, ignorant of settings
 			scene = 2;
 		}
 
+
 		output << scene << std::endl;
 
 		output << ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x << std::endl;
@@ -199,7 +200,7 @@ void SavingTrigger::defaultSave()//saves the default file, run once for debuggin
 
 		output << 0 << std::endl;
 		output << 30 << std::endl;
-		output << 0 << std::endl;//MainEntities Health 
+		output << 100 << std::endl;//MainEntities Health 
 
 		output << 0 << std::endl;
 

@@ -18,7 +18,7 @@ int StudyLevel::ChangeScene() {
 	//return to beginning
 	if (MainEntities::Health() <= 0)
 	{
-		return 0;
+		//return 0;
 	}
 
 	if (scene.m_switch1)
@@ -370,7 +370,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
-	Scene::BoxMaker(200, 10, -130, -10, 90, 0);
+	Scene::BoxMaker(350, 10, -130, -10, 90, 0);
 	Scene::BoxMaker(200, 10, 190, -10, 90, 0);
 	//book entity
 	{
