@@ -13,22 +13,22 @@ StudyLevel::StudyLevel(std::string name)
 
 }
 int StudyLevel::ChangeScene() {
-	auto& scene2 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-	auto& scene3 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
+	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+	
 	//return to beginning
 	if (MainEntities::Health() <= 0)
 	{
-		return 0;
+		//return 0;
 	}
 
-	if (scene2.m_switch)
+	if (scene.m_switch1)
 	{
-		scene2.m_switch = false;
+		scene.m_switch1 = false;
 		return 1;
 	}
-	else if (scene3.m_switch)
+	else if (scene.m_switch2)
 	{
-		scene3.m_switch = false;
+		scene.m_switch2 = false;
 		return 2;
 	}
 	else
@@ -138,11 +138,9 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<AnimationController>(entity);
 		ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
-		ECS::AttachComponent<SwitchScene2>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
-		ECS::AttachComponent<SwitchScene0>(entity);
-		ECS::AttachComponent<SwitchScene3>(entity);
+		
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -372,7 +370,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
-	Scene::BoxMaker(200, 10, -130, -10, 90, 0);
+	Scene::BoxMaker(350, 10, -130, -10, 90, 0);
 	Scene::BoxMaker(200, 10, 190, -10, 90, 0);
 	//book entity
 	{
@@ -649,30 +647,25 @@ void StudyLevel::KeyboardDown()
 	}
 	if (canDoor.m_door)
 	{
-		auto& object = ECS::GetComponent<SwitchScene0>(MainEntities::MainPlayer());
-		auto& object1 = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-		auto& object2 = ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer());
-		auto& object3 = ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer());
-
-
+		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 
 		if (Input::GetKeyDown(Key::E))
 		{
-			if (object.can_switch)
+			if (scene.can_switch0)
 			{
-				object.m_switch = true;
+				scene.m_switch0 = true;
 			}
-			else if (object1.can_switch)
+			else if (scene.can_switch1)
 			{
-				object1.m_switch = true;
+				scene.m_switch1 = true;
 			}
-			else if (object2.can_switch)
+			else if (scene.can_switch2)
 			{
-				object2.m_switch = true;
+				scene.m_switch2 = true;
 			}
-			else if (object3.can_switch)
+			else if (scene.can_switch3)
 			{
-				object3.m_switch = true;
+				scene.m_switch3 = true;
 			}
 		}
 	}
