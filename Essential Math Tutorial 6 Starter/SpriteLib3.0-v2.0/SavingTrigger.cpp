@@ -131,10 +131,10 @@ int SavingTrigger::isGhostDefeated(int i) {
 	}
 }
 
-void SavingTrigger::setGhostDefeated(int i) {
+void SavingTrigger::setGhostDefeated(int i) {//gets whether or not the ghost has been defeated. indexes start at 0. there is no hp storage for the ghost, only whether or not to spawn it in again.
 	LoadData();
 	settings[i + settingsBeforeGhosts] = 0;
-	setData(settings);
+	setData(settings);//lines like setData can be removed if you dont want to save progress everytime something changes.
 
 }
 
