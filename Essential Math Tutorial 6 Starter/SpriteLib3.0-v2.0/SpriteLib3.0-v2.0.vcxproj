@@ -137,7 +137,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="AnimationSpritePlayground.h" />
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BackEnd.h" />
     <ClInclude Include="BloomEffect.h" />
@@ -152,7 +151,6 @@
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="EnemyTrigger.h" />
-    <ClInclude Include="FirstCreation.h" />
     <ClInclude Include="FlashlightTrigger.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Game.h" />
@@ -196,9 +194,6 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StudyLevel.h" />
     <ClInclude Include="SwitchScene.h" />
-    <ClInclude Include="SwitchScene0.h" />
-    <ClInclude Include="SwitchScene2.h" />
-    <ClInclude Include="SwitchScene3.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Timer.h" />
@@ -217,7 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="AnimationSpritePlayground.cpp" />
     <ClCompile Include="AnimationSystem.cpp" />
     <ClCompile Include="BackEnd.cpp" />
     <ClCompile Include="BloomEffect.cpp" />
@@ -232,7 +226,6 @@
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
-    <ClCompile Include="FirstCreation.cpp" />
     <ClCompile Include="FlashlightTrigger.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -274,9 +267,6 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StudyLevel.cpp" />
     <ClCompile Include="SwitchScene.cpp" />
-    <ClCompile Include="SwitchScene0.cpp" />
-    <ClCompile Include="SwitchScene2.cpp" />
-    <ClCompile Include="SwitchScene3.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Timer.cpp" />
