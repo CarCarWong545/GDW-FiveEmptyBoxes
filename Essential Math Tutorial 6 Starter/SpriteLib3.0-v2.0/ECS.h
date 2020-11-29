@@ -22,6 +22,7 @@
 #include "DialogueTrigger.h"
 #include "Dialouge.h"
 #include "CanDoor.h"
+#include "CanSave.h"
 #include "EnemyTrigger.h"
 #include "FlashlightTrigger.h"
 #include "CanDamage.h"
