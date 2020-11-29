@@ -146,6 +146,7 @@
     <ClInclude Include="CanDamage.h" />
     <ClInclude Include="CanDoor.h" />
     <ClInclude Include="CanJump.h" />
+    <ClInclude Include="CanSave.h" />
     <ClInclude Include="DestroyTrigger.h" />
     <ClInclude Include="DialogueTrigger.h" />
     <ClInclude Include="Dialouge.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="CanDamage.cpp" />
     <ClCompile Include="CanDoor.cpp" />
     <ClCompile Include="CanJump.cpp" />
+    <ClCompile Include="CanSave.cpp" />
     <ClCompile Include="DestroyTrigger.cpp" />
     <ClCompile Include="DialogueTrigger.cpp" />
     <ClCompile Include="Dialouge.cpp" />

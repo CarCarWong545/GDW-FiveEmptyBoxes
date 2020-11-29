@@ -6,7 +6,7 @@
 
 
 #include <random>
-
+SavingTrigger st;
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -103,12 +103,31 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
-
+		ECS::AttachComponent<Trigger*>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
 		//Set up the components
 		std::string fileName = "toad.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 3.f, 2.f));
+		ECS::GetComponent<Trigger*>(entity) = new SavingTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());//can literally be anything
+	
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(-16.f), float32(3.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
 	
@@ -164,7 +183,8 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<SwitchScene2>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
-		ECS::AttachComponent<CanDoor>(entity);
+		ECS::AttachComponent<CanDoor>(entity); 
+		ECS::AttachComponent<CanSave>(entity);
 		ECS::AttachComponent<SwitchScene0>(entity);
 		ECS::AttachComponent<SwitchScene3>(entity);
 
@@ -487,7 +507,7 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
 	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
 	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-
+	auto& saveable = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
@@ -530,6 +550,8 @@ void PhysicsPlayground::KeyboardDown()
 
 		if (Input::GetKeyDown(Key::E))
 		{
+			
+
 			if (object.can_switch)
 			{
 				object.m_switch = true;
@@ -546,6 +568,17 @@ void PhysicsPlayground::KeyboardDown()
 			{
 				object3.m_switch = true;
 			}
+
+
+			
+		}
+	}
+	if (Input::GetKeyDown(Key::G))
+	{
+		if (saveable.m_save) {
+			
+			st.defaultSave();
+			st.LoadData();
 		}
 	}
 	if (Input::GetKeyDown(Key::F))
@@ -559,6 +592,12 @@ void PhysicsPlayground::KeyboardDown()
 			}
 		}
 
+		if (saveable.m_save) {
+			
+			
+			st.LoadData();
+			std::cout << st.numberGhostsDefeated() << std::endl;
+		}
 
 	}
 }
