@@ -33,6 +33,12 @@ protected:
 
 	clock_t startstuntime;
 	int vacuum = 0;
+	int vacuum2 = 0;
+	
 	bool ghost_1;
+	int curt1 = 0;
+	int curt2 = 0;
+	bool curt_1 = true;
+	bool curt_2 = true;
 };
 

@@ -28,6 +28,7 @@
 #include "CanDamage.h"
 #include "VTrigger.h"
 #include "SavingTrigger.h"
+#include "VTrigger2.h"
 
 class ECS abstract
 {

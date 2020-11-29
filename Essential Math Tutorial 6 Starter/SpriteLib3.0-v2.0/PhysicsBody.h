@@ -29,6 +29,7 @@ enum EntityCategories
 	TRIGGER = 0x0128,
 	ETRIGGER = 0x0256,
 	PTRIGGER = 0x0512,
+	PTRIGGER2 = 0x1024,
 };
 
 

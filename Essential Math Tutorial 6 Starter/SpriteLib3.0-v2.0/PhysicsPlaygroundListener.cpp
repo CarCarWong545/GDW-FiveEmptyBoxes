@@ -35,6 +35,7 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 	{
 		TriggerEnter(fixtureB);
 	}
+	
 
 	//if neither or both are sensors, will be false
 	if ((sensorA ^ sensorB))

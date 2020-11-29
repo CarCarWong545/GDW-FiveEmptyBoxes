@@ -211,6 +211,7 @@
     <ClInclude Include="VerticalScroll.h" />
     <ClInclude Include="VignetteEffect.h" />
     <ClInclude Include="VTrigger.h" />
+    <ClInclude Include="VTrigger2.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Xinput.h" />
   </ItemGroup>
@@ -287,6 +288,7 @@
     <ClCompile Include="VerticalScroll.cpp" />
     <ClCompile Include="VignetteEffect.cpp" />
     <ClCompile Include="VTrigger.cpp" />
+    <ClCompile Include="VTrigger2.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XInput.cpp" />
   </ItemGroup>
