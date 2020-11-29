@@ -36,6 +36,16 @@ void SceneTrigger::OnEnter()
 			
 			object.can_switch3 = true;
 		}
+		else if (s == 4)
+		{
+
+			object.can_switch4 = true;
+		}
+		else if (s == 5)
+		{
+
+			object.can_switch5 = true;
+		}
 	}
 }
 
@@ -64,6 +74,16 @@ void SceneTrigger::OnExit()
 	{
 		
 		object.can_switch3 = false;
+	}
+	else if (s == 4)
+	{
+
+		object.can_switch4 = false;
+	}
+	else if (s == 5)
+	{
+
+		object.can_switch5 = false;
 	}
 }
 SceneTrigger::SceneTrigger(int scene)

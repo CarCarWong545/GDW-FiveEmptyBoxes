@@ -28,6 +28,16 @@ int HallLevel::ChangeScene()
 		scene.m_switch2 = false;
 		return 2;
 	}
+	else if (scene.m_switch4)
+	{
+		scene.m_switch4 = false;
+		return 4;
+	}
+	else if (scene.m_switch5)
+	{
+		scene.m_switch5 = false;
+		return 5;
+	}
 	else
 	{
 		return -1;
@@ -220,7 +230,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(5);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -256,7 +266,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(4);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -375,6 +385,14 @@ void HallLevel::KeyboardHold()
 			else if (scene.can_switch3)
 			{
 				scene.m_switch3 = true;
+			}
+			else if (scene.can_switch4)
+			{
+				scene.m_switch4 = true;
+			}
+			else if (scene.can_switch5)
+			{
+				scene.m_switch5 = true;
 			}
 		}
 	}
