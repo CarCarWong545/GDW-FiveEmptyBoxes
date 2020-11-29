@@ -14,13 +14,16 @@ void FlashlightTrigger::OnEnter()
 	{
 		for (int i = 1; i < m_targetEntities.size(); i++)
 		{
-			auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
-			//"stun" ghost
-			body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			if (ECS::GetComponent<CanDamage>(m_targetEntities[i]).m_canbestun)
+			{
+				auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
+				//"stun" ghost
+				body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 
-			auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
-			ghost.m_candamage = false;
-			//ghost.m_stun = true;
+				auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
+				ghost.m_candamage = false;
+				//ghost.m_stun = true;
+			}
 		}
 	}
 

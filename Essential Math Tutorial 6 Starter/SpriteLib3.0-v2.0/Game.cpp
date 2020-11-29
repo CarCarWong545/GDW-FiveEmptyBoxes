@@ -39,15 +39,15 @@ void Game::InitGame()
 	m_scenes.push_back(new HallLevel("Animation TIEM!!!!"));
 	m_scenes.push_back(new ReturnFoyer1("Foyer")); //2
 	m_scenes.push_back(new StudyLevel("Study Room"));
-	m_scenes.push_back(new MasterBedLevel("Master Bedroom"));
-	m_scenes.push_back(new NurseryLevel("Nursery"));
+	//m_scenes.push_back(new MasterBedLevel("Master Bedroom"));
+	//m_scenes.push_back(new NurseryLevel("Nursery"));
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
 		activated[i] = false;
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[5];
+	m_activeScene = m_scenes[0];
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 

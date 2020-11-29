@@ -34,8 +34,12 @@ protected:
 	bool isstunned = false;
 
 	clock_t startstuntime;
+	clock_t startyawntime;
+	bool isyawn = false;
+	bool isyawn2 = false;
 	int vacuum = 0;
 	bool ghost_1;
+	int loop_anim = 0;
 
 	int book = 0;
 	

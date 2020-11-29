@@ -169,11 +169,13 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="MainEntities.h" />
+    <ClInclude Include="MasterBedLevel.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MoveDown.h" />
     <ClInclude Include="MoveDownTrigger.h" />
     <ClInclude Include="MoveUp.h" />
     <ClInclude Include="MoveUpTrigger.h" />
+    <ClInclude Include="NurseryLevel.h" />
     <ClInclude Include="PhysicsBody.h" />
     <ClInclude Include="PhysicsPlayground.h" />
     <ClInclude Include="PhysicsPlaygroundListener.h" />
@@ -243,11 +245,13 @@
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
+    <ClCompile Include="MasterBedLevel.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MoveDown.cpp" />
     <ClCompile Include="MoveDownTrigger.cpp" />
     <ClCompile Include="MoveUp.cpp" />
     <ClCompile Include="MoveUpTrigger.cpp" />
+    <ClCompile Include="NurseryLevel.cpp" />
     <ClCompile Include="PhysicsBody.cpp" />
     <ClCompile Include="PhysicsPlayground.cpp" />
     <ClCompile Include="PhysicsPlaygroundListener.cpp" />
