@@ -151,6 +151,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			&ECS::GetComponent<Transform>(entity));
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
+		ECS::GetComponent<Player>(entity).m_facing = RIGHT;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -161,7 +162,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(33.f), float32(30.f));
+		tempDef.position.Set(float32(-65.f), float32(30.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -219,7 +220,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_kinematicBody;
-			tempDef.position.Set(float32(-85.f), float32(25.f));
+			tempDef.position.Set(float32(115.f), float32(15.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -275,7 +276,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(-85.f), float32(25.f));
+			tempDef.position.Set(float32(115.f), float32(15.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -401,7 +402,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(180.f), float32(10.f));
+		tempDef.position.Set(float32(-115.f), float32(10.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
