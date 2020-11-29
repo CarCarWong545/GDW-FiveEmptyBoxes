@@ -6,6 +6,9 @@
 
 #include <random>
 
+SavingTrigger st2;
+
+
 ReturnFoyer1::ReturnFoyer1(std::string name)
 	: Scene(name)
 {
@@ -36,6 +39,8 @@ int ReturnFoyer1::ChangeScene() {
 
 void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 {
+	st2.defaultSave();
+
 	//MainEntities::Health(100);
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
@@ -92,7 +97,7 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 1.f));
 	}
 
-	//Setup new Entity
+	//Setup toad
 	{
 		/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
 
@@ -102,13 +107,33 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
-
+		ECS::AttachComponent<Trigger*>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
 		//Set up the components
 		std::string fileName = "toad.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 3.f, 2.f));
+		ECS::GetComponent<Trigger*>(entity) = new SavingTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());//can literally be anything
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(-16.f), float32(3.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
+
 
 
 	//banister
@@ -163,7 +188,7 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
-		
+		ECS::AttachComponent<CanSave>(entity);
 
 		ECS::GetComponent<Dialouge>(entity).dialouge = false;
 		ECS::GetComponent<Player>(entity).m_equip = true;
@@ -479,6 +504,7 @@ void ReturnFoyer1::KeyboardDown()
 	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
 	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
 	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	auto& saveable = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
 
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
@@ -540,6 +566,13 @@ void ReturnFoyer1::KeyboardDown()
 		if (isdialogue.dialouge) {
 			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
 			equip.m_equip = true;
+		}
+
+		if (saveable.m_save) {
+
+			st2.SaveData(false);
+
+			std::cout << st2.numberGhostsDefeated() << std::endl;
 		}
 	}
 

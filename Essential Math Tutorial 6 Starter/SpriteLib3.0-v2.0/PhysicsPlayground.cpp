@@ -3,10 +3,9 @@
 #include "Utilities.h"
 
 
-
+SavingTrigger st;
 
 #include <random>
-SavingTrigger st;
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -93,7 +92,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 1.f));
 	}
 
-	//Setup new Entity
+	//Setup toad
 	{
 		/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
 
@@ -583,9 +582,9 @@ void PhysicsPlayground::KeyboardDown()
 
 		if (saveable.m_save) {
 			
-			
-			st.LoadData();
-			std::cout << st.numberGhostsDefeated() << std::endl;
+			st.SaveData(false);
+
+			std::cout << st.isFlashlightOn() << std::endl;
 		}
 
 	}

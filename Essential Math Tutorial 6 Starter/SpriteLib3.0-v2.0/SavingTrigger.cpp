@@ -53,13 +53,13 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 		if (!ignoreStats) {//if ignoreStats is on, it will not record the players current stats,\\
 			it will take them from settings instead
 			int scene = 0;
-			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch == true) {
+			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch0 == true) {
 				scene = 0;
 			}
-			if (ECS::GetComponent<SwitchScene2>(MainEntities::MainPlayer()).m_switch == true) {
+			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch1 == true) {
 				scene = 1;
 			}
-			if (ECS::GetComponent<SwitchScene3>(MainEntities::MainPlayer()).m_switch == true) {
+			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch2 == true) {
 				scene = 2;
 			}
 
@@ -117,7 +117,6 @@ void SavingTrigger::LoadData()//sets the indexes of settings
 
 	}
 
-	
 	input.close();
 }
 

@@ -4,6 +4,8 @@
 
 #include <random>
 
+SavingTrigger st3;
+
 StudyLevel::StudyLevel(std::string name)
 	: Scene(name)
 {
@@ -471,6 +473,12 @@ void StudyLevel::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
+	if (MainEntities::Health() <= 0)
+	{
+		st3.LoadData(); //reset?
+		return;
+	}
+
 	if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
@@ -490,14 +498,14 @@ void StudyLevel::Update()
 		ghost_2.GetBody()->SetAwake(true);
 
 		
-		if (c_ghost.m_candamage)
+		if (c_ghost.m_candamage) //default
 		{
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			startstuntime = clock();
 			isyawn = false;
 			//anims.SetActiveAnim(0); //default
 		}
-		else if (!c_ghost.m_stun) {
+		else if (!c_ghost.m_stun) { //stunned
 			float elapsedtime;
 			float stuntime = 5.0f;
 			//anims.SetActiveAnim(loop_anim);
@@ -505,7 +513,7 @@ void StudyLevel::Update()
 			if (isstunned) {
 				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
 
-				if (elapsedtime >= stuntime) {
+				if (elapsedtime >= stuntime) { //unstun
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
 					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
@@ -513,24 +521,8 @@ void StudyLevel::Update()
 				}
 			}
 		}
-		//if (!isyawn)
-		//{
-		//	startyawntime = clock();
-		//	anims.SetActiveAnim(0);
-		//}
-		//else
-		//{
-		//	float elapsedtime;
-		//	float buffer = 3.0f;
-		//	anims.SetActiveAnim(2);
-		//	elapsedtime = (clock() - startyawntime) / CLOCKS_PER_SEC;
-		//	if (elapsedtime >= buffer)
-		//	{
-		//		//anims.SetActiveAnim(0); //yawn
-		//		//isyawn = false;
-		//	}
-		//}
-		if (c_ghost.m_suck && player.m_suck)
+
+		if (c_ghost.m_suck && player.m_suck) //is being sucked
 		{
 			if (player.m_facing == 0) //left
 			{

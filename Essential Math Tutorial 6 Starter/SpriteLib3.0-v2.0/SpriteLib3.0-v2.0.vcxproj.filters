@@ -153,6 +153,7 @@
     <ClInclude Include="CanSave.h" />
     <ClInclude Include="MasterBedLevel.h" />
     <ClInclude Include="NurseryLevel.h" />
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

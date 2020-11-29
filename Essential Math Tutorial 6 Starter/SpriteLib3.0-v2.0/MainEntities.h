@@ -11,6 +11,7 @@ public:
 	static int Flashlight();
 	static int* Enemies();
 	static int Captured();
+	
 
 	//Setters
 	static void MainCamera(int main);
@@ -20,6 +21,8 @@ public:
 	static void Enemies(int a[10]);
 	static void Capture(int n);
 
+	
+
 private:
 	static int m_mainCamera;
 	static int m_mainPlayer;
@@ -27,6 +30,7 @@ private:
 	static int m_flashlight;
 	static int enemies[10];
 	static int captured;
+	
 };
 
 #endif // !__MAINENTITIES_H__

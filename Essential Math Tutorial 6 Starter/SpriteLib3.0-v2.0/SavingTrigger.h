@@ -2,6 +2,7 @@
 
 #include "Trigger.h" 
 
+
 class SavingTrigger : public Trigger
 {
 public:
@@ -34,3 +35,4 @@ public:
 protected:
 	bool triggered = false; 
 };
+
