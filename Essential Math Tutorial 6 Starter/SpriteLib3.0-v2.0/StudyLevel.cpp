@@ -566,16 +566,23 @@ void StudyLevel::Update()
 		{
 			c_ghost.m_stun = false;
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			ghost_2.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			anims.SetActiveAnim(2); //know he can be sucked
 		}
 		else if (!c_ghost.m_candamage &&!c_ghost.m_suck)//stunned
 		{
 			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			ghost_2.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			anims.SetActiveAnim(2);
 	
 		}
-
+		else
+		{
+			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			ghost_2.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+		}
+		
 		if (anims.GetAnimation(anims.GetActiveAnim()).GetAnimationDone())
 		{
 			//loop between animations 0, 1, and 2. If the loop goes over 2, reset to 0
