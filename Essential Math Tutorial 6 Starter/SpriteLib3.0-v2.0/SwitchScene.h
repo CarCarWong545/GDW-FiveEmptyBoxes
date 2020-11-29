@@ -10,5 +10,9 @@ public:
 	bool m_switch2 = false;
 	bool can_switch3 = false;
 	bool m_switch3 = false;
+	bool can_switch4 = false;
+	bool m_switch4 = false;
+	bool can_switch5 = false;
+	bool m_switch5 = false;
 };
 

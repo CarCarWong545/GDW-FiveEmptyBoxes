@@ -36,11 +36,11 @@ void Game::InitGame()
 	//Creates a new scene.
 	//Replace this with your own scene.
 	m_scenes.push_back(new PhysicsPlayground("Foyer"));
-	m_scenes.push_back(new HallLevel("Animation TIEM!!!!"));
+	m_scenes.push_back(new HallLevel("Left Hallway"));
 	m_scenes.push_back(new ReturnFoyer1("Foyer")); //2
 	m_scenes.push_back(new StudyLevel("Study Room"));
-	//m_scenes.push_back(new MasterBedLevel("Master Bedroom"));
-	//m_scenes.push_back(new NurseryLevel("Nursery"));
+	m_scenes.push_back(new MasterBedLevel("Master Bedroom"));
+	m_scenes.push_back(new NurseryLevel("Nursery"));
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
 		activated[i] = false;
