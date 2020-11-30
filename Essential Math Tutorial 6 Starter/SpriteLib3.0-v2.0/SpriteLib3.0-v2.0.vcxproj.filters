@@ -76,6 +76,7 @@
     <ClCompile Include="MasterBedLevel.cpp" />
     <ClCompile Include="NurseryLevel.cpp" />
     <ClCompile Include="VTrigger2.cpp" />
+    <ClCompile Include="HealthTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="NurseryLevel.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="VTrigger2.h" />
+    <ClInclude Include="HealthTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

@@ -29,6 +29,7 @@
 #include "VTrigger.h"
 #include "SavingTrigger.h"
 #include "VTrigger2.h"
+#include "HealthTrigger.h"
 
 class ECS abstract
 {
