@@ -1,12 +1,17 @@
 #include "Game.h"
 #include "PhysicsPlayground.h"
 #include "Utilities.h"
-
+#include "HealthBar.h"
 
 
 
 #include <random>
 SavingTrigger st;
+static int healthBar = 0;
+static int healthBarBack = 0;
+static int ghostBar = 0;
+static int ghostBarBack = 0;
+static std::vector<int> ghostCount;
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -447,6 +452,22 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
+	{//Health bar (green)
+		
+		healthBar = Scene::createHealthBar();
+	}
+
+	{//health bar back (brown)
+		
+		healthBarBack = Scene::createHealthBarBack();
+	}
+
+	{
+		ghostCount = Scene::createGhosts(10);
+		ghostBar = Scene::createGhostFill();
+		ghostBarBack = Scene::createGhostBack();
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
@@ -464,6 +485,13 @@ void PhysicsPlayground::Update()
 		}
 
 	}
+
+
+	HealthBar hb;
+	hb.UpdateHealthBar(healthBar, healthBarBack);
+	hb.UpdateGhostCounter(ghostCount,ghostBar,ghostBarBack);
+
+
 }
 
 
@@ -581,6 +609,15 @@ void PhysicsPlayground::KeyboardDown()
 			st.LoadData();
 		}
 	}
+	if (Input::GetKeyDown(Key::G))
+	{
+		MainEntities().Health(MainEntities().Health() - 1);
+		
+	}
+	if (Input::GetKeyDown(Key::H))
+	{
+		MainEntities().Capture(MainEntities().Captured() + 1);
+	}
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
@@ -594,7 +631,7 @@ void PhysicsPlayground::KeyboardDown()
 
 		if (saveable.m_save) {
 			
-			
+			st.SaveData();
 			st.LoadData();
 			std::cout << st.numberGhostsDefeated() << std::endl;
 		}

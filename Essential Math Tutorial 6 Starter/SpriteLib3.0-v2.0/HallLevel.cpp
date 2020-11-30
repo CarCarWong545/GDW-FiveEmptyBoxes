@@ -1,7 +1,13 @@
 //#include "Game.h"
 #include "Utilities.h"
 #include "HallLevel.h"
+#include "HealthBar.h"
 
+static int healthBarUI = 0;
+static int healthBarBackUI = 0;
+static int ghostBackUI = 0;
+static int ghostFillUI = 0;
+static std::vector<int> ghostsUI;
 HallLevel::HallLevel(std::string name)
 	: Scene(name)
 {
@@ -173,6 +179,11 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 	//Wall right
 	Scene::BoxMaker(325, 2, -120.f, 50.f, 90, 0);
 
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
 	//Scene::BoxMaker(325, 2, 30.f, 52.f, 0, 0);
 	//door trigger to Study Room
 	{
@@ -324,6 +335,10 @@ void HallLevel::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
+
+	HealthBar hb;
+	hb.UpdateHealthBar(healthBarUI,healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
 }
 
 

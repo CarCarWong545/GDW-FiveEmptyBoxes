@@ -78,6 +78,7 @@
     <ClCompile Include="XInput.cpp" />
     <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="CanSave.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="Xinput.h" />
     <ClInclude Include="SavingTrigger.h" />
     <ClInclude Include="CanSave.h" />
+    <ClInclude Include="HealthBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />
