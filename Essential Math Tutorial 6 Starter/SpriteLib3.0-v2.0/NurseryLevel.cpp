@@ -637,7 +637,15 @@ void NurseryLevel::Update()
 
 			if (c_ghost.m_candamage)
 			{
-				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				//ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				if (ghost.GetPosition().x <= -90)
+				{
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(20, 0));
+				}
+				if (ghost.GetPosition().x >= -80)
+				{
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(-20, 0));
+				}
 
 				startstuntime = clock();
 			}
