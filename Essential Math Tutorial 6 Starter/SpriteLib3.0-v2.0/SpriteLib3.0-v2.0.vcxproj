@@ -149,6 +149,7 @@
     <ClInclude Include="DestroyTrigger.h" />
     <ClInclude Include="DialogueTrigger.h" />
     <ClInclude Include="Dialouge.h" />
+    <ClInclude Include="DiningLevel.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="EnemyTrigger.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="include\imgui\imstb_truetype.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="KitchenLevel.h" />
     <ClInclude Include="MainEntities.h" />
     <ClInclude Include="MasterBedLevel.h" />
     <ClInclude Include="Matrix.h" />
@@ -192,10 +194,12 @@
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="ReturnFoyer1.h" />
     <ClInclude Include="ReturnFoyer2.h" />
+    <ClInclude Include="Roof.h" />
     <ClInclude Include="SavingTrigger.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="SceneTrigger.h" />
+    <ClInclude Include="SecretAltar.h" />
     <ClInclude Include="Selectable.h" />
     <ClInclude Include="SelectiveColorEffect.h" />
     <ClInclude Include="SepiaEffect.h" />
@@ -217,6 +221,7 @@
     <ClInclude Include="VignetteEffect.h" />
     <ClInclude Include="VTrigger.h" />
     <ClInclude Include="VTrigger2.h" />
+    <ClInclude Include="Washroom.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="Xinput.h" />
   </ItemGroup>
@@ -234,6 +239,7 @@
     <ClCompile Include="DestroyTrigger.cpp" />
     <ClCompile Include="DialogueTrigger.cpp" />
     <ClCompile Include="Dialouge.cpp" />
+    <ClCompile Include="DiningLevel.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
@@ -256,6 +262,7 @@
     <ClCompile Include="include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="JSON.cpp" />
+    <ClCompile Include="KitchenLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
     <ClCompile Include="MasterBedLevel.cpp" />
@@ -275,9 +282,11 @@
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="ReturnFoyer1.cpp" />
     <ClCompile Include="ReturnFoyer2.cpp" />
+    <ClCompile Include="Roof.cpp" />
     <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTrigger.cpp" />
+    <ClCompile Include="SecretAltar.cpp" />
     <ClCompile Include="Selectable.cpp" />
     <ClCompile Include="SelectiveColorEffect.cpp" />
     <ClCompile Include="SepiaEffect.cpp" />
@@ -299,6 +308,7 @@
     <ClCompile Include="VignetteEffect.cpp" />
     <ClCompile Include="VTrigger.cpp" />
     <ClCompile Include="VTrigger2.cpp" />
+    <ClCompile Include="Washroom.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XInput.cpp" />
   </ItemGroup>

@@ -487,7 +487,7 @@ void StudyLevel::Update()
 
 	if (MainEntities::Health() <= 0)
 	{
-		//
+	//	st3.LoadData(); //reset?
 		return;
 	}
 

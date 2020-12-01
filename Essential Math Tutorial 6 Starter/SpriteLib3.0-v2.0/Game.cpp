@@ -44,6 +44,11 @@ void Game::InitGame()
 	m_scenes.push_back(new HallLevel2("Right Hallway")); //6
 	m_scenes.push_back(new ReturnFoyer2("Foyer ")); //7
 	m_scenes.push_back(new FortuneLevel("Fortune Room"));
+	m_scenes.push_back(new Washroom("Washroom"));
+	m_scenes.push_back(new DiningLevel("Dining Room"));
+	m_scenes.push_back(new KitchenLevel("Kitchen"));
+	m_scenes.push_back(new SecretAltar("Secret Altar"));
+	m_scenes.push_back(new Roof("Roof"));
 
 	for (int i = 0; i < m_scenes.size(); i++)
 	{

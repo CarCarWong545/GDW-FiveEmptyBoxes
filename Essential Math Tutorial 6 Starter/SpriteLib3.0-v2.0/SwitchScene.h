@@ -28,5 +28,7 @@ public:
 	bool m_switch11 = false;
 	bool can_switch12 = false;
 	bool m_switch12 = false;
+	bool can_switch13 = false;
+	bool m_switch13 = false;
 };
 

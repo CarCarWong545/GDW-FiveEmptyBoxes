@@ -88,6 +88,11 @@ void SceneTrigger::OnEnter()
 
 			object.can_switch12 = true;
 		}
+		else if (s == 13)
+		{
+
+			object.can_switch13 = true;
+		}
 	}
 }
 
@@ -161,6 +166,11 @@ void SceneTrigger::OnExit()
 	{
 
 		object.can_switch12 = false;
+	}
+	else if (s == 13)
+	{
+
+		object.can_switch13 = false;
 	}
 }
 SceneTrigger::SceneTrigger(int scene)
