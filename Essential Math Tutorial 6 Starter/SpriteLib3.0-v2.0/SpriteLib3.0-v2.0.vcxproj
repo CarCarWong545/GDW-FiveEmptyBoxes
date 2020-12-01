@@ -153,11 +153,13 @@
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="EnemyTrigger.h" />
     <ClInclude Include="FlashlightTrigger.h" />
+    <ClInclude Include="FortuneLevel.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
     <ClInclude Include="HallLevel.h" />
+    <ClInclude Include="HallLevel2.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="HealthTrigger.h" />
     <ClInclude Include="HorizontalScroll.h" />
@@ -188,6 +190,7 @@
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="ReturnFoyer1.h" />
+    <ClInclude Include="ReturnFoyer2.h" />
     <ClInclude Include="SavingTrigger.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
@@ -234,11 +237,13 @@
     <ClCompile Include="EffectManager.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
     <ClCompile Include="FlashlightTrigger.cpp" />
+    <ClCompile Include="FortuneLevel.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GrainEffect.cpp" />
     <ClCompile Include="GreyscaleEffect.cpp" />
     <ClCompile Include="HallLevel.cpp" />
+    <ClCompile Include="HallLevel2.cpp" />
     <ClCompile Include="HealthTrigger.cpp" />
     <ClCompile Include="HorizontalScroll.cpp" />
     <ClCompile Include="include\imgui\imgui.cpp" />
@@ -267,6 +272,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="ReturnFoyer1.cpp" />
+    <ClCompile Include="ReturnFoyer2.cpp" />
     <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneTrigger.cpp" />

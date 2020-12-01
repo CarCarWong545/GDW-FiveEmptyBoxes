@@ -36,18 +36,22 @@ void Game::InitGame()
 	//Creates a new scene.
 	//Replace this with your own scene.
 	m_scenes.push_back(new PhysicsPlayground("Foyer"));
-	m_scenes.push_back(new HallLevel("Left Hallway"));
+	m_scenes.push_back(new HallLevel("Left Hallway"));//1
 	m_scenes.push_back(new ReturnFoyer1("Foyer")); //2
 	m_scenes.push_back(new StudyLevel("Study Room"));
 	m_scenes.push_back(new MasterBedLevel("Master Bedroom"));
 	m_scenes.push_back(new NurseryLevel("Nursery"));
+	m_scenes.push_back(new HallLevel2("Right Hallway")); //6
+	m_scenes.push_back(new ReturnFoyer2("Foyer ")); //7
+	m_scenes.push_back(new FortuneLevel("Fortune Room"));
+
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
 		activated[i] = false;
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[4];
+	m_activeScene = m_scenes[8];
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 

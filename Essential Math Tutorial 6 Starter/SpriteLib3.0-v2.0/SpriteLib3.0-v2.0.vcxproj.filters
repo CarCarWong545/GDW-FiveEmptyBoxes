@@ -77,6 +77,9 @@
     <ClCompile Include="NurseryLevel.cpp" />
     <ClCompile Include="VTrigger2.cpp" />
     <ClCompile Include="HealthTrigger.cpp" />
+    <ClCompile Include="HallLevel2.cpp" />
+    <ClCompile Include="ReturnFoyer2.cpp" />
+    <ClCompile Include="FortuneLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -158,6 +161,9 @@
     <ClInclude Include="Header.h" />
     <ClInclude Include="VTrigger2.h" />
     <ClInclude Include="HealthTrigger.h" />
+    <ClInclude Include="HallLevel2.h" />
+    <ClInclude Include="ReturnFoyer2.h" />
+    <ClInclude Include="FortuneLevel.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

@@ -8,5 +8,9 @@
 #include "StudyLevel.h"
 #include "MasterBedLevel.h"
 #include "NurseryLevel.h"
+#include "HallLevel2.h"
+#include "ReturnFoyer2.h"
+#include "FortuneLevel.h"
+
 
 #endif // !__SCENES_H__

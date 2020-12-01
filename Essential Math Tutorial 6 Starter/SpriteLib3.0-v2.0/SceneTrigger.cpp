@@ -46,6 +46,41 @@ void SceneTrigger::OnEnter()
 
 			object.can_switch5 = true;
 		}
+		else if (s == 6)
+		{
+
+			object.can_switch6 = true;
+		}
+		else if (s == 7)
+		{
+
+			object.can_switch7 = true;
+		}
+		else if (s == 8)
+		{
+
+			object.can_switch8 = true;
+		}
+		else if (s == 9)
+		{
+
+			object.can_switch9 = true;
+		}
+		else if (s == 10)
+		{
+
+			object.can_switch10 = true;
+		}
+		else if (s == 11)
+		{
+
+			object.can_switch11 = true;
+		}
+		else if (s == 12)
+		{
+
+			object.can_switch12 = true;
+		}
 	}
 }
 
@@ -84,6 +119,41 @@ void SceneTrigger::OnExit()
 	{
 
 		object.can_switch5 = false;
+	}
+	else if (s == 6)
+	{
+
+		object.can_switch6 = false;
+	}
+	else if (s == 7)
+	{
+
+		object.can_switch7 = false;
+	}
+	else if (s == 8)
+	{
+
+		object.can_switch8 = false;
+	}
+	else if (s == 9)
+	{
+
+		object.can_switch9 = false;
+	}
+	else if (s == 10)
+	{
+
+		object.can_switch10 = false;
+	}
+	else if (s == 11)
+	{
+
+		object.can_switch11 = false;
+	}
+	else if (s == 12)
+	{
+
+		object.can_switch12 = false;
 	}
 }
 SceneTrigger::SceneTrigger(int scene)
