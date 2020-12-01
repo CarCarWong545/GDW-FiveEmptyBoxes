@@ -3,9 +3,14 @@
 #include "Utilities.h"
 
 #include <random>
+#include "HealthBar.h"
 
-SavingTrigger st3;
-
+static int healthBarUI = 0;
+static int healthBarBackUI = 0;
+static int ghostBackUI = 0;
+static int ghostFillUI = 0;
+static std::vector<int> ghostsUI;
+static HealthBar hb;
 StudyLevel::StudyLevel(std::string name)
 	: Scene(name)
 {
@@ -370,6 +375,11 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 	Scene::BoxMaker(350, 10, 0, -15, 0, 0);
 	Scene::BoxMaker(350, 10, -130, -10, 90, 0);
 	Scene::BoxMaker(200, 10, 190, -10, 90, 0);
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
 	//book entity
 	{
 		if (ghost_1)
@@ -463,6 +473,8 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 
 void StudyLevel::Update()
 {
+	hb.UpdateHealthBar(healthBarUI,healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 	int* enemies = MainEntities::Enemies();

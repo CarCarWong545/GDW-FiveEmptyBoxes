@@ -72,6 +72,7 @@
     <ClCompile Include="XInput.cpp" />
     <ClCompile Include="SavingTrigger.cpp" />
     <ClCompile Include="CanSave.cpp" />
+    <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="HallLevel.cpp" />
     <ClCompile Include="MasterBedLevel.cpp" />
     <ClCompile Include="NurseryLevel.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="Xinput.h" />
     <ClInclude Include="SavingTrigger.h" />
     <ClInclude Include="CanSave.h" />
+    <ClInclude Include="HealthBar.h" />
     <ClInclude Include="MasterBedLevel.h" />
     <ClInclude Include="NurseryLevel.h" />
     <ClInclude Include="Header.h" />

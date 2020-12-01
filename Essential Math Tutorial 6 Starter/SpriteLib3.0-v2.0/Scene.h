@@ -35,7 +35,11 @@ public:
 	void AdjustScrollOffset();
 	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
 		float zNear, float zFar, float aspectRatio, bool vertScroll = false, bool horizScroll = false);
-
+	int createHealthBar();
+	int createHealthBarBack();
+	std::vector<int> createGhosts(int);
+	int createGhostFill();
+	int createGhostBack();
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.
 	//The same way you do for Update().

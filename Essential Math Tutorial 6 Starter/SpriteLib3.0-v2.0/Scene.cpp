@@ -193,6 +193,88 @@ void Scene::AdjustScrollOffset()
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize);
 }
 
+int Scene::createHealthBar() {
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+
+	//Set up the components
+	std::string fileName = "Health.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 6);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 71.f));
+	return entity;
+}
+
+int Scene::createHealthBarBack() {
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+
+	//Set up the components
+	std::string fileName = "HealthBack.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 55, 8);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 70.f));
+	return entity;
+}
+
+std::vector<int> Scene::createGhosts(int totalGhostCount)
+{
+	std::vector<int> ghosts;
+	for (int i = 0; i < totalGhostCount; i++) {
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//Set up the components
+		std::string fileName = "GhostFrame.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, (64/totalGhostCount), 8);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 71.f));
+		ghosts.push_back(entity);
+	}
+	return ghosts;
+}
+
+int Scene::createGhostFill()
+{
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+
+	//Set up the components
+	std::string fileName = "GhostFiller.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 0, 8);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 70.f));
+	return entity;
+}
+
+int Scene::createGhostBack()
+{
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+
+	//Set up the components
+	std::string fileName = "GhostBack.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 64, 8);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 69.f));
+	return entity;
+}
+
 void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
 	float zNear, float zFar, float aspectRatio, bool vertScroll, bool horizScroll)
 {
