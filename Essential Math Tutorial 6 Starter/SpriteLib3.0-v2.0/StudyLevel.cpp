@@ -487,7 +487,7 @@ void StudyLevel::Update()
 
 	if (MainEntities::Health() <= 0)
 	{
-		st3.LoadData(); //reset?
+		//
 		return;
 	}
 
@@ -625,6 +625,7 @@ void StudyLevel::Update()
 		}
 		else
 		{
+			anims.SetActiveAnim(loop_anim); //default to normal
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			ghost_2.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}

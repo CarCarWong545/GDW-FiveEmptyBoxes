@@ -48,8 +48,15 @@ void SceneTrigger::OnEnter()
 		}
 		else if (s == 6)
 		{
-
-			object.can_switch6 = true;
+			auto enemies = MainEntities::Enemies();
+			if (enemies[0] == 0 && enemies[1] == 0 && enemies[2] == 0) //can only go into this scene if 3 enemies are defeated
+			{
+				object.can_switch6 = true;
+			}
+			else
+			{
+				object.can_switch6 = false;
+			}
 		}
 		else if (s == 7)
 		{
@@ -122,7 +129,7 @@ void SceneTrigger::OnExit()
 	}
 	else if (s == 6)
 	{
-
+		
 		object.can_switch6 = false;
 	}
 	else if (s == 7)

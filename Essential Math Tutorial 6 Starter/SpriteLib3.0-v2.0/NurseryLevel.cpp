@@ -4,6 +4,15 @@
 
 
 #include <random>
+#include "HealthBar.h"
+static int healthBarUI = 0;
+static int healthBarBackUI = 0;
+static int ghostBackUI = 0;
+static int ghostFillUI = 0;
+static std::vector<int> ghostsUI;
+static HealthBar hb;
+
+
 
 NurseryLevel::NurseryLevel(std::string name)
 	:Scene(name)
@@ -38,6 +47,8 @@ int NurseryLevel::ChangeScene() {
 
 void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 {
+
+
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
 
@@ -447,11 +458,21 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 void NurseryLevel::Update()
 {
+
+	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
+
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 	int* enemies = MainEntities::Enemies();
