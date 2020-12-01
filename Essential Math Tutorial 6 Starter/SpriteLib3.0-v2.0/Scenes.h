@@ -11,6 +11,11 @@
 #include "HallLevel2.h"
 #include "ReturnFoyer2.h"
 #include "FortuneLevel.h"
+#include "Washroom.h"
+#include "DiningLevel.h"
+#include "KitchenLevel.h"
+#include "SecretAltar.h"
+#include "Roof.h"
 
 
 #endif // !__SCENES_H__

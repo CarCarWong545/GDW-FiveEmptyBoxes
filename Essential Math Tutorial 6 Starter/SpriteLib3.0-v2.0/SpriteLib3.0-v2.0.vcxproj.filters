@@ -81,6 +81,11 @@
     <ClCompile Include="HallLevel2.cpp" />
     <ClCompile Include="ReturnFoyer2.cpp" />
     <ClCompile Include="FortuneLevel.cpp" />
+    <ClCompile Include="Washroom.cpp" />
+    <ClCompile Include="DiningLevel.cpp" />
+    <ClCompile Include="KitchenLevel.cpp" />
+    <ClCompile Include="SecretAltar.cpp" />
+    <ClCompile Include="Roof.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -166,6 +171,11 @@
     <ClInclude Include="HallLevel2.h" />
     <ClInclude Include="ReturnFoyer2.h" />
     <ClInclude Include="FortuneLevel.h" />
+    <ClInclude Include="Washroom.h" />
+    <ClInclude Include="DiningLevel.h" />
+    <ClInclude Include="KitchenLevel.h" />
+    <ClInclude Include="SecretAltar.h" />
+    <ClInclude Include="Roof.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />
