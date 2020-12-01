@@ -20,24 +20,28 @@ void EnemyTrigger::OnEnter()
 	{
 		//take health - 5
 		MainEntities::Health(MainEntities::Health() - 5);
+		auto direction = ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetBody()->GetLinearVelocity();
+		direction *= -1.f;
 		if (player.m_facing == 0)
 		{
-			ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x + 30, position.GetPosition().y - 10), true);
-
+			ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x + 60, position.GetPosition().y - 5), true);
+			
 			//ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 		else
 		{
-			if (position.GetPosition().x - 30 <= -130)
+			if (position.GetPosition().x - 60 <= -130)
 			{
 				ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(-125, position.GetPosition().y), true);
 			}
 			else
 			{
-				ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x - 30, position.GetPosition().y - 10), true);
+				ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).SetPosition(b2Vec2(position.GetPosition().x - 60, position.GetPosition().y - 5), true);
 			}
 			
-			//ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			//ECS::GetComponent<PhysicsBody>(m_targetEntities[0]).GetBody()->SetLinearVelocity(direction);
+
 		}
 	}
 }
