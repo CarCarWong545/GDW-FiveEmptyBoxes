@@ -4,6 +4,13 @@
 
 
 #include <random>
+#include "HealthBar.h"
+static int healthBarUI = 0;
+static int healthBarBackUI = 0;
+static int ghostBackUI = 0;
+static int ghostFillUI = 0;
+static std::vector<int> ghostsUI;
+static HealthBar hb;
 
 DiningLevel::DiningLevel(std::string name)
 	:Scene(name)
@@ -254,7 +261,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, ETRIGGER);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
-	Scene::BoxMaker(450, 10, 0, -13, 0, 0);
+	Scene::BoxMaker(450, 5, 0, -13, 0, 0);
 	Scene::BoxMaker(200, 10, -120, -10, 90, 0);
 	Scene::BoxMaker(200, 10, 180, -10, 90, 0);
 
@@ -296,12 +303,23 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
 void DiningLevel::Update()
 {
+
+	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
+
+
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 	int* enemies = MainEntities::Enemies();

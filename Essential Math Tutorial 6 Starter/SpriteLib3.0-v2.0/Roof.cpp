@@ -4,6 +4,13 @@
 
 
 #include <random>
+#include "HealthBar.h"
+static int healthBarUI = 0;
+static int healthBarBackUI = 0;
+static int ghostBackUI = 0;
+static int ghostFillUI = 0;
+static std::vector<int> ghostsUI;
+static HealthBar hb;
 
 Roof::Roof(std::string name)
 	:Scene(name)
@@ -363,12 +370,24 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
 void Roof::Update()
 {
+
+
+	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
+
+
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 	int* enemies = MainEntities::Enemies();
