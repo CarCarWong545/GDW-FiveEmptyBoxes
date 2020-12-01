@@ -34,6 +34,12 @@ protected:
 	clock_t startstuntime;
 	int vacuum = 0;
 	bool ghost_1;
+	bool activate_ghost = false;
+	int dialogue = 0;
+	int ball = 0;
+	int horse = 0;
+	bool second_phase = false;
+	int loop_anim = 1;
 };
 
 
