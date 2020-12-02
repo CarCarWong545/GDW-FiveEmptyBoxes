@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "PhysicsPlayground.h"
 Player::Player()
 {
 }
@@ -106,7 +106,13 @@ void Player::MovementUpdate()
 	}
 	if (Input::GetKeyDown(Key::Z))
 	{
-		m_flashlight = !m_flashlight;
+		if (m_equip) {
+			m_flashlight = !m_flashlight;
+			
+				PhysicsPlayground::changeFlashlight(m_flashlight);
+			
+		}
+		
 	}
 	/*if (Input::GetKeyDown(Key::X))
 	{
