@@ -33,7 +33,7 @@ protected:
 
 	bool isstunned = false;
 	
-	bool dialougetostart;
+	bool dialougetostart = true;
 
 	clock_t dialougestart;
 
