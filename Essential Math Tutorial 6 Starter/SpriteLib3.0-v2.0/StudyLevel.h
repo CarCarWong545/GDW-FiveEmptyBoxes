@@ -32,6 +32,12 @@ protected:
 	float stuntime = 3.f;
 
 	bool isstunned = false;
+	
+	bool dialougetostart = true;
+
+	clock_t dialougestart;
+
+	double dialoguestop;
 
 	clock_t startstuntime;
 	clock_t startyawntime;
@@ -42,6 +48,8 @@ protected:
 	int loop_anim = 0;
 
 	int book = 0;
+
+	unsigned int dialogue;
 	
 };
 

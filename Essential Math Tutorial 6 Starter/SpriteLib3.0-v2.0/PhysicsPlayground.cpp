@@ -471,6 +471,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 void PhysicsPlayground::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 
 	if (!firstdialogue && deletefirstd) {
@@ -482,6 +483,42 @@ void PhysicsPlayground::Update()
 
 	}
 
+	if (secondd && !deletefirstd) {
+		seconddstart = clock();
+		sd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 2.png");
+		secondd = false;
+	}
+
+	if (!secondd && deletesecondd) {
+		secondstop = (clock() - seconddstart) / CLOCKS_PER_SEC;
+		if (secondstop >= secondspassforfirst) {
+			PhysicsBody::m_bodiesToDelete.push_back(sd);
+			deletesecondd = false;
+			DialoguedoneEGadd = true;
+		}
+	}
+
+	if (!thirdd) {
+		thirdstop = (clock() - thirddstart) / CLOCKS_PER_SEC;
+		if (thirdstop >= secondspassforfirst) {
+			PhysicsBody::m_bodiesToDelete.push_back(td);
+			thirdd = true;
+			canmove = true;
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		}
+	}
+
+	if (DialoguedoneEGadd) {
+		equip.m_equip = true;
+		canmove = true;
+
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		
+		DialoguedoneEGadd = false;
+		
+	}
 
 	HealthBar hb;
 	hb.UpdateHealthBar(healthBar, healthBarBack);
@@ -495,31 +532,33 @@ void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
-	float speed = 1.f;
-	b2Vec2 vel = b2Vec2(0.f, 0.f);
+	if (canmove) {
+		float speed = 1.f;
+		b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 5.f;
-	}
+		if (Input::GetKey(Key::Shift))
+		{
+			speed *= 5.f;
+		}
 
-	if (Input::GetKey(Key::A))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-	}
-	if (Input::GetKey(Key::D))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-	}
+		if (Input::GetKey(Key::A))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (Input::GetKey(Key::D))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
 
-	//Change physics body size for circle
-	if (Input::GetKey(Key::O))
-	{
-		player.ScaleBody(1.3 * Timer::deltaTime, 0);
-	}
-	else if (Input::GetKey(Key::I))
-	{
-		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		//Change physics body size for circle
+		if (Input::GetKey(Key::O))
+		{
+			player.ScaleBody(1.3 * Timer::deltaTime, 0);
+		}
+		else if (Input::GetKey(Key::I))
+		{
+			player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		}
 	}
 }
 
@@ -612,17 +651,31 @@ void PhysicsPlayground::KeyboardDown()
 		if (isdialogue.dialouge) {
 			if (firstdialogue) {
 				firstdstart = clock();
-				fd = Scene::DialogueMaker(50, 20, 5, 90, 20, 0, 1, "PHDialogue.png");
-				equip.m_equip = true;
+				fd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 1.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(fd));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(fd));
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_staticBody;
+				//player.SetType(b2_staticBody);
+				canmove = false;
 				firstdialogue = false;
 			}
+
+		
 		}
 
-		if (saveable.m_save) {
+		if (saveable.m_save && thirdd) {
 			
+			thirddstart = clock();
+			td = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
 			st.SaveData();
 			st.LoadData();
 			std::cout << st.numberGhostsDefeated() << std::endl;
+			thirdd = false;
+			canmove = false;
 		}
 
 	}
