@@ -175,7 +175,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 
 			b2Body* tempBody;
 			b2BodyDef tempDef;
-			tempDef.type = b2_dynamicBody;
+			tempDef.type = b2_kinematicBody;
 			tempDef.position.Set(float32(-120.f), float32(25.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);

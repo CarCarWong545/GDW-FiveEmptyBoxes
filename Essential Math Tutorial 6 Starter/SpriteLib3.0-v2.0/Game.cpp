@@ -46,7 +46,7 @@ void Game::InitGame()
 	m_scenes.push_back(new FortuneLevel("Fortune Room"));
 	m_scenes.push_back(new Washroom("Washroom"));
 	m_scenes.push_back(new DiningLevel("Dining Room"));
-	m_scenes.push_back(new KitchenLevel("Kitchen"));
+	m_scenes.push_back(new KitchenLevel("Kitchen")); //11
 	m_scenes.push_back(new SecretAltar("Secret Altar"));
 	m_scenes.push_back(new Roof("Roof"));
 
@@ -56,7 +56,7 @@ void Game::InitGame()
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[9];
+	m_activeScene = m_scenes[11];
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 

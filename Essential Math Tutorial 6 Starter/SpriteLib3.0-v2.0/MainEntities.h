@@ -11,6 +11,7 @@ public:
 	static int Flashlight();
 	static int* Enemies();
 	static int Captured();
+	static int Pickups();
 	
 
 	//Setters
@@ -20,6 +21,7 @@ public:
 	static void Flashlight(int main);
 	static void Enemies(int a[10]);
 	static void Capture(int n);
+	static void Pickup(int n);
 
 	
 
@@ -28,8 +30,9 @@ private:
 	static int m_mainPlayer;
 	static int health;
 	static int m_flashlight;
-	static int enemies[10];
+	static int enemies[13];
 	static int captured;
+	static int marios;
 	
 };
 

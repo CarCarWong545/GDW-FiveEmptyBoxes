@@ -7,9 +7,10 @@ int MainEntities::m_mainCamera = 0;
 int MainEntities::m_mainPlayer = 0;
 int MainEntities::health = 100;
 int MainEntities::m_flashlight = 0;
-int MainEntities::enemies[10] = { 1, 2, 3,4,5, 6, 7, 8, 9, 10};
+int MainEntities::enemies[13] = { 1, 2, 3,4,5, 6, 7, 8, 9, 10, 11, 12, 13};
 //1 = blue ghost, 2= neville...0 = gone
 int MainEntities::captured = 0;
+int MainEntities::marios = 0;
 
 
 int MainEntities::MainCamera()
@@ -41,6 +42,11 @@ int* MainEntities::Enemies()
 int MainEntities::Captured()
 {
 	return captured;
+}
+
+int MainEntities::Pickups()
+{
+	return marios;
 }
 
 
@@ -83,4 +89,9 @@ void MainEntities::Enemies(int a[10])
 void MainEntities::Capture(int n)
 {
 	captured = n;
+}
+
+void MainEntities::Pickup(int n)
+{
+	marios = n;
 }

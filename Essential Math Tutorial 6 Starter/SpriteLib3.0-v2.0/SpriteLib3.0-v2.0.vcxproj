@@ -146,6 +146,7 @@
     <ClInclude Include="CanDoor.h" />
     <ClInclude Include="CanJump.h" />
     <ClInclude Include="CanSave.h" />
+    <ClInclude Include="CanSwitch.h" />
     <ClInclude Include="DestroyTrigger.h" />
     <ClInclude Include="DialogueTrigger.h" />
     <ClInclude Include="Dialouge.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="JSON.h" />
     <ClInclude Include="KitchenLevel.h" />
     <ClInclude Include="MainEntities.h" />
+    <ClInclude Include="MarioTrigger.h" />
     <ClInclude Include="MasterBedLevel.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MoveDown.h" />
@@ -236,6 +238,7 @@
     <ClCompile Include="CanDoor.cpp" />
     <ClCompile Include="CanJump.cpp" />
     <ClCompile Include="CanSave.cpp" />
+    <ClCompile Include="CanSwitch.cpp" />
     <ClCompile Include="DestroyTrigger.cpp" />
     <ClCompile Include="DialogueTrigger.cpp" />
     <ClCompile Include="Dialouge.cpp" />
@@ -265,6 +268,7 @@
     <ClCompile Include="KitchenLevel.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEntities.cpp" />
+    <ClCompile Include="MarioTrigger.cpp" />
     <ClCompile Include="MasterBedLevel.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MoveDown.cpp" />

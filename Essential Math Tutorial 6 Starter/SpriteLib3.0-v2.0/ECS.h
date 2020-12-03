@@ -30,6 +30,8 @@
 #include "SavingTrigger.h"
 #include "VTrigger2.h"
 #include "HealthTrigger.h"
+#include "MarioTrigger.h"
+#include "CanSwitch.h"
 
 class ECS abstract
 {

@@ -86,6 +86,8 @@
     <ClCompile Include="KitchenLevel.cpp" />
     <ClCompile Include="SecretAltar.cpp" />
     <ClCompile Include="Roof.cpp" />
+    <ClCompile Include="MarioTrigger.cpp" />
+    <ClCompile Include="CanSwitch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -176,6 +178,8 @@
     <ClInclude Include="KitchenLevel.h" />
     <ClInclude Include="SecretAltar.h" />
     <ClInclude Include="Roof.h" />
+    <ClInclude Include="MarioTrigger.h" />
+    <ClInclude Include="CanSwitch.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

@@ -221,6 +221,7 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
+		ECS::AttachComponent<CanSwitch>(entity);
 
 
 		//Sets up the components
@@ -323,6 +324,8 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 				ECS::AttachComponent<AnimationController>(entity);
 				ECS::AttachComponent<CanDamage>(entity);
 				ECS::GetComponent<CanDamage>(entity).m_canbestun = true;
+				ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+				ECS::GetComponent<CanDamage>(entity).m_suck = false;
 
 				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 				auto& animController = ECS::GetComponent<AnimationController>(entity);
@@ -377,7 +380,8 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 				ECS::AttachComponent<CanDamage>(entity);
 
 				ECS::GetComponent<CanDamage>(entity).m_candamage = true;
-				ECS::GetComponent<CanDamage>(entity).m_canbestun = false;
+				ECS::GetComponent<CanDamage>(entity).m_canbestun = true;
+				ECS::GetComponent<CanDamage>(entity).m_suck = false;
 
 				//Sets up the components  
 				std::string fileName = "neville.png";
@@ -577,7 +581,7 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 			ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost21);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost31);
 
@@ -637,39 +641,41 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 		}
-		//spawn heart
-		{
-			//Creates entity
-			auto entity = ECS::CreateEntity();
-			//Add components
-			ECS::AttachComponent<Sprite>(entity);
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-			ECS::AttachComponent<Trigger*>(entity);
+		if (ghost_1)
+		{//spawn heart
+			{
+				//Creates entity
+				auto entity = ECS::CreateEntity();
+				//Add components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+				ECS::AttachComponent<PhysicsBody>(entity);
+				ECS::AttachComponent<Trigger*>(entity);
 
-			//Sets up components
-			std::string fileName = "Ghost_Heart.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
-			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-			ECS::GetComponent<Trigger*>(entity) = new HealthTrigger();
-			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+				//Sets up components
+				std::string fileName = "Ghost_Heart.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+				ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+				ECS::GetComponent<Trigger*>(entity) = new HealthTrigger();
+				ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 
 
-			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(-75), float32(0));
+				float shrinkX = 0.f;
+				float shrinkY = 0.f;
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_staticBody;
+				tempDef.position.Set(float32(-75), float32(0));
 
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
+				tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
-			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
+				tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+			}
 		}
 
 		healthBarUI = Scene::createHealthBar();
@@ -783,6 +789,42 @@ void Washroom::Update()
 				enemies[3] = 0; //4th enemy
 				MainEntities::Enemies(enemies);
 				MainEntities::Capture(MainEntities::Captured() + 1);
+				//spawn mario item
+				{
+					ECS::GetComponent<CanSwitch>(MainEntities::MainPlayer()).c_switch = false; //can't switch once item is spawned
+					//Creates entity
+					auto entity = ECS::CreateEntity();
+					
+					//Add components
+					ECS::AttachComponent<Sprite>(entity);
+					ECS::AttachComponent<Transform>(entity);
+					ECS::AttachComponent<PhysicsBody>(entity);
+					ECS::AttachComponent<Trigger*>(entity);
+
+					//Sets up components
+					std::string fileName = "Mario Shoe.png";
+					ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+					ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+					ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+					ECS::GetComponent<Trigger*>(entity) = new MarioTrigger();
+					ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+
+
+					auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+					auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+					float shrinkX = 0.f;
+					float shrinkY = 0.f;
+					b2Body* tempBody;
+					b2BodyDef tempDef;
+					tempDef.type = b2_staticBody;
+					tempDef.position.Set(float32(-85), float32(0));
+
+					tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+					tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
+					tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+				}
 			}
 
 		}
@@ -827,6 +869,7 @@ void Washroom::Update()
 				anims.SetActiveAnim(2);
 			}
 			c_ghost2.m_canbestun = true;
+			c_ghost2.m_suck = false;
 			//ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			startstuntime2 = clock();
 		}
@@ -1098,21 +1141,24 @@ void Washroom::KeyboardDown()
 
 		if (Input::GetKeyDown(Key::E))
 		{
-			if (scene.can_switch0)
+			if (ECS::GetComponent<CanSwitch>(MainEntities::MainPlayer()).c_switch)
 			{
-				scene.m_switch0 = true;
-			}
-			else if (scene.can_switch6)
-			{
-				scene.m_switch6 = true;
-			}
-			else if (scene.can_switch7)
-			{
-				scene.m_switch7 = true;
-			}
-			else if (scene.can_switch3)
-			{
-				scene.m_switch3 = true;
+				if (scene.can_switch0)
+				{
+					scene.m_switch0 = true;
+				}
+				else if (scene.can_switch6)
+				{
+					scene.m_switch6 = true;
+				}
+				else if (scene.can_switch7)
+				{
+					scene.m_switch7 = true;
+				}
+				else if (scene.can_switch3)
+				{
+					scene.m_switch3 = true;
+				}
 			}
 		}
 	}
