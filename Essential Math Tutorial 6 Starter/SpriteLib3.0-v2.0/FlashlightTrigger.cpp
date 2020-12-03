@@ -7,28 +7,25 @@ void FlashlightTrigger::OnTrigger()
 	Trigger::OnTrigger();
 }
 
-void FlashlightTrigger::OnEnter()
+void FlashlightTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	if (ECS::GetComponent<Player>(m_targetEntities[0]).m_flashlight)
 	{
-		for (int i = 1; i < m_targetEntities.size(); i++)
-		{
-			if (ECS::GetComponent<CanDamage>(m_targetEntities[i]).m_canbestun)
+		
+		if (ECS::GetComponent<CanDamage>(entity).m_canbestun)
 			{
-				auto& body = ECS::GetComponent<PhysicsBody>(m_targetEntities[i]);
+				auto& body = ECS::GetComponent<PhysicsBody>(entity);
 				//"stun" ghost
 				body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 
-				auto& ghost = ECS::GetComponent<CanDamage>(m_targetEntities[i]);
+				auto& ghost = ECS::GetComponent<CanDamage>(entity);
 				ghost.m_candamage = false;
 				//ghost.m_stun = true;
 			}
 		}
 	}
 
-	
-}
 
 void FlashlightTrigger::OnExit()
 {

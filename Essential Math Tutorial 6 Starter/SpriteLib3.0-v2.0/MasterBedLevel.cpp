@@ -145,6 +145,9 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Transform>(entity);
 			ECS::AttachComponent<PhysicsBody>(entity);
 			ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<CanDamage>(entity);
+
+			ECS::GetComponent<CanDamage>(entity).m_candamage = true;
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& animController = ECS::GetComponent<AnimationController>(entity);
@@ -172,7 +175,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(-85.f), float32(25.f));
+			tempDef.position.Set(float32(145.f), float32(15.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -318,6 +321,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -354,10 +358,11 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-			ECS::GetComponent<Trigger*>(entity) = new VTrigger(1);
+			std::vector<int>targets = {1};
+			ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -702,17 +707,18 @@ void MasterBedLevel::Update()
 			}
 		}
 
-		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
-		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
+		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost2);
+		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost2);
+		auto& c_ghost2 = ECS::GetComponent<CanDamage>(ghost1);
 		auto & anims = ECS::GetComponent<AnimationController>(ghost2);
 
 		
-		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
+		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost1);
 		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
 		ghost.GetBody()->SetAwake(true);
 		ghost_2.GetBody()->SetAwake(true);
 
-		if (c_ghost.m_candamage)
+		if (c_ghost.m_candamage &&c_ghost2.m_candamage)
 		{
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			startstuntime = clock();
@@ -720,7 +726,7 @@ void MasterBedLevel::Update()
 		else if (!c_ghost.m_stun) {
 			float elapsedtime;
 			float stuntime = 5.0f;
-
+			c_ghost2.m_candamage = false;
 			isstunned = true;
 			if (isstunned) {
 				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
@@ -728,6 +734,8 @@ void MasterBedLevel::Update()
 				if (elapsedtime >= stuntime) {
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
+					c_ghost2.m_candamage = true;
+					c_ghost2.m_stun = false;
 					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 					isstunned = false;
 				}
@@ -745,6 +753,8 @@ void MasterBedLevel::Update()
 			}
 			c_ghost.m_candamage = false;
 			c_ghost.m_stun = true;
+			c_ghost2.m_candamage = false;
+			c_ghost2.m_stun = true;
 			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 			direction.Normalize();
 			float scale = 10.f;
@@ -808,6 +818,7 @@ void MasterBedLevel::Update()
 		else if (c_ghost.m_suck)
 		{
 			c_ghost.m_stun = false;
+			c_ghost2.m_stun = false;
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 		else if (!c_ghost.m_candamage && !c_ghost.m_suck)
@@ -816,12 +827,13 @@ void MasterBedLevel::Update()
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 		}
 
-		if (!curt_1) 
+		if (!curt_1) //curtain gone
 		{
 			if (!c_ghost.m_stun)
 			{
 				anims.SetActiveAnim(1); //second
 				c_ghost.m_canbestun = true;
+				c_ghost2.m_candamage = true;
 
 				if (ghost.GetPosition().x >= 50 && ghost.GetPosition().y <= 60)
 				{
@@ -841,6 +853,7 @@ void MasterBedLevel::Update()
 		else
 		{
 			c_ghost.m_canbestun = false;
+			c_ghost2.m_canbestun = false;
 		}
 	}
 

@@ -145,6 +145,9 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Transform>(entity);
 			ECS::AttachComponent<PhysicsBody>(entity);
 			ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<CanDamage>(entity);
+
+			ECS::GetComponent<CanDamage>(entity).m_candamage = false;
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& animController = ECS::GetComponent<AnimationController>(entity);
@@ -173,11 +176,11 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(-85.f), float32(25.f));
+			tempDef.position.Set(float32(-120.f), float32(25.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight()-shrinkY)/2.f),vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
+			tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY) / 2.f), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
 			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
 
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
@@ -291,7 +294,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY) / 2.f), vec2(0.f, 0.f), true, ETRIGGER, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
+			tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight()-shrinkY)/2.f), vec2(0.f, 0.f), true, ETRIGGER, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
 			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
 
 			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
@@ -329,7 +332,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(-130.f), float32(15.f));
+			tempDef.position.Set(float32(-120.f), float32(15.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -360,6 +363,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -395,10 +399,11 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new VTrigger(2); //3rd enemy
+		std::vector<int>targets = {2}; //3rd enemy
+		ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -485,11 +490,12 @@ void NurseryLevel::Update()
 
 	if (ghost_1)
 	{
-		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
-		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
+		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost2);
+		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost2);
+		auto& c_ghost2 = ECS::GetComponent<CanDamage>(ghost1);
 
 		
-		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
+		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost1);
 		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
 		ghost.GetBody()->SetAwake(true);
 		ghost_2.GetBody()->SetAwake(true);
@@ -499,7 +505,7 @@ void NurseryLevel::Update()
 			auto& anims = ECS::GetComponent<AnimationController>(ghost2);
 			auto& ball1 = ECS::GetComponent<PhysicsBody>(ball);
 
-			if (c_ghost.m_candamage)
+			if (c_ghost.m_candamage && c_ghost2.m_candamage)
 			{
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 				startstuntime = clock();
@@ -513,7 +519,7 @@ void NurseryLevel::Update()
 			else if (!c_ghost.m_stun) {
 				float elapsedtime;
 				float stuntime = 5.0f;
-
+				c_ghost2.m_candamage = false;
 				isstunned = true;
 				if (isstunned) {
 					elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
@@ -521,6 +527,8 @@ void NurseryLevel::Update()
 					if (elapsedtime >= stuntime) {
 						c_ghost.m_candamage = true;
 						c_ghost.m_stun = false;
+						c_ghost2.m_candamage = true;
+						c_ghost2.m_stun = false;
 						//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 						isstunned = false;
 						anims.SetActiveAnim(1);
@@ -539,6 +547,8 @@ void NurseryLevel::Update()
 				}
 				c_ghost.m_candamage = false;
 				c_ghost.m_stun = true;
+				c_ghost2.m_candamage = false;
+				c_ghost2.m_stun = true;
 				b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 				direction.Normalize();
 				float scale = 10.f;
@@ -565,12 +575,15 @@ void NurseryLevel::Update()
 
 					ghost.ScaleBody(2.f, 0);
 					ghost_2.ScaleBody(2.f, 0);
-					ECS::GetComponent<Sprite>(ghost2).SetWidth(ghost_2.GetWidth());
-					ECS::GetComponent<Sprite>(ghost2).SetHeight(ghost_2.GetHeight());
+					ECS::GetComponent<Sprite>(ghost1).SetWidth(ghost_2.GetWidth());
+					ECS::GetComponent<Sprite>(ghost1).SetHeight(ghost_2.GetHeight());
+					ECS::GetComponent<Sprite>(ghost2).SetWidth(ghost.GetWidth());
+					ECS::GetComponent<Sprite>(ghost2).SetHeight(ghost.GetHeight());
 					PhysicsBody::m_bodiesToDelete.push_back(ball); //delete the ball
 					loop_anim = 1;
 					anims.GetAnimation(1).SetRepeating(true);
 					anims.SetActiveAnim(1); //default anim
+					ECS::GetComponent<PhysicsBody>(ghost2).GetBody()->SetTransform(b2Vec2(-110, 25), 0);
 					//horse entity
 					{
 
@@ -604,7 +617,7 @@ void NurseryLevel::Update()
 						b2Body* tempBody;
 						b2BodyDef tempDef;
 						tempDef.type = b2_dynamicBody;
-						tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost1).GetPosition().x), float32(-10));
+						tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().x), float32(-10));
 
 						tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -623,8 +636,10 @@ void NurseryLevel::Update()
 			else if (c_ghost.m_suck) //player isnt sucking but can be sucked
 			{
 				c_ghost.m_stun = false;
+				c_ghost2.m_stun = false;
 				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 				anims.SetActiveAnim(1); //know he can be sucked
+				ball1.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			}
 			else if (!c_ghost.m_candamage && !c_ghost.m_suck) //stunned
 			{
@@ -634,7 +649,7 @@ void NurseryLevel::Update()
 				ball1.GetBody()->SetLinearVelocity(b2Vec2(40, -5));
 				if (ball1.GetBody()->GetPosition().x >= 0)
 				{
-					ball1.GetBody()->SetTransform(b2Vec2(float32(ghost.GetPosition().x), float32(ghost.GetPosition().y)), 0);
+					//ball1.GetBody()->SetTransform(b2Vec2(float32(ghost.GetPosition().x), float32(ghost.GetPosition().y)), 0);
 				}
 			}
 		}
@@ -656,7 +671,7 @@ void NurseryLevel::Update()
 				horse1.GetBody()->SetLinearVelocity(b2Vec2(40, 0));
 			}
 
-			if (c_ghost.m_candamage)
+			if (c_ghost.m_candamage && c_ghost2.m_candamage)
 			{
 				//ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 				if (ghost.GetPosition().x <= -90)
@@ -673,7 +688,7 @@ void NurseryLevel::Update()
 			else if (!c_ghost.m_stun) {
 				float elapsedtime;
 				float stuntime = 5.0f;
-
+				c_ghost2.m_candamage = false;
 				isstunned = true;
 				if (isstunned) {
 					elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
@@ -681,6 +696,8 @@ void NurseryLevel::Update()
 					if (elapsedtime >= stuntime) {
 						c_ghost.m_candamage = true;
 						c_ghost.m_stun = false;
+						c_ghost2.m_candamage = true;
+						c_ghost2.m_stun = false;
 						//.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 						isstunned = false;
 						anims.SetActiveAnim(1);
@@ -699,6 +716,8 @@ void NurseryLevel::Update()
 				}
 				c_ghost.m_candamage = false;
 				c_ghost.m_stun = true;
+				c_ghost2.m_candamage = false;
+				c_ghost2.m_stun = true;
 				b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 				direction.Normalize();
 				float scale = 10.f;
@@ -895,11 +914,13 @@ void NurseryLevel::KeyboardDown()
 		if (isdialogue.dialouge) {
 			activate_ghost = true;
 			player.GetBody()->SetTransform(b2Vec2(0, 0), 0);
-			ECS::GetComponent<CanDamage>(ghost1).m_candamage = true; //move to baby phase 1
-			ECS::GetComponent<CanDamage>(ghost1).m_canbestun = true;
+			ECS::GetComponent<CanDamage>(ghost2).m_candamage = true; //move to baby phase 1
+			ECS::GetComponent<CanDamage>(ghost2).m_canbestun = true;
+			ECS::GetComponent<CanDamage>(ghost1).m_candamage = true;
 			PhysicsBody::m_bodiesToDelete.push_back(dialogue); //delete dialogue trigger
 			auto& anims = ECS::GetComponent<AnimationController>(ghost2);
 			anims.SetActiveAnim(1);
+			ECS::GetComponent<PhysicsBody>(ghost2).GetBody()->SetTransform(b2Vec2(-110, 25), 0);
 			//ball entity
 			{
 				
@@ -933,7 +954,7 @@ void NurseryLevel::KeyboardDown()
 					b2Body* tempBody;
 					b2BodyDef tempDef;
 					tempDef.type = b2_dynamicBody;
-					tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost1).GetPosition().x), float32((ECS::GetComponent<PhysicsBody>(ghost1).GetPosition().y)));
+					tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().x), float32((ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().y)));
 
 					tempBody = m_physicsWorld->CreateBody(&tempDef);
 

@@ -7,7 +7,9 @@ public:
 	//Depreciated use OnEnter and OnExit instead
 	virtual void OnTrigger();
 
-	virtual void OnEnter();
+	virtual void OnEnter(int entity);
+
+	//virtual void OnEnter();
 	virtual void OnExit();
 
 	void SetTriggerEntity(int triggerEnt);

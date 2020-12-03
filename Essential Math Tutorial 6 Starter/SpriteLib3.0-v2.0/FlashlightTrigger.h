@@ -6,7 +6,9 @@ class FlashlightTrigger :
 public:
 	void OnTrigger() override;
 
-	void OnEnter() override;
+	void OnEnter(int entity) override;
+
+	//void OnEnter() override;
 	void OnExit() override;
 
 

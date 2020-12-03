@@ -8,7 +8,7 @@ void Trigger::OnTrigger()
 	ECS::GetComponent<Sprite>(m_triggerEntity).SetTransparency(0.2f);
 }
 
-void Trigger::OnEnter()
+void Trigger::OnEnter(int entity)
 {	//Tests the trigger working and displays using T
 	ECS::GetComponent<PhysicsBody>(m_triggerEntity).SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 }

@@ -7,9 +7,9 @@ void SceneTrigger::OnTrigger()
 	Trigger::OnTrigger();
 }
 
-void SceneTrigger::OnEnter()
+void SceneTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	auto& canDoor = ECS::GetComponent<CanDoor>(m_targetEntities[0]);
 	auto& player = ECS::GetComponent<Player>(m_targetEntities[0]);
 	if (player.m_equip)

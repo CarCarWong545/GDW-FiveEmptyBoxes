@@ -27,13 +27,22 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 
 
 	//no contact events if flashlight/main player
+	
 	if (entityA == MainEntities::Flashlight() && filterB.categoryBits == ENEMY)
 	{
-		TriggerEnter(fixtureA);
+		TriggerEnter(fixtureA, fixtureB);
 	}
 	else if (entityB == MainEntities::Flashlight() && filterA.categoryBits == ENEMY)
 	{
-		TriggerEnter(fixtureB);
+		TriggerEnter(fixtureB, fixtureA);
+	}
+	if (entityA == MainEntities::Flashlight() && filterB.categoryBits == PLAYER)
+	{
+		return;
+	}
+	else if (entityB == MainEntities::Flashlight() && filterA.categoryBits == PLAYER)
+	{
+		return;
 	}
 	
 
@@ -42,11 +51,11 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 	{
 		if (sensorA)
 		{
-			TriggerEnter(fixtureA);
+			TriggerEnter(fixtureA, fixtureB);
 		}
 		else if (sensorB)
 		{
-			TriggerEnter(fixtureB);
+			TriggerEnter(fixtureB, fixtureA);
 		}
 	}
 
@@ -86,11 +95,20 @@ void PhysicsPlaygroundListener::EndContact(b2Contact* contact)
 	}
 }
 
-void PhysicsPlaygroundListener::TriggerEnter(b2Fixture* sensor)
+void PhysicsPlaygroundListener::TriggerEnter(b2Fixture* sensor, b2Fixture* target)
 {
 	int entity = (int)sensor->GetBody()->GetUserData();
+	if (target)
+	{
+		int entity2 = (int)target->GetBody()->GetUserData();
+		ECS::GetComponent<Trigger*>(entity)->OnEnter(entity2);
+	}
+	else
+	{
+		ECS::GetComponent<Trigger*>(entity)->OnEnter(0);
+	}
 
-	ECS::GetComponent<Trigger*>(entity)->OnEnter();
+	
 }
 
 void PhysicsPlaygroundListener::TriggerExit(b2Fixture* sensor)

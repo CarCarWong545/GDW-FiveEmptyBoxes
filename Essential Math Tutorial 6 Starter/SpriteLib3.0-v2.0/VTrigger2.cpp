@@ -6,9 +6,9 @@ void VTrigger2::OnTrigger()
 {
 }
 
-void VTrigger2::OnEnter()
+void VTrigger2::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	if (ECS::GetComponent<Player>(m_targetEntities[0]).m_suck)
 	{
 		for (int i = 1; i < m_targetEntities.size(); i++)

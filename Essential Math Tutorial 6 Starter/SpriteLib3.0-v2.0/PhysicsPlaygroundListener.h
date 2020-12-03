@@ -9,8 +9,10 @@ public:
 
 	void BeginContact(b2Contact* contact) override;
 	void EndContact(b2Contact* contact) override;
+	
 private:
-	void TriggerEnter(b2Fixture* sensor);
+	void TriggerEnter(b2Fixture* sensor, b2Fixture* target = nullptr);
+	//void TriggerEnter(b2Fixture* sensor);
 	void TriggerExit(b2Fixture* sensor);
 };
 

@@ -8,9 +8,9 @@ void MoveDownTrigger::OnTrigger()
 	object.moveDown = true;
 }
 
-void MoveDownTrigger::OnEnter()
+void MoveDownTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	auto& object = ECS::GetComponent<MoveDown>(m_targetEntities[0]);
 	object.moveDown = true;
 }

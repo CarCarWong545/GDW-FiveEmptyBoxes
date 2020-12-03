@@ -6,11 +6,13 @@ class VTrigger :
 public:
 	void OnTrigger() override;
 
-	VTrigger(int n);
+	VTrigger(std::vector<int>n);
 
-	void OnEnter() override;
+	void OnEnter(int entity) override;
+
+	//void OnEnter() override;
 	void OnExit() override;
 private:
-	int enemy; //according to enemy index
+	std::vector<int>enemy; //according to enemy index
 };
 

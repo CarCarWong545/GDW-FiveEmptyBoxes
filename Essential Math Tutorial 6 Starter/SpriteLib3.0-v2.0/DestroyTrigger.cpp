@@ -18,9 +18,9 @@ void DestroyTrigger::OnTrigger()
 	}
 }
 
-void DestroyTrigger::OnEnter()
+void DestroyTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 
 	if (!triggered)
 	{

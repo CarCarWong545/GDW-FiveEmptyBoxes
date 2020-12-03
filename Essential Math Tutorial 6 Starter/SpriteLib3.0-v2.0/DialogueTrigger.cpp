@@ -9,10 +9,10 @@ void DialogueTrigger::OnTrigger()
 	Trigger::OnTrigger();
 }
 
-void DialogueTrigger::OnEnter()
+void DialogueTrigger::OnEnter(int entity)
 {
 	
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	
 	if (d == 0) {
 		auto& object = ECS::GetComponent<Dialouge>(m_targetEntities[0]);

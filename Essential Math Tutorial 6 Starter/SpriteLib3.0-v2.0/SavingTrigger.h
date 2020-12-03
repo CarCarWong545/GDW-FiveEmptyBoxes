@@ -7,7 +7,8 @@ class SavingTrigger : public Trigger
 {
 public:
 	void OnTrigger() override;
-	void OnEnter() override;
+	void OnEnter(int entity) override;
+	//void OnEnter() override;
 	void OnExit() override;
 	void SaveData(bool ignoreStats = false);//ignoreStats = true will use the settings vector to save with, instead of the real player values at save time
 	void LoadData();

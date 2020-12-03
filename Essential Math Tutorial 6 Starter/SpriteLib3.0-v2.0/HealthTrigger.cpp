@@ -6,9 +6,9 @@ void HealthTrigger::OnTrigger()
 	Trigger::OnTrigger();
 }
 
-void HealthTrigger::OnEnter()
+void HealthTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	MainEntities::Health(MainEntities::Health() + 25); //recover health
 	PhysicsBody::m_bodiesToDelete.push_back(m_triggerEntity); //deletes itself
 }

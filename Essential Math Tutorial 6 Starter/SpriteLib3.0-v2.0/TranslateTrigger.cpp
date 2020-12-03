@@ -6,9 +6,9 @@ void TranslateTrigger::OnTrigger()
 	Trigger::OnTrigger();
 }
 
-void TranslateTrigger::OnEnter()
+void TranslateTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	for (int i = 0; i < m_targetEntities.size(); i++)
 	{
 		ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).SetPosition(movement, true);

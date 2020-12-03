@@ -8,9 +8,9 @@ void MoveUpTrigger::OnTrigger()
 	object.moveUp = true;
 }
 
-void MoveUpTrigger::OnEnter()
+void MoveUpTrigger::OnEnter(int entity)
 {
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 	auto& object = ECS::GetComponent<MoveUp>(m_targetEntities[0]);
 	object.moveUp = true;
 }

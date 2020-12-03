@@ -134,13 +134,16 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		{
 
 			auto entity = ECS::CreateEntity();
-			ghost2 = entity;
+			ghost1 = entity;
 
 			//Add components  
 			ECS::AttachComponent<Sprite>(entity);
 			ECS::AttachComponent<Transform>(entity);
 			ECS::AttachComponent<PhysicsBody>(entity);
 			ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<CanDamage>(entity);
+
+			ECS::GetComponent<CanDamage>(entity).m_candamage = true;
 			
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& animController = ECS::GetComponent<AnimationController>(entity);
@@ -248,7 +251,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		{
 
 			auto entity = ECS::CreateEntity();
-			ghost1 = entity;
+			ghost2 = entity;
 
 			//Add components  
 			//ECS::AttachComponent<EnemyBlue>(entity);
@@ -316,6 +319,7 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 		
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -351,7 +355,8 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new VTrigger(0);
+		std::vector<int>targets = {0};
+		ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
@@ -495,7 +500,8 @@ void StudyLevel::Update()
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
 		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
-		auto& anims = ECS::GetComponent<AnimationController>(ghost2);
+		auto& anims = ECS::GetComponent<AnimationController>(ghost1);
+		auto& c_ghost2 = ECS::GetComponent<CanDamage>(ghost2);
 
 		auto& book1 = ECS::GetComponent<PhysicsBody>(book);
 		//book1.GetBody()->SetLinearVelocity(b2Vec2(-50, -5));
@@ -510,7 +516,7 @@ void StudyLevel::Update()
 		ghost_2.GetBody()->SetAwake(true);
 
 		
-		if (c_ghost.m_candamage) //default
+		if (c_ghost.m_candamage &&c_ghost2.m_candamage) //default
 		{
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			startstuntime = clock();
@@ -521,6 +527,7 @@ void StudyLevel::Update()
 			float elapsedtime;
 			float stuntime = 5.0f;
 			//anims.SetActiveAnim(loop_anim);
+			c_ghost2.m_candamage = false;
 			isstunned = true;
 			if (isstunned) {
 				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
@@ -528,6 +535,8 @@ void StudyLevel::Update()
 				if (elapsedtime >= stuntime) { //unstun
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
+					c_ghost2.m_candamage = true;
+					c_ghost2.m_stun = false;
 					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 					isstunned = false;
 				}
@@ -547,6 +556,8 @@ void StudyLevel::Update()
 			isyawn = false;
 			c_ghost.m_candamage = false;
 			c_ghost.m_stun = true;
+			c_ghost2.m_candamage = false;
+			c_ghost2.m_stun = true;
 			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 			direction.Normalize();
 			float scale = 10.f;
@@ -611,6 +622,7 @@ void StudyLevel::Update()
 		else if (c_ghost.m_suck) //player isnt sucking but he can be sucked
 		{
 			c_ghost.m_stun = false;
+			c_ghost2.m_stun = false;
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			ghost_2.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			anims.SetActiveAnim(2); //know he can be sucked

@@ -31,7 +31,23 @@ protected:
 	float elapsedtime = 0.f;
 	float stuntime = 3.f;
 
-	bool isstunned = false;
+	clock_t startstuntime;
+	clock_t startyawntime;
+	bool isyawn = false;
+	bool isyawn2 = false;
 	int vacuum = 0;
 	bool ghost_1;
+	int loop_anim = 0;
+
+	clock_t startstuntime2;
+	bool ghost_21 = false;
+	int ghost21 = 0;
+	int ghost22 = 0;
+
+	clock_t startstuntime3;
+	bool ghost_31 = false;
+	int ghost31 = 0;
+	int ghost32 = 0;
+
+	bool isstunned = false;
 };

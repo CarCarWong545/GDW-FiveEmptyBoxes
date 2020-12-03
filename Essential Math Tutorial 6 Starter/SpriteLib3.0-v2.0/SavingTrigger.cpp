@@ -15,11 +15,11 @@ void SavingTrigger::OnTrigger()
 	}
 }
 
-void SavingTrigger::OnEnter()
+void SavingTrigger::OnEnter(int entity)
 {
 	auto& object = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
 	object.m_save = true;
-	Trigger::OnEnter();
+	Trigger::OnEnter(entity);
 
 	
 
