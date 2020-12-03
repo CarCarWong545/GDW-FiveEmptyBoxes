@@ -782,8 +782,8 @@ void StudyLevel::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
-			equip.m_equip = true;
+			dialougestart = clock();
+			dialogue = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");;
 		}
 	}
 	if (Input::GetKeyDown(Key::Y))
