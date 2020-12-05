@@ -33,7 +33,9 @@ protected:
 
 	bool isstunned = false;
 	
+	bool canmove = true;
 	bool dialougetostart = true;
+	bool dialoguestopped = false;
 
 	clock_t dialougestart;
 
