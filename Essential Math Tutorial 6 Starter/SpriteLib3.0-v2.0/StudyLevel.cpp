@@ -126,6 +126,8 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 0.f));
 	}
+
+
 	// ghost entity
 	{
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
@@ -490,13 +492,35 @@ void StudyLevel::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
+		if (dialougetostart) {
+			dialougestart = clock();
+			dialogue = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Neville Dialouge.png");
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialogue));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialogue));
+			dialougetostart = false;
+			canmove = false;
+			dialougetostart = false;
+		}
+
+		if (!dialoguestopped && !dialougetostart) {
+			dialoguestop = (clock() - dialougestart) / CLOCKS_PER_SEC;
+			if (dialoguestop >= 2) {
+				PhysicsBody::m_bodiesToDelete.push_back(dialogue);
+				dialoguestopped = true;
+				canmove = true;
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			}
+		}
+		
+
 	if (MainEntities::Health() <= 0)
 	{
 	//	st3.LoadData(); //reset?
 		return;
 	}
 
-	if (ghost_1)
+	if (ghost_1 && dialoguestopped)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
 		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
@@ -690,28 +714,30 @@ void StudyLevel::KeyboardHold()
 	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 5.f;
-	}
+	if (canmove) {
+		if (Input::GetKey(Key::Shift))
+		{
+			speed *= 5.f;
+		}
 
-	if (Input::GetKey(Key::A))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-	}
-	if (Input::GetKey(Key::D))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-	}
+		if (Input::GetKey(Key::A))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (Input::GetKey(Key::D))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
 
-	//Change physics body size for circle
-	if (Input::GetKey(Key::O))
-	{
-		player.ScaleBody(1.3 * Timer::deltaTime, 0);
-	}
-	else if (Input::GetKey(Key::I))
-	{
-		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		//Change physics body size for circle
+		if (Input::GetKey(Key::O))
+		{
+			player.ScaleBody(1.3 * Timer::deltaTime, 0);
+		}
+		else if (Input::GetKey(Key::I))
+		{
+			player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		}
 	}
 }
 
