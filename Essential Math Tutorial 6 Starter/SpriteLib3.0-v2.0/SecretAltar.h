@@ -24,6 +24,18 @@ public:
 protected:
 	PhysicsPlaygroundListener listener;
 
+
+	bool canmove = true;
+
+	bool firstdialogue = true;
+	clock_t firstdstart;
+	bool firstddelete = true;
+	double firststop;
+	unsigned int dialouge;
+	bool deletefirstd = true;
+
+
+
 	int ghost1 = 0;
 	int ghost2 = 0; //ghost 1 physics body
 	int flashlight = 0;

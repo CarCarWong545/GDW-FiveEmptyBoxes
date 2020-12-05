@@ -29,13 +29,31 @@ protected:
 	float elapsedtime = 0.f;
 	float stuntime = 3.f;
 
+	bool canmove = true;
+
+	bool firstdialogue = true;
+	clock_t firstdstart;
+	bool firstddelete = true;
+
+	bool seconddialogue = true;
+	clock_t secondstart;
+	bool seconddelete = true;
+
+	double firststop;
+	double secondstop;
+
+	unsigned int dialouge;
+	unsigned int sdialouge;
+
+
+
 	bool isstunned = false;
 
 	clock_t startstuntime;
 	int vacuum = 0;
 	bool ghost_1;
 	bool activate_ghost = false;
-	int dialogue = 0;
+	int ghostdialogue = 0;
 	int ball = 0;
 	int horse = 0;
 	bool second_phase = false;
