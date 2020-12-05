@@ -32,6 +32,7 @@
 #include "HealthTrigger.h"
 #include "MarioTrigger.h"
 #include "CanSwitch.h"
+#include "SpikeTrigger.h"
 
 class ECS abstract
 {

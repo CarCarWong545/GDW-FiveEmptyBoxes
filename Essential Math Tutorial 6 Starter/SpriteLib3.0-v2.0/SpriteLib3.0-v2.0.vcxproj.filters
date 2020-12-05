@@ -88,6 +88,7 @@
     <ClCompile Include="Roof.cpp" />
     <ClCompile Include="MarioTrigger.cpp" />
     <ClCompile Include="CanSwitch.cpp" />
+    <ClCompile Include="SpikeTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -180,6 +181,7 @@
     <ClInclude Include="Roof.h" />
     <ClInclude Include="MarioTrigger.h" />
     <ClInclude Include="CanSwitch.h" />
+    <ClInclude Include="SpikeTrigger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

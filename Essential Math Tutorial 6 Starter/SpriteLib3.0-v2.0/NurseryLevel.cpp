@@ -48,7 +48,7 @@ int NurseryLevel::ChangeScene() {
 void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 {
 
-
+	activate_ghost = false;
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
 

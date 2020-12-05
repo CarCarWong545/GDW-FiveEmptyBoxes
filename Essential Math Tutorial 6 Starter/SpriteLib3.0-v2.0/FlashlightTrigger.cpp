@@ -18,6 +18,13 @@ void FlashlightTrigger::OnEnter(int entity)
 				auto& body = ECS::GetComponent<PhysicsBody>(entity);
 				//"stun" ghost
 				body.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				if (ECS::GetComponent<CanDamage>(entity).is_boo)
+				{
+					float scale = 0.10f;
+					auto direction = body.GetBody()->GetLinearVelocity();
+					direction *= scale;
+					body.GetBody()->SetLinearVelocity(direction);
+				}
 
 				auto& ghost = ECS::GetComponent<CanDamage>(entity);
 				ghost.m_candamage = false;

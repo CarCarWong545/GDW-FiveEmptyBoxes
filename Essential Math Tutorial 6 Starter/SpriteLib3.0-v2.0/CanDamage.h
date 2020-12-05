@@ -7,5 +7,6 @@ public:
 	bool m_suck = false;
 	int hp = 100;
 	bool m_canbestun = false;
+	bool is_boo = false;
 };
 

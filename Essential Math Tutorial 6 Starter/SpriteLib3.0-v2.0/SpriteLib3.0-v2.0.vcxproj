@@ -206,6 +206,7 @@
     <ClInclude Include="SelectiveColorEffect.h" />
     <ClInclude Include="SepiaEffect.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpikeTrigger.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="StudyLevel.h" />
     <ClInclude Include="SwitchScene.h" />
@@ -295,6 +296,7 @@
     <ClCompile Include="SelectiveColorEffect.cpp" />
     <ClCompile Include="SepiaEffect.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SpikeTrigger.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="StudyLevel.cpp" />
     <ClCompile Include="SwitchScene.cpp" />

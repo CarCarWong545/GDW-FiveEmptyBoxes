@@ -659,7 +659,10 @@ void ReturnFoyer2::KeyboardDown()
 			}
 			else if (scene.can_switch12)
 			{
-				scene.m_switch12 = true;
+				if (MainEntities::Pickups() == 3)
+				{
+					scene.m_switch12 = true;
+				}
 			}
 		}
 	}
