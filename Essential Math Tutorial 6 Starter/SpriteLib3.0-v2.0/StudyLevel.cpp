@@ -809,7 +809,7 @@ void StudyLevel::KeyboardDown()
 	{
 		if (isdialogue.dialouge) {
 			dialougestart = clock();
-			dialogue = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");;
+			dialogue = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
 		}
 	}
 	if (Input::GetKeyDown(Key::Y))

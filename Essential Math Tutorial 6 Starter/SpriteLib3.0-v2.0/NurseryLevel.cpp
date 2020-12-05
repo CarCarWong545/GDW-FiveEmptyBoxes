@@ -70,6 +70,8 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		ghost_1 = false;
 	}
 
+	activate_ghost = false;
+	second_phase = false;
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
@@ -175,8 +177,8 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 
 			b2Body* tempBody;
 			b2BodyDef tempDef;
-			tempDef.type = b2_kinematicBody;
-			tempDef.position.Set(float32(-120.f), float32(25.f));
+			tempDef.type = b2_dynamicBody;
+			tempDef.position.Set(float32(-120.f), float32(35.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -307,7 +309,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		{//Creates entity
 			auto entity = ECS::CreateEntity();
 
-			dialogue = entity;
+			ghostdialogue = entity;
 			//Add components
 			ECS::AttachComponent<Sprite>(entity);
 			ECS::AttachComponent<Transform>(entity);
@@ -488,6 +490,83 @@ void NurseryLevel::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
+	if (!firstdialogue)
+	{
+		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;
+		if (firststop >= 0.5) {
+			PhysicsBody::m_bodiesToDelete.push_back(dialouge);
+			firstddelete = false;
+			canmove = true;
+			firstdialogue = true;
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		}
+	}
+	if (!firstddelete) {
+		activate_ghost = true;
+		playerb.GetBody()->SetTransform(b2Vec2(0, 0), 0);
+		ECS::GetComponent<CanDamage>(ghost2).m_candamage = true; //move to baby phase 1
+		ECS::GetComponent<CanDamage>(ghost2).m_canbestun = true;
+		ECS::GetComponent<CanDamage>(ghost1).m_candamage = true;
+		PhysicsBody::m_bodiesToDelete.push_back(ghostdialogue);
+		auto& anims = ECS::GetComponent<AnimationController>(ghost2);
+		anims.SetActiveAnim(1);
+		ECS::GetComponent<PhysicsBody>(ghost2).GetBody()->SetTransform(b2Vec2(-110, 25), 0);
+		//ball entity
+		{
+
+			auto entity = ECS::CreateEntity();
+			ball = entity;
+
+			//Add components  
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<Trigger*>(entity);
+			ECS::AttachComponent<CanDamage>(entity);
+
+			//Sets up the components  
+			std::string fileName = "Ball.png";
+
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+			ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_dynamicBody;
+			tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().x), float32((ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().y)));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY) / 2.f), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER, 0.5f, 3.f);
+			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+			tempPhsBody.SetGravityScale(0.f);
+			tempPhsBody.SetFixedRotation(true);
+
+			b2Vec2 direction = b2Vec2(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition().x - tempPhsBody.GetPosition().x, ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition().y - tempPhsBody.GetPosition().y);
+			direction.Normalize();
+			float scale = 5.f;
+			direction *= scale;
+
+			tempPhsBody.GetBody()->SetLinearVelocity(direction);
+		}
+		firstddelete = true;
+	}
+		
+
 	if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost2);
@@ -564,6 +643,15 @@ void NurseryLevel::Update()
 				if (c_ghost.hp <= 0) //set up second phase of battle
 				{
 					second_phase = true;
+
+					if (second_phase && seconddialogue && seconddelete) {
+						secondstart = clock();
+						sdialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Baby2 Dialouge.png");
+						seconddialogue = false;
+						
+
+					}
+					
 					activate_ghost = false;
 					playerb.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 					playerb.GetBody()->SetTransform(b2Vec2(0, 0), 0);
@@ -794,7 +882,15 @@ void NurseryLevel::Update()
 		}
 
 	}
-
+	if (!seconddialogue)
+	{
+		secondstop = (clock() - secondstart) / CLOCKS_PER_SEC;
+		if (secondstop >= 0.5) {
+			PhysicsBody::m_bodiesToDelete.push_back(sdialouge);
+			seconddelete = false;
+			seconddialogue = true;
+		}
+	}
 	//setup animation component again so the player doesnt lose their animations
 	ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(
 		&ECS::GetComponent<AnimationController>(MainEntities::MainPlayer()),
@@ -820,28 +916,30 @@ void NurseryLevel::KeyboardHold()
 	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 5.f;
-	}
+	if (canmove) {
+		if (Input::GetKey(Key::Shift))
+		{
+			speed *= 5.f;
+		}
 
-	if (Input::GetKey(Key::A))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-	}
-	if (Input::GetKey(Key::D))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-	}
+		if (Input::GetKey(Key::A))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (Input::GetKey(Key::D))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
 
-	//Change physics body size for circle
-	if (Input::GetKey(Key::O))
-	{
-		player.ScaleBody(1.3 * Timer::deltaTime, 0);
-	}
-	else if (Input::GetKey(Key::I))
-	{
-		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		//Change physics body size for circle
+		if (Input::GetKey(Key::O))
+		{
+			player.ScaleBody(1.3 * Timer::deltaTime, 0);
+		}
+		else if (Input::GetKey(Key::I))
+		{
+			player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		}
 	}
 }
 
@@ -912,66 +1010,16 @@ void NurseryLevel::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			activate_ghost = true;
-			player.GetBody()->SetTransform(b2Vec2(0, 0), 0);
-			ECS::GetComponent<CanDamage>(ghost2).m_candamage = true; //move to baby phase 1
-			ECS::GetComponent<CanDamage>(ghost2).m_canbestun = true;
-			ECS::GetComponent<CanDamage>(ghost1).m_candamage = true;
-			PhysicsBody::m_bodiesToDelete.push_back(dialogue); //delete dialogue trigger
-			auto& anims = ECS::GetComponent<AnimationController>(ghost2);
-			anims.SetActiveAnim(1);
-			ECS::GetComponent<PhysicsBody>(ghost2).GetBody()->SetTransform(b2Vec2(-110, 25), 0);
-			//ball entity
-			{
-				
-					auto entity = ECS::CreateEntity();
-					ball = entity;
-
-					//Add components  
-					ECS::AttachComponent<Sprite>(entity);
-					ECS::AttachComponent<Transform>(entity);
-					ECS::AttachComponent<PhysicsBody>(entity);
-					ECS::AttachComponent<Trigger*>(entity);
-					ECS::AttachComponent<CanDamage>(entity);
-
-					//Sets up the components  
-					std::string fileName = "Ball.png";
-
-					ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
-					ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-					ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
-					ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
-					ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-					ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-
-
-					auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-					auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-					float shrinkX = 0.f;
-					float shrinkY = 0.f;
-
-					b2Body* tempBody;
-					b2BodyDef tempDef;
-					tempDef.type = b2_dynamicBody;
-					tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().x), float32((ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().y)));
-
-					tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-					tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY) / 2.f), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER, 0.5f, 3.f);
-					//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
-
-					tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-					tempPhsBody.SetGravityScale(0.f);
-					tempPhsBody.SetFixedRotation(true);
-
-					b2Vec2 direction = b2Vec2(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition().x - tempPhsBody.GetPosition().x, ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition().y - tempPhsBody.GetPosition().y);
-					direction.Normalize();
-					float scale = 5.f;
-					direction *= scale;
-
-					tempPhsBody.GetBody()->SetLinearVelocity(direction);
-				}
+			if (firstdialogue) {
+				firstdstart = clock();
+				dialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Baby Dialouge.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				firstdialogue = false;
+				canmove = false;
+			}
+			
+		
 		}
 	}
 }

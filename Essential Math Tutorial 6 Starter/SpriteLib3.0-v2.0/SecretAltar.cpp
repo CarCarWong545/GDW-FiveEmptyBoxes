@@ -314,7 +314,7 @@ void SecretAltar::Update()
 	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
 	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
 
-
+	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 	int* enemies = MainEntities::Enemies();
@@ -325,6 +325,22 @@ void SecretAltar::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
+
+	if (!firstdialogue && deletefirstd) {
+		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;
+		if (firststop >= 3) {
+			PhysicsBody::m_bodiesToDelete.push_back(dialouge);
+			deletefirstd = false;
+			canmove = true;
+
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		}
+	}
+
+	if (!firstdialogue && !deletefirstd) {
+		scene.m_switch13 = true;
+	}
 	/*if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
@@ -519,8 +535,14 @@ void SecretAltar::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
-			equip.m_equip = true;
+			if (firstdialogue) {
+				firstdstart = clock();
+				dialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "BOO.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				canmove = false;
+				firstdialogue = false;
+			}
 		}
 	}
 }

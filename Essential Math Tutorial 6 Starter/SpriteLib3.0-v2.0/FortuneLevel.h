@@ -31,6 +31,25 @@ protected:
 	float elapsedtime = 0.f;
 	float stuntime = 3.f;
 
+
+	bool canmove = true;
+
+	bool firstdialogue = true;
+	clock_t firstdstart;
+	bool firstddelete = true;
+
+	bool seconddialogue = true;
+	clock_t secondstart;
+	bool seconddelete = true;
+
+	double firststop;
+	double secondstop;
+
+	unsigned int dialouge;
+	unsigned int sdialouge;
+
+	bool deletefirstd = true;
+
 	bool isstunned = false;
 
 	clock_t startstuntime;

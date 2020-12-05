@@ -366,6 +366,28 @@ void FortuneLevel::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
+	if(!firstdialogue && deletefirstd) {
+		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;
+		if (firststop >= 10) {
+			PhysicsBody::m_bodiesToDelete.push_back(dialouge);
+			deletefirstd = false;
+			canmove = true;
+
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		}
+
+		if (!seconddialogue) {
+			secondstop = (clock() - secondstart) / CLOCKS_PER_SEC;
+			if (secondstop >= 8) {
+				PhysicsBody::m_bodiesToDelete.push_back(sdialouge);
+				seconddialogue = true;
+				canmove = true;
+			}
+		}
+
+	}
+
 	/*if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
@@ -464,28 +486,30 @@ void FortuneLevel::KeyboardHold()
 	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 5.f;
-	}
+	if (canmove) {
+		if (Input::GetKey(Key::Shift))
+		{
+			speed *= 5.f;
+		}
 
-	if (Input::GetKey(Key::A))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-	}
-	if (Input::GetKey(Key::D))
-	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-	}
+		if (Input::GetKey(Key::A))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (Input::GetKey(Key::D))
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
 
-	//Change physics body size for circle
-	if (Input::GetKey(Key::O))
-	{
-		player.ScaleBody(1.3 * Timer::deltaTime, 0);
-	}
-	else if (Input::GetKey(Key::I))
-	{
-		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		//Change physics body size for circle
+		if (Input::GetKey(Key::O))
+		{
+			player.ScaleBody(1.3 * Timer::deltaTime, 0);
+		}
+		else if (Input::GetKey(Key::I))
+		{
+			player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+		}
 	}
 }
 
@@ -505,12 +529,14 @@ void FortuneLevel::KeyboardDown()
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
 	}
-	if (canJump.m_canJump)
-	{
-		if (Input::GetKeyDown(Key::Space))
+	if (canmove) {
+		if (canJump.m_canJump)
 		{
-			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
-			canJump.m_canJump = false;
+			if (Input::GetKeyDown(Key::Space))
+			{
+				player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
+				canJump.m_canJump = false;
+			}
 		}
 	}
 	if (canMove.moveUp)
@@ -556,8 +582,23 @@ void FortuneLevel::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
-			
+			if (firstdialogue) {
+				firstdstart = clock();
+				dialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Clair1.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				canmove = false;
+				firstdialogue = false;
+			}
+
+			if (!firstdialogue && seconddialogue && MainEntities::Pickups() == 3) {
+				secondstart = clock();
+				sdialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Clair2.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				canmove = false;
+				seconddialogue = false;
+			}
 		}
 	}
 }
