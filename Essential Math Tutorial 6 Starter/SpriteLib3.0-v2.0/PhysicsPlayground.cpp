@@ -61,7 +61,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 	EffectManager::CreateEffect(EffectType::Vignette, windowWidth, windowHeight);
 	ve = (VignetteEffect*)EffectManager::GetEffect(EffectManager::GetVignetteHandle());
-	//changeFlashlight(false);
+	changeFlashlight(false);
 	//EffectManager::CreateEffect(Vignette, BackEnd::GetWindowWidth(), BackEnd::GetWindowHeight());
 
 	//Setup MainCamera Entity
@@ -699,18 +699,18 @@ void PhysicsPlayground::KeyboardUp()
 
 }
 
-//void PhysicsPlayground::changeFlashlight(bool on) {
-//	if (on) {
-//		ve->SetInnerRadius(0.4f);
-//		ve->SetOuterRadius(0.5f);
-//		ve->SetOpacity(0.5f);
-//	}
-//	else
-//	{
-//		ve->SetInnerRadius(0.2f);
-//		ve->SetOuterRadius(0.3f);
-//		ve->SetOpacity(0.6f);
-//
-//	}
-//	
-//}
+void PhysicsPlayground::changeFlashlight(bool on) {
+	if (on) {
+		ve->SetInnerRadius(0.4f);
+		ve->SetOuterRadius(0.5f);
+		ve->SetOpacity(0.5f);
+	}
+	else
+	{
+		ve->SetInnerRadius(0.2f);
+		ve->SetOuterRadius(0.3f);
+		ve->SetOpacity(0.6f);
+
+	}
+	
+}
