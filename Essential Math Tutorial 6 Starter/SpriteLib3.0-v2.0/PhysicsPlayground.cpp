@@ -12,6 +12,8 @@ static int healthBarBack = 0;
 static int ghostBar = 0;
 static int ghostBarBack = 0;
 static std::vector<int> ghostCount;
+VignetteEffect* ve;
+
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -56,6 +58,11 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
+
+	EffectManager::CreateEffect(EffectType::Vignette, windowWidth, windowHeight);
+	ve = (VignetteEffect*)EffectManager::GetEffect(EffectManager::GetVignetteHandle());
+	changeFlashlight(false);
+	//EffectManager::CreateEffect(Vignette, BackEnd::GetWindowWidth(), BackEnd::GetWindowHeight());
 
 	//Setup MainCamera Entity
 	{
@@ -466,6 +473,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	
 }
 
 void PhysicsPlayground::Update()
@@ -523,6 +531,10 @@ void PhysicsPlayground::Update()
 	HealthBar hb;
 	hb.UpdateHealthBar(healthBar, healthBarBack);
 	hb.UpdateGhostCounter(ghostCount,ghostBar,ghostBarBack);
+
+	
+	
+	
 
 
 }
@@ -685,4 +697,20 @@ void PhysicsPlayground::KeyboardUp()
 {
 	
 
+}
+
+void PhysicsPlayground::changeFlashlight(bool on) {
+	if (on) {
+		ve->SetInnerRadius(0.4f);
+		ve->SetOuterRadius(0.5f);
+		ve->SetOpacity(0.5f);
+	}
+	else
+	{
+		ve->SetInnerRadius(0.2f);
+		ve->SetOuterRadius(0.3f);
+		ve->SetOpacity(0.6f);
+
+	}
+	
 }

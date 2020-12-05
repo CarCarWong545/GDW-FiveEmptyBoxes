@@ -84,6 +84,19 @@ void HealthBar::UpdateGhostCounter(std::vector<int> ghosts, int fillColour, int 
 
 }
 
+void HealthBar::UpdateVignette()
+{
+	VignetteEffect* ve = (VignetteEffect*)EffectManager::GetEffect(EffectManager::GetVignetteHandle());
+	//float innerRadius = ve->GetInnerRadius();
+	//float outerRadius = ve->GetOuterRadius();
+	//float opacity = ve->GetOpacity();
+
+	ve->SetInnerRadius(3.f);
+	ve->SetOuterRadius(6.f);
+	ve->SetOpacity(0.5f);
+}
+
+
 
 
 
