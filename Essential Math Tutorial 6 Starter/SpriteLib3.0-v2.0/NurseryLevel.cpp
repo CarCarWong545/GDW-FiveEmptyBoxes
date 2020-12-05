@@ -175,7 +175,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 
 			b2Body* tempBody;
 			b2BodyDef tempDef;
-			tempDef.type = b2_kinematicBody;
+			tempDef.type = b2_dynamicBody;
 			tempDef.position.Set(float32(-120.f), float32(25.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
@@ -272,7 +272,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 			//std::string animations = "BLUETWRL.json";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 4.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
 			//ECS::GetComponent<EnemyBlue>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
 				//&ECS::GetComponent<AnimationController>(entity),
 				//&ECS::GetComponent<Transform>(entity), true, &ECS::GetComponent<PhysicsBody>(entity));

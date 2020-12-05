@@ -621,14 +621,28 @@ void KitchenLevel::Update()
 		{
 			c_ghost.m_stun = false;
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-			anims.SetActiveAnim(0);
+			if (player.m_facing == 0)
+			{
+				anims.SetActiveAnim(1);
+			}
+			else
+			{
+				anims.SetActiveAnim(0);
+			}
 			c_ghost_.m_stun = false;
 		}
 		else if (!c_ghost.m_candamage && !c_ghost.m_suck) //stunned
 		{
 			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
 			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-			anims.SetActiveAnim(0);
+			if (player.m_facing == 0)
+			{
+				anims.SetActiveAnim(1);
+			}
+			else
+			{
+				anims.SetActiveAnim(0);
+			}
 		}
 	}
 

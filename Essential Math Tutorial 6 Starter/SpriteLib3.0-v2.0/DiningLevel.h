@@ -31,7 +31,12 @@ protected:
 	float elapsedtime = 0.f;
 	float stuntime = 3.f;
 
+	clock_t startstuntime;
 	bool isstunned = false;
 	int vacuum = 0;
 	bool ghost_1;
+
+	int ball = 0;
+	int pin1 = 0;
+	bool tilted = false;
 };	

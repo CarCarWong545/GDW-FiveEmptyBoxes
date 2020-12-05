@@ -114,7 +114,7 @@ void Player::MovementUpdate()
 		if (m_equip) {
 			m_flashlight = !m_flashlight;
 			
-				PhysicsPlayground::changeFlashlight(m_flashlight);
+				//PhysicsPlayground::changeFlashlight(m_flashlight);
 			
 		}
 		
