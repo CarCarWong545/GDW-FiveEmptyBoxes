@@ -22,6 +22,11 @@ SecretAltar::SecretAltar(std::string name)
 int SecretAltar::ChangeScene() {
 	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 	//return to beginning
+
+	if (activated)
+	{
+		return 13; //teleport to roof
+	}
 	if (MainEntities::Health() <= 0)
 	{
 		return 0;
@@ -50,17 +55,8 @@ void SecretAltar::InitScene(float windowWidth, float windowHeight)
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
-	int* enemies = MainEntities::Enemies();
 
-	if (enemies[0] != 0)
-	{
-		ghost_1 = true;
-	}
-	else
-	{
-		ghost_1 = false;
-	}
-
+	
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
@@ -177,86 +173,6 @@ void SecretAltar::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetGravityScale(1.2f);
 
 	}
-
-	//flashlight trigger
-	{
-		//Creates entity
-		auto entity = ECS::CreateEntity();
-		flashlight = entity;
-		ECS::SetIsFlashlight(entity, true);
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<Trigger*>(entity);
-
-		//Sets up components
-		std::string fileName = "boxSprite.jpg";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new FlashlightTrigger();
-		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
-
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = -10.f;
-		float shrinkY = 0.f;
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().x), float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().y));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, ENEMY | ETRIGGER);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-	}
-	// vacuum trigger
-	{
-		//Creates entity
-		auto entity = ECS::CreateEntity();
-		vacuum = entity;
-		//ECS::SetIsFlashlight(entity, true);
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<Trigger*>(entity);
-
-		//Sets up components
-		std::string fileName = "boxSprite.jpg";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		std::vector<int>targets = { 3,4 };
-		ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
-		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
-
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = -10.f;
-		float shrinkY = 0.f;
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().x), float32(ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetBody()->GetWorldCenter().y));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, ETRIGGER);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-	}
 	Scene::BoxMaker(450, 5, 0, -13, 0, 0);
 	Scene::BoxMaker(200, 10, -120, -10, 90, 0);
 	Scene::BoxMaker(200, 10, 180, -10, 90, 0);
@@ -322,8 +238,6 @@ void SecretAltar::Update()
 	auto& playerb = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& players = ECS::GetComponent<Sprite>(MainEntities::MainPlayer());
 
-	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
-	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
 
 	if (!firstdialogue && deletefirstd) {

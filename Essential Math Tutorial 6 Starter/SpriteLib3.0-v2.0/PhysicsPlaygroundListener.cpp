@@ -44,6 +44,14 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 	{
 		return;
 	}
+	if (entityA == MainEntities::Flashlight() && filterB.categoryBits == OBJECTS)
+	{
+		return;
+	}
+	else if (entityB == MainEntities::Flashlight() && filterA.categoryBits == OBJECTS)
+	{
+		return;
+	}
 	
 
 	//if neither or both are sensors, will be false

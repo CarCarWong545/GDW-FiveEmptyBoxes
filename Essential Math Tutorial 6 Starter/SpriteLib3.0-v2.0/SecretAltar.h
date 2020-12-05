@@ -46,4 +46,5 @@ protected:
 	bool isstunned = false;
 	int vacuum = 0;
 	bool ghost_1;
+	bool activated = false;
 };

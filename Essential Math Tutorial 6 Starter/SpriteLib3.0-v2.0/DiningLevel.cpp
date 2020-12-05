@@ -57,7 +57,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
 
-	if (enemies[0] != 0)
+	if (enemies[7] != 0)
 	{
 		ghost_1 = true;
 	}
@@ -126,6 +126,67 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 0.f));
 	}
+	// ghost entity
+	{
+		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
+
+		if (ghost_1) //first enemy
+		{
+
+			auto entity = ECS::CreateEntity();
+			ghost2 = entity;
+
+			//Add components  
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<AnimationController>(entity);
+			ECS::AttachComponent<CanDamage>(entity);
+
+			ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+			
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& animController = ECS::GetComponent<AnimationController>(entity);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 4.f));
+			//Sets up the components  
+			std::string fileName = "spritesheets/BWLGHOST.png";
+			std::string animations = "BWLGHOST.json";
+
+			animController.InitUVs(fileName);
+			nlohmann::json animations2 = File::LoadJSON(animations);
+			animController.AddAnimation(animations2["IDLELEFT"].get<Animation>());
+			animController.AddAnimation(animations2["IDLERIGHT"].get<Animation>());
+			animController.AddAnimation(animations2["ATKLEFT"].get<Animation>());
+			animController.AddAnimation(animations2["ATKRIGHT"].get<Animation>());
+			
+			animController.SetActiveAnim(0);
+
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30, true, &animController);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_dynamicBody;
+			tempDef.position.Set(float32(-75.f), float32(50.f));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
+			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+			tempPhsBody.SetGravityScale(0.f);
+			tempPhsBody.SetFixedRotation(true);
+
+		}
+
+	}
 
 	//luigi entity
 	{
@@ -146,6 +207,8 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<SwitchScene>(entity);
 		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
+		ECS::AttachComponent<CanSwitch>(entity);
+
 
 
 		//Sets up the components
@@ -182,6 +245,58 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetGravityScale(1.2f);
 
 	}
+	//ghost trigger entity  
+
+		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
+
+	if (ghost_1) //first enemy
+	{
+
+		auto entity = ECS::CreateEntity();
+		ghost1 = entity;
+
+		//Add components  
+		//ECS::AttachComponent<EnemyBlue>(entity);
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+		ECS::AttachComponent<CanDamage>(entity);
+
+		ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+		ECS::GetComponent<CanDamage>(entity).m_canbestun = false;
+
+		//Sets up the components  
+		std::string fileName = "neville.png";
+		//std::string animations = "BLUETWRL.json";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_kinematicBody;
+		tempDef.position.Set(float32(-75.f), float32(50.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+		//tempSpr.SetTransparency(0);
+	}
+
 
 	//flashlight trigger
 	{
@@ -205,6 +320,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -240,11 +356,11 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		std::vector<int>targets = { 3,4 };
+		std::vector<int>targets = {7};
 		ECS::GetComponent<Trigger*>(entity) = new VTrigger(targets);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost1);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
 
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
@@ -303,6 +419,125 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
+	//ball entity
+	
+		if (ghost_1)
+		{
+			{
+			auto entity = ECS::CreateEntity();
+			ball = entity;
+
+			//Add components  
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+
+
+			//Sets up the components  
+			std::string fileName = "BBall.png";
+
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+
+
+			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_dynamicBody;
+			tempDef.position.Set(float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().x), float32(ECS::GetComponent<PhysicsBody>(ghost2).GetPosition().y));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetHeight() / 2.f), vec2(0.f, 0.f), false, OBJECTS, PLAYER | ENVIRONMENT | GROUND| OBJECTS, 0.2f, 1.f);
+			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+			//tempPhsBody.SetGravityScale(0.f);
+			//tempPhsBody.SetFixedRotation(true);
+			}
+			//pin entity
+			{
+				auto entity = ECS::CreateEntity();
+				pin1 = entity;
+
+				//Add components  
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+				ECS::AttachComponent<PhysicsBody>(entity);
+
+
+				//Sets up the components  
+				std::string fileName = "pin.png";
+
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 20);
+				ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+
+
+
+				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+				float shrinkX = 0.f;
+				float shrinkY = 0.f;
+
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_dynamicBody;
+				tempDef.position.Set(float32(70), float32(10));
+
+				tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, OBJECTS, OBJECTS | ENVIRONMENT | GROUND, 0.5f, 3.f);
+				//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+				tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+				//tempPhsBody.SetGravityScale(0.f);
+				//tempPhsBody.SetFixedRotation(true);
+				//tempPhsBody.SetRotationAngleDeg(90.f);
+			}
+			//spawn heart
+			{
+				//Creates entity
+				auto entity = ECS::CreateEntity();
+				//Add components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+				ECS::AttachComponent<PhysicsBody>(entity);
+				ECS::AttachComponent<Trigger*>(entity);
+
+				//Sets up components
+				std::string fileName = "Ghost_Heart.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+				ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+				ECS::GetComponent<Trigger*>(entity) = new HealthTrigger();
+				ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+
+
+				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+				float shrinkX = 0.f;
+				float shrinkY = 0.f;
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_staticBody;
+				tempDef.position.Set(float32(15), float32(18));
+
+				tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
+				tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+			}
+		}
+	
 
 	healthBarUI = Scene::createHealthBar();
 	healthBarBackUI = Scene::createHealthBarBack();
@@ -331,81 +566,175 @@ void DiningLevel::Update()
 	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
 	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
-	/*if (ghost_1)
+	if (ghost_1)
 	{
 		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
-		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
+		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost2);
+		auto& c_ghost_ = ECS::GetComponent<CanDamage>(ghost1);
 
 
 		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
 		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
 		ghost.GetBody()->SetAwake(true);
 		ghost_2.GetBody()->SetAwake(true);
+		auto& anims = ECS::GetComponent<AnimationController>(ghost2);
+		
 
-		if (c_ghost.m_candamage)
+		if (c_ghost.m_candamage && c_ghost_.m_candamage)
 		{
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			if (tilted)
+			{
+				if (ghost.GetPosition().x <= -40)//move right
+				{
+
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+					anims.SetActiveAnim(3);
+				}
+				if (ghost.GetPosition().x >= 30)
+				{
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(-15, 0));
+					anims.SetActiveAnim(2);
+				}
+			}
+			else
+			{
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				anims.SetActiveAnim(1);
+			}
+			c_ghost.m_canbestun = true;
+			
 			startstuntime = clock();
 		}
 		else if (!c_ghost.m_stun) {
 			float elapsedtime;
-			float stuntime = 5.0f;
-
+			float stuntime = 3.0f;
+			c_ghost_.m_candamage = false;
 			isstunned = true;
+			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			if (isstunned) {
 				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
 
 				if (elapsedtime >= stuntime) {
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
-					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+					ghost.GetBody()->SetLinearVelocity(b2Vec2(15,0));
 					isstunned = false;
+					c_ghost_.m_candamage = true;
+					c_ghost_.m_stun = false;
 				}
 			}
 		}
-		if (c_ghost.m_suck && player.m_suck)
+		if (tilted)
 		{
-			c_ghost.m_candamage = false;
-			c_ghost.m_stun = true;
-			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
-			direction.Normalize();
-			float scale = 10.f;
-			direction *= scale;
-			ghost.GetBody()->SetLinearVelocity(direction);
-			ghost_2.GetBody()->SetLinearVelocity(direction);
-			b2Vec2 force = direction;
-			force *= 300.f;
-			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
-			c_ghost.hp -= 1;
-
-			int offset = 20; //20 is good value
-			//ghost comes within offet~ of contact with vacuum
-			//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
-			if (c_ghost.hp <= 0)
+			if (c_ghost.m_suck && player.m_suck)
 			{
-				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
-				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
-				ghost_1 = false;
+				if (player.m_facing == 0) //left
+				{
+					anims.SetActiveAnim(0);
+				}
+				else //right
+				{
+					anims.SetActiveAnim(1);
+				}
+				c_ghost.m_candamage = false;
+				c_ghost.m_stun = true;
+				c_ghost_.m_candamage = false;
+				c_ghost_.m_stun = true;
+				b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
+				direction.Normalize();
+				float scale = 10.f;
+				direction *= scale;
+				ghost.GetBody()->SetLinearVelocity(direction);
+				ghost_2.GetBody()->SetLinearVelocity(direction);
+				b2Vec2 force = direction;
+				force *= 300.f;
+				playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
+				c_ghost.hp -= 1;
 
-				enemies[0] = 0;
-				MainEntities::Enemies(enemies);
-				MainEntities::Capture(MainEntities::Captured() + 1);
+				int offset = 20;
+				if (c_ghost.hp <= 0)
+				{
+					PhysicsBody::m_bodiesToDelete.push_back(ghost1);
+					PhysicsBody::m_bodiesToDelete.push_back(ghost2);
+					ghost_1 = false;
+
+					enemies[7] = 0; //7th enemy
+					MainEntities::Enemies(enemies);
+					MainEntities::Capture(MainEntities::Captured() + 1);
+					//spawn mario item
+					{
+						ECS::GetComponent<CanSwitch>(MainEntities::MainPlayer()).c_switch = false; //can't switch once item is spawned
+						//Creates entity
+						auto entity = ECS::CreateEntity();
+						//Add components
+						ECS::AttachComponent<Sprite>(entity);
+						ECS::AttachComponent<Transform>(entity);
+						ECS::AttachComponent<PhysicsBody>(entity);
+						ECS::AttachComponent<Trigger*>(entity);
+
+						//Sets up components
+						std::string fileName = "Mario Hat.png";
+						ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+						ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+						ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+						ECS::GetComponent<Trigger*>(entity) = new MarioTrigger();
+						ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+
+
+						auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+						auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+						float shrinkX = 0.f;
+						float shrinkY = 0.f;
+						b2Body* tempBody;
+						b2BodyDef tempDef;
+						tempDef.type = b2_staticBody;
+						tempDef.position.Set(float32(40), float32(15));
+
+						tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+						tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
+						tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+					}
+				}
+
 			}
-
+			else if (c_ghost.m_suck) //cant be sucked
+			{
+				c_ghost.m_stun = false;
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				if (player.m_facing == 0)
+				{
+					anims.SetActiveAnim(1);
+				}
+				else
+				{
+					anims.SetActiveAnim(0);
+				}
+				c_ghost_.m_stun = false;
+			}
+			else if (!c_ghost.m_candamage && !c_ghost.m_suck) //stunned
+			{
+				//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+				if (player.m_facing == 0)
+				{
+					anims.SetActiveAnim(1);
+				}
+				else
+				{
+					anims.SetActiveAnim(0);
+				}
+			}
 		}
-		else if (c_ghost.m_suck)
+		//check if the pin has fallen over
+		if (ECS::GetComponent<PhysicsBody>(pin1).GetRotationAngleDeg() >= static_cast<float>(89) || ECS::GetComponent<PhysicsBody>(pin1).GetRotationAngleDeg() <= static_cast<float>(-89))
 		{
-			c_ghost.m_stun = false;
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		}
-		else if (!c_ghost.m_candamage && !c_ghost.m_suck)
-		{
-			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			tilted = true;
 		}
 	}
-	*/
-
+	
+	//std::cout << ECS::GetComponent<PhysicsBody>(pin1).GetRotationAngleDeg() << "\n";
 
 	if (player.m_facing == 1)//right
 	{
@@ -417,6 +746,11 @@ void DiningLevel::Update()
 		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 	}
+	//setup animation component again so the player doesnt lose their animations
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(
+		&ECS::GetComponent<AnimationController>(MainEntities::MainPlayer()),
+		&ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer())
+	);
 
 }
 
@@ -500,21 +834,24 @@ void DiningLevel::KeyboardDown()
 
 		if (Input::GetKeyDown(Key::E))
 		{
-			if (scene.can_switch0)
+			if (ECS::GetComponent<CanSwitch>(MainEntities::MainPlayer()).c_switch)
 			{
-				scene.m_switch0 = true;
-			}
-			else if (scene.can_switch6)
-			{
-				scene.m_switch6 = true;
-			}
-			else if (scene.can_switch7)
-			{
-				scene.m_switch7 = true;
-			}
-			else if (scene.can_switch3)
-			{
-				scene.m_switch3 = true;
+				if (scene.can_switch0)
+				{
+					scene.m_switch0 = true;
+				}
+				else if (scene.can_switch6)
+				{
+					scene.m_switch6 = true;
+				}
+				else if (scene.can_switch7)
+				{
+					scene.m_switch7 = true;
+				}
+				else if (scene.can_switch3)
+				{
+					scene.m_switch3 = true;
+				}
 			}
 		}
 	}
