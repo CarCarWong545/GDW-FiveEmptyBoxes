@@ -93,6 +93,51 @@ void SceneTrigger::OnEnter(int entity)
 
 			object.can_switch13 = true;
 		}
+		else if (s == 15)
+		{
+
+			object.can_switch15 = true;
+		}
+		else if (s == 16)
+		{
+
+			object.can_switch16 = true;
+		}
+		else if (s == 17)
+		{
+
+			object.can_switch17 = true;
+		}
+		else if (s == 18)
+		{
+
+			object.can_switch18 = true;
+		}
+		else if (s == 19)
+		{
+
+			object.can_switch19 = true;
+		}
+		else if (s == 20)
+		{
+
+			object.can_switch20 = true;
+		}
+		else if (s == 21)
+		{
+
+		object.can_switch21 = true;
+		}
+		else if (s == 22)
+		{
+
+		object.can_switch22 = true;
+		}
+		else if (s == 23)
+		{
+
+		object.can_switch23 = true;
+		}
 	}
 }
 
@@ -171,6 +216,51 @@ void SceneTrigger::OnExit()
 	{
 
 		object.can_switch13 = false;
+	}
+	else if (s == 15)
+	{
+
+		object.can_switch15 = false;
+	}
+	else if (s == 16)
+	{
+
+		object.can_switch16 = false;
+	}
+	else if (s == 17)
+	{
+
+		object.can_switch17 = false;
+	}
+	else if (s == 18)
+	{
+
+		object.can_switch18 = false;
+	}
+	else if (s == 19)
+	{
+
+		object.can_switch19 = false;
+	}
+	else if (s == 20)
+	{
+
+		object.can_switch20 = false;
+	}
+	else if (s == 21)
+	{
+
+		object.can_switch21 = false;
+	}
+	else if (s == 22)
+	{
+
+		object.can_switch22 = false;
+	}
+	else if (s == 23)
+	{
+
+		object.can_switch23 = false;
 	}
 }
 SceneTrigger::SceneTrigger(int scene)

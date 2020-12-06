@@ -689,7 +689,7 @@ void Roof::Update()
 
 			//Set up the components
 			std::string fileName = "Mario.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 40);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
 
@@ -705,7 +705,7 @@ void Roof::Update()
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(0.f), float32(4.f));
+			tempDef.position.Set(float32(0.f), float32(10.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -836,11 +836,14 @@ void Roof::KeyboardDown()
 			{
 				scene.m_switch13 = true;
 			}
+
 		}
 	}
 	if (Input::GetKeyDown(Key::F))
 	{
+		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 		if (isdialogue.dialouge) {
+			scene.m_switch15 = true;
 			//Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
 			//equip.m_equip = true;
 			//switch scene

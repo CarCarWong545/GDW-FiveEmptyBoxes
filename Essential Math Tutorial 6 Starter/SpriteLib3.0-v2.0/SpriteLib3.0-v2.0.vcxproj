@@ -161,6 +161,13 @@
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
     <ClInclude Include="HallLevel.h" />
+    <ClInclude Include="HallLevel2OutofDining.h" />
+    <ClInclude Include="HallLevel2OutofFortune.h" />
+    <ClInclude Include="HallLevel2OutofKitchen.h" />
+    <ClInclude Include="HallLevel2OutofWash.h" />
+    <ClInclude Include="HallLevelOutofMaster.h" />
+    <ClInclude Include="HallLevelOutofNursery.h" />
+    <ClInclude Include="HallLevelOutofStudyRoom.h" />
     <ClInclude Include="HealthBar.h" />
     <ClInclude Include="HallLevel2.h" />
     <ClInclude Include="Header.h" />
@@ -254,6 +261,13 @@
     <ClCompile Include="GrainEffect.cpp" />
     <ClCompile Include="GreyscaleEffect.cpp" />
     <ClCompile Include="HallLevel.cpp" />
+    <ClCompile Include="HallLevel2OutofDining.cpp" />
+    <ClCompile Include="HallLevel2OutofFortune.cpp" />
+    <ClCompile Include="HallLevel2OutofKitchen.cpp" />
+    <ClCompile Include="HallLevel2OutofWash.cpp" />
+    <ClCompile Include="HallLevelOutofMaster.cpp" />
+    <ClCompile Include="HallLevelOutofNursery.cpp" />
+    <ClCompile Include="HallLevelOutofStudyRoom.cpp" />
     <ClCompile Include="HealthBar.cpp" />
     <ClCompile Include="HallLevel2.cpp" />
     <ClCompile Include="HealthTrigger.cpp" />

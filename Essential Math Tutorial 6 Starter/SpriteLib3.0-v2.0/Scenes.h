@@ -18,4 +18,13 @@
 #include "Roof.h"
 
 
+#include "HallLevelOutofStudyRoom.h" // 16 put 14 and 15 above then remove comment
+#include "HallLevelOutofNursery.h"
+#include "HallLevelOutofMaster.h"
+#include "HallLevel2OutofFortune.h"
+#include "HallLevel2OutofWash.h"
+#include "HallLevel2OutofDining.h"
+#include "HallLevel2OutofKitchen.h"
+
+
 #endif // !__SCENES_H__

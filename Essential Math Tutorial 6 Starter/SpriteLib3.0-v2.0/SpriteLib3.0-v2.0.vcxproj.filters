@@ -89,6 +89,13 @@
     <ClCompile Include="MarioTrigger.cpp" />
     <ClCompile Include="CanSwitch.cpp" />
     <ClCompile Include="SpikeTrigger.cpp" />
+    <ClCompile Include="HallLevelOutofStudyRoom.cpp" />
+    <ClCompile Include="HallLevelOutofNursery.cpp" />
+    <ClCompile Include="HallLevelOutofMaster.cpp" />
+    <ClCompile Include="HallLevel2OutofFortune.cpp" />
+    <ClCompile Include="HallLevel2OutofWash.cpp" />
+    <ClCompile Include="HallLevel2OutofDining.cpp" />
+    <ClCompile Include="HallLevel2OutofKitchen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -182,6 +189,13 @@
     <ClInclude Include="MarioTrigger.h" />
     <ClInclude Include="CanSwitch.h" />
     <ClInclude Include="SpikeTrigger.h" />
+    <ClInclude Include="HallLevelOutofStudyRoom.h" />
+    <ClInclude Include="HallLevelOutofNursery.h" />
+    <ClInclude Include="HallLevelOutofMaster.h" />
+    <ClInclude Include="HallLevel2OutofFortune.h" />
+    <ClInclude Include="HallLevel2OutofWash.h" />
+    <ClInclude Include="HallLevel2OutofDining.h" />
+    <ClInclude Include="HallLevel2OutofKitchen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

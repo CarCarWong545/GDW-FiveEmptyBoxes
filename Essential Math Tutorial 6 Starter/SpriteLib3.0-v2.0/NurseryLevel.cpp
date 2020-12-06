@@ -29,10 +29,10 @@ int NurseryLevel::ChangeScene() {
 		return 0;
 	}
 
-	if (scene.m_switch1)
+	if (scene.m_switch17)
 	{
-		scene.m_switch1 = false;
-		return 1;
+		scene.m_switch17 = false;
+		return 17;
 	}
 	else if (scene.m_switch2)
 	{
@@ -234,7 +234,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(33.f), float32(30.f));
+		tempDef.position.Set(float32(200.f), float32(10.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -443,7 +443,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(1);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(17);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -993,9 +993,9 @@ void NurseryLevel::KeyboardDown()
 			{
 				scene.m_switch0 = true;
 			}
-			else if (scene.can_switch1)
+			else if (scene.can_switch17)
 			{
-				scene.m_switch1 = true;
+				scene.m_switch17 = true;
 			}
 			else if (scene.can_switch2)
 			{
