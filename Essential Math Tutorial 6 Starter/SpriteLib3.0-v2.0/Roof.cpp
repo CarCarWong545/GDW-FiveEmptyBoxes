@@ -32,10 +32,10 @@ int Roof::ChangeScene() {
 		scene.m_switch13 = false;
 		return 13;
 	}
-	else if (scene.m_switch15)
+	else if (scene.m_switch23)
 	{
-		scene.m_switch15 = false;
-		return 15;
+		scene.m_switch23 = false;
+		return 23;
 	}
 	else
 	{
@@ -843,7 +843,7 @@ void Roof::KeyboardDown()
 	{
 		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 		if (isdialogue.dialouge) {
-			scene.m_switch15 = true;
+			scene.m_switch23 = true;
 			//Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
 			//equip.m_equip = true;
 			//switch scene
