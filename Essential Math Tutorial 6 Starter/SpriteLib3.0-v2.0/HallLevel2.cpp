@@ -156,6 +156,7 @@ void HallLevel2::InitScene(float windowWidth, float windowHeight)
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
 		ECS::GetComponent<Player>(entity).m_facing = RIGHT;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);

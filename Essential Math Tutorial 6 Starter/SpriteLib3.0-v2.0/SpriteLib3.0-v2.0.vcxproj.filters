@@ -18,7 +18,6 @@
     <ClCompile Include="EnemyTrigger.cpp" />
     <ClCompile Include="FlashlightTrigger.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GrainEffect.cpp" />
     <ClCompile Include="GreyscaleEffect.cpp" />
     <ClCompile Include="HorizontalScroll.cpp" />
@@ -89,6 +88,7 @@
     <ClCompile Include="MarioTrigger.cpp" />
     <ClCompile Include="CanSwitch.cpp" />
     <ClCompile Include="SpikeTrigger.cpp" />
+    <ClCompile Include="Game.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />

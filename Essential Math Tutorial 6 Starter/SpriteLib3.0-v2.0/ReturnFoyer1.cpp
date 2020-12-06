@@ -207,6 +207,7 @@ void ReturnFoyer1::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Dialouge>(entity).dialouge = false;
 		ECS::GetComponent<Player>(entity).m_equip = true;
 		ECS::GetComponent<Player>(entity).m_facing = RIGHT;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";

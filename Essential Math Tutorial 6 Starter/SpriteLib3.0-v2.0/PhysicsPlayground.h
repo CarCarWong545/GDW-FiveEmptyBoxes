@@ -20,6 +20,12 @@ public:
 	void KeyboardHold() override;
 	void KeyboardDown() override;
 	void KeyboardUp() override;
+
+	void GamepadStroke(XInputController* con);
+	void GamepadUp(XInputController* con);
+	void GamepadDown(XInputController* con);
+	void GamepadStick(XInputController* con);
+	void GamepadTrigger(XInputController* con);
 	
 	static void changeFlashlight(bool);
 protected:

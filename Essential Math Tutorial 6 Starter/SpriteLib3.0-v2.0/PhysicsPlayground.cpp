@@ -698,6 +698,156 @@ void PhysicsPlayground::KeyboardUp()
 	
 
 }
+void PhysicsPlayground::GamepadStroke(XInputController* con)
+{
+
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+
+	if (canmove) 
+	{
+		float speed = 1.f;
+		b2Vec2 vel = b2Vec2(0.f, 0.f);
+
+		if (con->IsButtonStroked(XINPUT_GAMEPAD_DPAD_LEFT)) //move left
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (con->IsButtonStroked(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
+		if (con->IsButtonStroked(XINPUT_GAMEPAD_Y)) //sprint
+		{
+			speed *= 5.f;
+		}
+	}
+
+}
+void PhysicsPlayground::GamepadUp(XInputController* con)
+{
+
+}
+void PhysicsPlayground::GamepadDown(XInputController* con)
+{
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
+	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
+	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
+	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	auto& saveable = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
+	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
+	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+
+	if (canJump.m_canJump)
+	{
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_A))//presses a button - jump?
+		{
+			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
+			canJump.m_canJump = false;
+		}
+	}
+
+	if (canMove.moveUp)
+	{
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_UP)) //stair up
+		{
+			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y + 60), 0);
+			canMove.moveUp = false;
+		}
+	}
+	if (canMoveD.moveDown)
+	{
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_DOWN)) //stair down
+		{
+			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y - 70), 0);
+			canMoveD.moveDown = false;
+		}
+	}
+	if (canDoor.m_door)
+	{
+		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
+
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_B)) //doors
+		{
+			if (scene.can_switch0)
+			{
+				scene.m_switch0 = true;
+			}
+			else if (scene.can_switch1)
+			{
+				scene.m_switch1 = true;
+			}
+			else if (scene.can_switch2)
+			{
+				scene.m_switch2 = true;
+			}
+			else if (scene.can_switch3)
+			{
+				scene.m_switch3 = true;
+			}
+
+
+		}
+	}
+	if (con->IsButtonPressed(XINPUT_GAMEPAD_X)) //talk
+	{
+
+		if (isdialogue.dialouge) {
+			if (firstdialogue) {
+				firstdstart = clock();
+				fd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 1.png");
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(fd));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(fd));
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_staticBody;
+				//player.SetType(b2_staticBody);
+				canmove = false;
+				firstdialogue = false;
+			}
+
+
+		}
+
+		if (saveable.m_save && thirdd) {
+
+			thirddstart = clock();
+			td = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
+			st.SaveData();
+			st.LoadData();
+			std::cout << st.numberGhostsDefeated() << std::endl;
+			thirdd = false;
+			canmove = false;
+		}
+
+	}
+	if (con->IsButtonStroked(XINPUT_GAMEPAD_LEFT_SHOULDER)) //flashlight
+	{
+		if (player2.m_equip) {
+			player2.m_flashlight = !player2.m_flashlight;
+
+			//PhysicsPlayground::changeFlashlight(player2.m_flashlight);
+
+		}
+	}
+	if (con->IsButtonStroked(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
+	{
+		player2.m_suck = true;
+		player2.m_flashlight = false;
+	}
+
+}
+void PhysicsPlayground::GamepadStick(XInputController* con)
+{
+
+}
+void PhysicsPlayground::GamepadTrigger(XInputController* con)
+{
+
+}
 
 void PhysicsPlayground::changeFlashlight(bool on) {
 	if (on) {

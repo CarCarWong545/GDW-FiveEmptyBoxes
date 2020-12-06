@@ -131,8 +131,9 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
 
 		if (ghost_1) //first enemy
+			
 		{
-
+			MainEntities::Health(MainEntities::Health() + 5);
 			auto entity = ECS::CreateEntity();
 			ghost2 = entity;
 
@@ -223,6 +224,7 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 			&ECS::GetComponent<Transform>(entity));
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);

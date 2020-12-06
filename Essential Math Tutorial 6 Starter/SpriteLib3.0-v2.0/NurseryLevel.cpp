@@ -224,6 +224,7 @@ void NurseryLevel::InitScene(float windowWidth, float windowHeight)
 			&ECS::GetComponent<Transform>(entity));
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);

@@ -126,69 +126,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 0.f));
 	}
-	// ghost entity
-	{
-		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
-
-		if (ghost_1) //first enemy
-		{
-
-			auto entity = ECS::CreateEntity();
-			ghost2 = entity;
-
-			//Add components  
-			ECS::AttachComponent<Sprite>(entity);
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-			ECS::AttachComponent<AnimationController>(entity);
-			ECS::AttachComponent<CanDamage>(entity);
-
-			ECS::GetComponent<CanDamage>(entity).m_candamage = true;
-			ECS::GetComponent<CanDamage>(entity).hp = 150;
-
-			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-			auto& animController = ECS::GetComponent<AnimationController>(entity);
-			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 4.f));
-			//Sets up the components  
-			std::string fileName = "spritesheets/GRBRD.png";
-			std::string animations = "GRBING.json";
-
-			animController.InitUVs(fileName);
-			nlohmann::json animations2 = File::LoadJSON(animations);
-			animController.AddAnimation(animations2["IDLELEFT"].get<Animation>());
-			animController.AddAnimation(animations2["IDLERIGHT"].get<Animation>());
-			animController.AddAnimation(animations2["ATKLEFT"].get<Animation>());
-			animController.AddAnimation(animations2["ATKRIGHT"].get<Animation>());
-			animController.AddAnimation(animations2["GRBLEFT"].get<Animation>());
-			animController.AddAnimation(animations2["GRBRIGHT"].get<Animation>());
-			animController.SetActiveAnim(4);
-
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30, true, &animController);
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(75.f), float32(35.f));
-
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
-			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
-
-			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-			tempPhsBody.SetGravityScale(0.f);
-			tempPhsBody.SetFixedRotation(true);
-
-		}
-
-	}
-
+	
 	//luigi entity
 	{
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
@@ -223,6 +161,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
 		ECS::GetComponent<Player>(entity).m_facing = RIGHT;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -244,8 +183,72 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetFixedRotation(true);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 		tempPhsBody.SetGravityScale(1.2f);
-
 	}
+	
+		// ghost entity
+		{
+			/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
+
+			if (ghost_1) //first enemy
+			{
+				
+
+				auto entity = ECS::CreateEntity();
+				ghost2 = entity;
+
+				//Add components  
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+				ECS::AttachComponent<PhysicsBody>(entity);
+				ECS::AttachComponent<AnimationController>(entity);
+				ECS::AttachComponent<CanDamage>(entity);
+
+				ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+				ECS::GetComponent<CanDamage>(entity).hp = 150;
+
+				auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+				auto& animController = ECS::GetComponent<AnimationController>(entity);
+				ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+				ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 4.f));
+				//Sets up the components  
+				std::string fileName = "spritesheets/GRBRD.png";
+				std::string animations = "GRBING.json";
+
+				animController.InitUVs(fileName);
+				nlohmann::json animations2 = File::LoadJSON(animations);
+				animController.AddAnimation(animations2["IDLELEFT"].get<Animation>());
+				animController.AddAnimation(animations2["IDLERIGHT"].get<Animation>());
+				animController.AddAnimation(animations2["ATKLEFT"].get<Animation>());
+				animController.AddAnimation(animations2["ATKRIGHT"].get<Animation>());
+				animController.AddAnimation(animations2["GRBLEFT"].get<Animation>());
+				animController.AddAnimation(animations2["GRBRIGHT"].get<Animation>());
+				animController.SetActiveAnim(4);
+
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30, true, &animController);
+				auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+
+				float shrinkX = 0.f;
+				float shrinkY = 0.f;
+
+				b2Body* tempBody;
+				b2BodyDef tempDef;
+				tempDef.type = b2_dynamicBody;
+				tempDef.position.Set(float32(75.f), float32(35.f));
+
+				tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+				tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENEMY, OBJECTS | PICKUP | TRIGGER | PTRIGGER, 0.5f, 3.f);
+				//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+				tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+				tempPhsBody.SetGravityScale(0.f);
+				tempPhsBody.SetFixedRotation(true);
+
+			}
+
+		}
+
 	//ghost trigger entity  
 	
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
@@ -264,7 +267,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Trigger*>(entity);
 			ECS::AttachComponent<CanDamage>(entity);
 
-			ECS::GetComponent<CanDamage>(entity).m_candamage = true;
+			ECS::GetComponent<CanDamage>(entity).m_candamage = true; //doesnt seem to affect anything
 			ECS::GetComponent<CanDamage>(entity).m_canbestun = false;
 
 			//Sets up the components  
@@ -462,8 +465,14 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 	ghostFillUI = Scene::createGhostFill();
 	ghostsUI = Scene::createGhosts(13);
 
+	
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	if (ghost_1)
+	{
+		MainEntities::Health(MainEntities::Health() + 5);
+	}
 }
 
 void KitchenLevel::Update()

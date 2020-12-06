@@ -222,6 +222,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 			&ECS::GetComponent<Transform>(entity));
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
+		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -251,7 +252,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 
 	if (ghost_1) //first enemy
 	{
-
+		MainEntities::Health(MainEntities::Health() + 5);
 		auto entity = ECS::CreateEntity();
 		ghost1 = entity;
 
