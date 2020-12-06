@@ -79,7 +79,7 @@ void Player::ReassignComponents(AnimationController* controller, PhysicsBody* bo
 
 void Player::Update()
 {
-	if (!m_locked)
+	if (!m_locked && !m_controller)
 	{
 		MovementUpdate();
 	}
@@ -166,6 +166,11 @@ void Player::AnimationUpdate()
 	SetActiveAnimation(activeAnimation + (int)m_facing);
 }
 
+
+void Player::Set_con(bool n)
+{
+	m_controller = n;
+}
 
 void Player::Set_move(bool n)
 {

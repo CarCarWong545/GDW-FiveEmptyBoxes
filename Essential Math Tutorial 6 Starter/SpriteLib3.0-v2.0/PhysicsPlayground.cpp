@@ -727,17 +727,18 @@ void PhysicsPlayground::KeyboardUp()
 }
 void PhysicsPlayground::GamepadStroke(XInputController* con)
 {
-
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
 }
 void PhysicsPlayground::GamepadUp(XInputController* con)
 {
-
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
 }
 void PhysicsPlayground::GamepadDown(XInputController* con)
 {
 
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
 
 	if (canmove)
 	{
@@ -750,6 +751,7 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 			player2.m_facing = LEFT;
 			//player2.m_moving = true;
 			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
+
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
 		{
