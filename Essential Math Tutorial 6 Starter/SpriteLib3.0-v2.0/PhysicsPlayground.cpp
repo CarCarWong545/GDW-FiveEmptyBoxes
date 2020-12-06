@@ -571,6 +571,8 @@ void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
+
 	if (canmove) {
 		float speed = 1.f;
 		b2Vec2 vel = b2Vec2(0.f, 0.f);
@@ -612,6 +614,8 @@ void PhysicsPlayground::KeyboardDown()
 	auto& saveable = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -722,7 +726,7 @@ void PhysicsPlayground::KeyboardDown()
 
 void PhysicsPlayground::KeyboardUp()
 {
-	
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
 
 }
 void PhysicsPlayground::GamepadStroke(XInputController* con)
@@ -739,6 +743,8 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(false);
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
 
 	if (canmove)
 	{
@@ -753,7 +759,7 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 
 		}
-		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
+		else if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
 			player2.m_facing = RIGHT;
@@ -879,7 +885,7 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 
 		}
 	}
-	if (con->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
+	if (con->IsButtonStroked(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
 	{
 		player2.m_suck = true;
 		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(true);
