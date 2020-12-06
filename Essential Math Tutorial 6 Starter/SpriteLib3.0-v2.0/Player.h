@@ -85,14 +85,14 @@ public:
 	bool m_flashlight = true;
 	//is luigi sucking
 	bool m_suck = false;
+	//Basically, any animation OTHER than moving will not have a cancel, and we'll be checking whether or not that animation is done
+	bool m_moving = false;
 
 	AnimDir m_facing = LEFT;
 
 private:
 	void SetActiveAnimation(int anim);
 
-	//Basically, any animation OTHER than moving will not have a cancel, and we'll be checking whether or not that animation is done
-	bool m_moving = false;
 	//Are you currently attacking?????
 	bool m_attacking = false;
 	//Have we locked the player from moving during this animation?
