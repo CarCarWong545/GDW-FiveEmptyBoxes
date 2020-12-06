@@ -113,8 +113,16 @@ void Player::MovementUpdate()
 	{
 		if (m_equip) {
 			m_flashlight = !m_flashlight;
-			
-				//PhysicsPlayground::changeFlashlight(m_flashlight);
+			std::string output = "The flashlight is: ";
+				PhysicsPlayground::changeFlashlight(m_flashlight);
+				if (m_flashlight) {
+					output += "ON";
+				}
+				else
+				{
+					output += "OFF";
+				}
+				std::cout << output << std::endl;
 			
 		}
 		
