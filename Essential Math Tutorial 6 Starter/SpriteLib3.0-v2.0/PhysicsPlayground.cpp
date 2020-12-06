@@ -12,6 +12,7 @@ static int healthBarBack = 0;
 static int ghostBar = 0;
 static int ghostBarBack = 0;
 static std::vector<int> ghostCount;
+VignetteEffect* ve;
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -57,6 +58,9 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
+	EffectManager::CreateEffect(EffectType::Vignette, windowWidth, windowHeight);
+	ve = (VignetteEffect*)EffectManager::GetEffect(EffectManager::GetVignetteHandle());
+	changeFlashlight(false);
 	//Setup MainCamera Entity
 	{
 		/*Scene::CreateCamera(m_sceneReg, vec4(-75.f, 75.f, -75.f, 75.f), -100.f, 100.f, windowWidth, windowHeight, true, true);*/
@@ -684,5 +688,22 @@ void PhysicsPlayground::KeyboardDown()
 void PhysicsPlayground::KeyboardUp()
 {
 	
+
+
+}
+
+void PhysicsPlayground::changeFlashlight(bool on) {
+	if (on) {
+		ve->SetInnerRadius(0.4f);
+		ve->SetOuterRadius(0.5f);
+		ve->SetOpacity(0.5f);
+	}
+	else
+	{
+		ve->SetInnerRadius(0.2f);
+		ve->SetOuterRadius(0.3f);
+		ve->SetOpacity(0.6f);
+
+	}
 
 }

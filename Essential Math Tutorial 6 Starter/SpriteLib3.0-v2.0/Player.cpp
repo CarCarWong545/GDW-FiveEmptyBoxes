@@ -111,7 +111,26 @@ void Player::MovementUpdate()
 	}
 	if (Input::GetKeyDown(Key::Z))
 	{
-		m_flashlight = !m_flashlight;
+		
+		
+		if (m_equip) {
+			std::string output = "Flashlight is: ";
+			m_flashlight = !m_flashlight;
+
+			PhysicsPlayground::changeFlashlight(m_flashlight);
+
+			if (m_flashlight) {
+				output += "ON";
+			}
+			else
+			{
+				output += "OFF";
+
+			}
+			std::cout << output << std::endl;
+
+		}
+		
 	}
 	/*if (Input::GetKeyDown(Key::X))
 	{

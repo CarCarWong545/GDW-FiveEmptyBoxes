@@ -86,6 +86,7 @@
     <ClCompile Include="KitchenLevel.cpp" />
     <ClCompile Include="SecretAltar.cpp" />
     <ClCompile Include="Roof.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="KitchenLevel.h" />
     <ClInclude Include="SecretAltar.h" />
     <ClInclude Include="Roof.h" />
+    <ClInclude Include="TitleScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

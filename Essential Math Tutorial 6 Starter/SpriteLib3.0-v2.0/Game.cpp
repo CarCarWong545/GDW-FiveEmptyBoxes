@@ -49,6 +49,7 @@ void Game::InitGame()
 	m_scenes.push_back(new KitchenLevel("Kitchen"));
 	m_scenes.push_back(new SecretAltar("Secret Altar"));
 	m_scenes.push_back(new Roof("Roof"));
+	m_scenes.push_back(new TitleScreen("TitleScreen"));
 
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
@@ -56,7 +57,7 @@ void Game::InitGame()
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[0];
+	m_activeScene = m_scenes[14];//title screen
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 

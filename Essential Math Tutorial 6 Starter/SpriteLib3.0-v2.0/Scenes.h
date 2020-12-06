@@ -16,6 +16,7 @@
 #include "KitchenLevel.h"
 #include "SecretAltar.h"
 #include "Roof.h"
+#include "TitleScreen.h"
 
 
 #endif // !__SCENES_H__

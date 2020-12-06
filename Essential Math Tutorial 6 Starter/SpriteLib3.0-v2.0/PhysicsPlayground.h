@@ -21,6 +21,8 @@ public:
 	void KeyboardDown() override;
 	void KeyboardUp() override;
 
+	static void changeFlashlight(bool on);
+
 protected:
 	PhysicsPlaygroundListener listener;
 	bool firstdialogue = true;
