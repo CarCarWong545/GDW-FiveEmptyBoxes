@@ -49,8 +49,8 @@ void Game::InitGame()
 	m_scenes.push_back(new KitchenLevel("Kitchen")); //11
 	m_scenes.push_back(new SecretAltar("Secret Altar"));
 	m_scenes.push_back(new Roof("Roof"));
-	m_scenes.push_back(new ReturnFoyer2("Foyer ")); // 14 placeholder Main Menu
-	m_scenes.push_back(new ReturnFoyer2("Foyer ")); // 15 placeholder for testin should be Final Thanks for Playing Image
+	m_scenes.push_back(new TitleScreen("Start ")); // 14 start
+	m_scenes.push_back(new InfoScene("Info ")); // 15 info
     m_scenes.push_back(new HallLevelOutofStudyRoom("Left Hallway")); //16 14 should be Main Menu, and 15 is Final Image
 	m_scenes.push_back(new HallLevelOutofNursery("Left Hallway")); //17
 	m_scenes.push_back(new HallLevelOutofMaster("Left Hallway")); //18
@@ -58,6 +58,7 @@ void Game::InitGame()
 	m_scenes.push_back(new HallLevel2OutofWash("Right Hallway")); //20
 	m_scenes.push_back(new HallLevel2OutofDining("Right Hallway")); //21
 	m_scenes.push_back(new HallLevel2OutofKitchen("Right Hallway")); //22
+	m_scenes.push_back(new HallLevel2OutofKitchen("final thanks for playing")); //23
 
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
@@ -65,7 +66,7 @@ void Game::InitGame()
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[0];
+	m_activeScene = m_scenes[14];
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 
