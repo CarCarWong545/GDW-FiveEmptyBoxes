@@ -227,6 +227,11 @@ void Player::AnimationUpdate()
 	SetActiveAnimation(activeAnimation + (int)m_facing);
 }
 
+void Player::set_controller(bool n)
+{
+	controller = n;
+}
+
 
 void Player::SetActiveAnimation(int anim)
 {

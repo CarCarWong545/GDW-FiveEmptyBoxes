@@ -78,6 +78,8 @@ public:
 	void Update();
 	void MovementUpdate();
 	void AnimationUpdate();
+
+	void set_controller(bool n);
 	//does luigi have equipment
 	bool m_equip = false;
 	bool dialogue = false;

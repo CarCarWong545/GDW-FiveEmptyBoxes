@@ -559,11 +559,6 @@ void PhysicsPlayground::Update()
 	hb.UpdateHealthBar(healthBar, healthBarBack);
 	hb.UpdateGhostCounter(ghostCount,ghostBar,ghostBarBack);
 
-	
-	
-	
-
-
 }
 
 
@@ -571,8 +566,7 @@ void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
-	ECS::GetComponent<Player>(MainEntities::MainPlayer()).controller = false;
-
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).set_controller(false);
 
 	if (canmove) {
 		float speed = 1.f;
@@ -617,7 +611,7 @@ void PhysicsPlayground::KeyboardDown()
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
 	player2.controller = false;
-
+	player2.set_controller(false);
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -744,8 +738,8 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-	player2.controller = true;
-
+	
+	player2.set_controller(true);
 	if (canmove)
 	{
 		float speed = 1.f;
