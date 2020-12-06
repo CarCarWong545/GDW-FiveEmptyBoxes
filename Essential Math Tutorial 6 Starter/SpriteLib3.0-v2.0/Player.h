@@ -90,6 +90,10 @@ public:
 
 	AnimDir m_facing = LEFT;
 
+	void Set_move(bool n);
+	void Set_vacuum(bool n);
+	void Set_flash(bool n);
+
 private:
 	void SetActiveAnimation(int anim);
 

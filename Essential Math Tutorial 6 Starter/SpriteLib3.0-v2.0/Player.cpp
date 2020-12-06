@@ -167,6 +167,21 @@ void Player::AnimationUpdate()
 }
 
 
+void Player::Set_move(bool n)
+{
+	m_moving = n;
+}
+
+void Player::Set_vacuum(bool n)
+{
+	m_suck = n;
+}
+
+void Player::Set_flash(bool n)
+{
+	m_flashlight = n;
+}
+
 void Player::SetActiveAnimation(int anim)
 {
 	m_animController->SetActiveAnim(anim);

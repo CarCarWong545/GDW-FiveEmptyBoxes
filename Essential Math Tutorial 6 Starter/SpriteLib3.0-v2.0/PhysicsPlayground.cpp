@@ -748,13 +748,15 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
 			player2.m_facing = LEFT;
-			player2.m_moving = true;
+			//player2.m_moving = true;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
 			player2.m_facing = RIGHT;
 			player2.m_moving = true;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_Y)) //sprint
 		{
@@ -860,16 +862,28 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 	if (con->IsButtonPressed(XINPUT_GAMEPAD_LEFT_SHOULDER)) //flashlight
 	{
 		if (player2.m_equip) {
-			player2.m_flashlight = !player2.m_flashlight;
-
+			//player2.m_flashlight = !player2.m_flashlight;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(!player2.m_flashlight);
+			std::string output = "The flashlight is: ";
 			PhysicsPlayground::changeFlashlight(player2.m_flashlight);
+			if (player2.m_flashlight) {
+				output += "ON";
+			}
+			else
+			{
+				output += "OFF";
+			}
+			std::cout << output << std::endl;
 
 		}
 	}
 	if (con->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
 	{
 		player2.m_suck = true;
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(true);
 		player2.m_flashlight = false;
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(false);
+
 	}
 }
 void PhysicsPlayground::GamepadStick(XInputController* con)
