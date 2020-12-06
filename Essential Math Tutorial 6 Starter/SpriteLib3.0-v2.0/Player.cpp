@@ -79,12 +79,23 @@ void Player::ReassignComponents(AnimationController* controller, PhysicsBody* bo
 
 void Player::Update()
 {
-	if (!m_locked)
+	if (!controller)
 	{
-		MovementUpdate();
-	}
+		if (!m_locked)
+		{
+			MovementUpdate();
+		}
 
-	AnimationUpdate();
+		AnimationUpdate();
+	}
+	else
+	{
+		if (!m_locked)
+		{
+			ControllerUpdate();
+		}
+		AnimationUpdate();
+	}
 }
 
 void Player::MovementUpdate()
@@ -137,6 +148,56 @@ void Player::MovementUpdate()
 		m_flashlight = false;
 	}
 }
+void Player::ControllerUpdate()
+{
+	m_moving = false;
+	m_suck = false;
+	XInputController* tempCon = nullptr;
+	//Gamepad button stroked (pressed)
+	for (int i = 0; i < 3; i++)
+	{
+		if (XInputManager::ControllerConnected(i))
+		{
+			tempCon = XInputManager::GetController(i);
+			tempCon->SetStickDeadZone(0.1f);
+		}
+	}
+
+	if (tempCon->IsButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT)) //move left
+	{
+		m_facing = LEFT;
+		m_moving = true;
+	}
+	if (tempCon->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
+	{
+		m_facing = RIGHT;
+		m_moving = true;
+	}
+	if (tempCon->IsButtonPressed(XINPUT_GAMEPAD_LEFT_SHOULDER))
+	{
+		if (m_equip) {
+			m_flashlight = !m_flashlight;
+			std::string output = "The flashlight is: ";
+			PhysicsPlayground::changeFlashlight(m_flashlight);
+			if (m_flashlight) {
+				output += "ON";
+			}
+			else
+			{
+				output += "OFF";
+			}
+			std::cout << output << std::endl;
+
+		}
+
+	}
+	if (tempCon->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER))
+	{
+		m_suck = true;
+		m_flashlight = false;
+	}
+}
+
 
 void Player::AnimationUpdate()
 {
@@ -165,6 +226,7 @@ void Player::AnimationUpdate()
 		}
 	SetActiveAnimation(activeAnimation + (int)m_facing);
 }
+
 
 void Player::SetActiveAnimation(int anim)
 {

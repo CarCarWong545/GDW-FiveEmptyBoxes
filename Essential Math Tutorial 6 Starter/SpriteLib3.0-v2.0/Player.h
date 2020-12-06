@@ -88,6 +88,10 @@ public:
 	//Basically, any animation OTHER than moving will not have a cancel, and we'll be checking whether or not that animation is done
 	bool m_moving = false;
 
+	bool controller = false;
+
+	void ControllerUpdate();
+
 	AnimDir m_facing = LEFT;
 
 private:

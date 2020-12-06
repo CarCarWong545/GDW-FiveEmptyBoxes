@@ -571,6 +571,9 @@ void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
+	ECS::GetComponent<Player>(MainEntities::MainPlayer()).controller = false;
+
+
 	if (canmove) {
 		float speed = 1.f;
 		b2Vec2 vel = b2Vec2(0.f, 0.f);
@@ -612,6 +615,9 @@ void PhysicsPlayground::KeyboardDown()
 	auto& saveable = ECS::GetComponent<CanSave>(MainEntities::MainPlayer());
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+
+	player2.controller = false;
+
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -738,6 +744,7 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+	player2.controller = true;
 
 	if (canmove)
 	{
@@ -747,14 +754,11 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT)) //move left
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-			player2.m_facing = LEFT;
-			player2.m_moving = true;
+			
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-			player2.m_facing = RIGHT;
-			player2.m_moving = true;
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_Y)) //sprint
 		{
@@ -856,20 +860,6 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 			canmove = false;
 		}
 
-	}
-	if (con->IsButtonPressed(XINPUT_GAMEPAD_LEFT_SHOULDER)) //flashlight
-	{
-		if (player2.m_equip) {
-			player2.m_flashlight = !player2.m_flashlight;
-
-			PhysicsPlayground::changeFlashlight(player2.m_flashlight);
-
-		}
-	}
-	if (con->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
-	{
-		player2.m_suck = true;
-		player2.m_flashlight = false;
 	}
 }
 void PhysicsPlayground::GamepadStick(XInputController* con)
