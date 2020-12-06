@@ -570,9 +570,18 @@ void PhysicsPlayground::Update()
 void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
 	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
 
+	if (Input::GetKeyDown(Key::A) || Input::GetKeyDown(Key::D) || Input::GetKeyDown(Key::Space) || Input::GetKeyDown(Key::Q) || Input::GetKeyDown(Key::Z) || Input::GetKeyDown(Key::F) || Input::GetKeyDown(Key::E) || Input::GetKeyDown(Key::UpArrow) || Input::GetKeyDown(Key::DownArrow) || Input::GetKeyDown(Key::Shift)) {
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
+		player2.MovementUpdate();
+		player2.AnimationUpdate();
+	}
+	else {
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
+	}
 	if (canmove) {
 		float speed = 1.f;
 		b2Vec2 vel = b2Vec2(0.f, 0.f);
@@ -580,17 +589,34 @@ void PhysicsPlayground::KeyboardHold()
 		if (Input::GetKey(Key::Shift))
 		{
 			speed *= 5.f;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 		}
 
 		if (Input::GetKey(Key::A))
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 		}
 		if (Input::GetKey(Key::D))
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 		}
+		if (!ECS::GetComponent<Player>(MainEntities::MainPlayer()).m_controller) {
+			if (Input::GetKey(Key::Q)) //vacuum
+			{
+				player2.m_suck = true;
+				ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(true);
+				player2.m_flashlight = false;
+				ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(false);
 
+			}
+			else
+			{
+				player2.m_suck = false;
+				ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+			}
+		}
 		//Change physics body size for circle
 		if (Input::GetKey(Key::O))
 		{
@@ -615,8 +641,15 @@ void PhysicsPlayground::KeyboardDown()
 	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 
-	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
 
+	if (Input::GetKeyDown(Key::A) || Input::GetKeyDown(Key::D) || Input::GetKeyDown(Key::Space) || Input::GetKeyDown(Key::Q) || Input::GetKeyDown(Key::Z) || Input::GetKeyDown(Key::F) || Input::GetKeyDown(Key::E) || Input::GetKeyDown(Key::UpArrow) || Input::GetKeyDown(Key::DownArrow) || Input::GetKeyDown(Key::Shift)) {
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
+		player2.MovementUpdate();
+		player2.AnimationUpdate();
+	}
+	else {
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
+	}
 	if (Input::GetKeyDown(Key::T))
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
@@ -722,6 +755,8 @@ void PhysicsPlayground::KeyboardDown()
 		}
 
 	}
+	
+	player2.AnimationUpdate();
 }
 
 void PhysicsPlayground::KeyboardUp()
@@ -742,12 +777,25 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
-	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(false);
-	ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+	
 
+	if(con-> IsButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT) || con ->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT) || con -> IsButtonPressed(XINPUT_GAMEPAD_A) || con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_UP) || 
+		con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_DOWN) || con->IsButtonPressed(XINPUT_GAMEPAD_B) || con->IsButtonPressed(XINPUT_GAMEPAD_X) || con->IsButtonPressed(XINPUT_GAMEPAD_Y) || con->IsButtonPressed(XINPUT_GAMEPAD_LEFT_SHOULDER)
+		|| con->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER)){
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(true);
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(false);
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+
+		player2.AnimationUpdate();
+	
+	}
+	else {
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_con(false);
+		
+	}
 	if (canmove)
 	{
+
 		float speed = 1.f;
 		b2Vec2 vel = b2Vec2(0.f, 0.f);
 
@@ -890,18 +938,20 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 
 		}
 	}
-	if (con->IsButtonStroked(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
-	{
-		player2.m_suck = true;
-		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(true);
-		player2.m_flashlight = false;
-		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(false);
+	if (ECS::GetComponent<Player>(MainEntities::MainPlayer()).m_controller) {
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_RIGHT_SHOULDER)) //vacuum
+		{
+			player2.m_suck = true;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(true);
+			player2.m_flashlight = false;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(false);
 
-	}
-	else
-	{
-		player2.m_suck = false;
-		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+		}
+		else
+		{
+			player2.m_suck = false;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+		}
 	}
 
 	player2.AnimationUpdate();
