@@ -16,7 +16,6 @@ void VTrigger::OnEnter(int entity)
 	Trigger::OnEnter(entity);
 	if (ECS::GetComponent<Player>(m_targetEntities[0]).m_suck)
 	{
-		
 			auto& body = ECS::GetComponent<PhysicsBody>(entity);
 			auto& ghost = ECS::GetComponent<CanDamage>(entity);
 			if (!ghost.m_candamage)

@@ -431,6 +431,7 @@ void DiningLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Sprite>(entity);
 			ECS::AttachComponent<Transform>(entity);
 			ECS::AttachComponent<PhysicsBody>(entity);
+			
 
 
 			//Sets up the components  
@@ -610,7 +611,7 @@ void DiningLevel::Update()
 			float stuntime = 3.0f;
 			c_ghost_.m_candamage = false;
 			isstunned = true;
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			//ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 			if (isstunned) {
 				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
 
@@ -618,6 +619,7 @@ void DiningLevel::Update()
 					c_ghost.m_candamage = true;
 					c_ghost.m_stun = false;
 					ghost.GetBody()->SetLinearVelocity(b2Vec2(15,0));
+					anims.SetActiveAnim(3);
 					isstunned = false;
 					c_ghost_.m_candamage = true;
 					c_ghost_.m_stun = false;

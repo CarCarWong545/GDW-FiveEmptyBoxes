@@ -12,7 +12,7 @@ void FlashlightTrigger::OnEnter(int entity)
 	Trigger::OnEnter(entity);
 	if (ECS::GetComponent<Player>(m_targetEntities[0]).m_flashlight)
 	{
-		
+	
 		if (ECS::GetComponent<CanDamage>(entity).m_canbestun)
 			{
 				auto& body = ECS::GetComponent<PhysicsBody>(entity);

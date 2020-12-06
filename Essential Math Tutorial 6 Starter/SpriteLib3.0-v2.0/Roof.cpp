@@ -683,7 +683,7 @@ void Roof::Update()
 			ECS::AttachComponent<Trigger*>(entity);
 
 			//Set up the components
-			std::string fileName = "E.Gadd.png";
+			std::string fileName = "Mario.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
@@ -836,8 +836,9 @@ void Roof::KeyboardDown()
 	if (Input::GetKeyDown(Key::F))
 	{
 		if (isdialogue.dialouge) {
-			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
-			equip.m_equip = true;
+			//Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
+			//equip.m_equip = true;
+			//switch scene
 		}
 	}
 }

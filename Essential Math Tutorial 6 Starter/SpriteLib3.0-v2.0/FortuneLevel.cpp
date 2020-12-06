@@ -55,17 +55,7 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
-	int* enemies = MainEntities::Enemies();
-
-	if (enemies[0] != 0)
-	{
-		ghost_1 = true;
-	}
-	else
-	{
-		ghost_1 = false;
-	}
-
+	
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
@@ -307,92 +297,7 @@ void FortuneLevel::Update()
 
 	}
 
-	/*if (ghost_1)
-	{
-		auto& ghost = ECS::GetComponent<PhysicsBody>(ghost1);
-		auto& c_ghost = ECS::GetComponent<CanDamage>(ghost1);
 
-
-		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
-		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
-		ghost.GetBody()->SetAwake(true);
-		ghost_2.GetBody()->SetAwake(true);
-
-		if (c_ghost.m_candamage)
-		{
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-			startstuntime = clock();
-		}
-		else if (!c_ghost.m_stun) {
-			float elapsedtime;
-			float stuntime = 5.0f;
-
-			isstunned = true;
-			if (isstunned) {
-				elapsedtime = (clock() - startstuntime) / CLOCKS_PER_SEC;
-
-				if (elapsedtime >= stuntime) {
-					c_ghost.m_candamage = true;
-					c_ghost.m_stun = false;
-					//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
-					isstunned = false;
-				}
-			}
-		}
-		if (c_ghost.m_suck && player.m_suck)
-		{
-			c_ghost.m_candamage = false;
-			c_ghost.m_stun = true;
-			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
-			direction.Normalize();
-			float scale = 10.f;
-			direction *= scale;
-			ghost.GetBody()->SetLinearVelocity(direction);
-			ghost_2.GetBody()->SetLinearVelocity(direction);
-			b2Vec2 force = direction;
-			force *= 300.f;
-			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
-			c_ghost.hp -= 1;
-
-			int offset = 20; //20 is good value
-			//ghost comes within offet~ of contact with vacuum
-			//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
-			if (c_ghost.hp <= 0)
-			{
-				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
-				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
-				ghost_1 = false;
-
-				enemies[0] = 0;
-				MainEntities::Enemies(enemies);
-				MainEntities::Capture(MainEntities::Captured() + 1);
-			}
-
-		}
-		else if (c_ghost.m_suck)
-		{
-			c_ghost.m_stun = false;
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		}
-		else if (!c_ghost.m_candamage && !c_ghost.m_suck)
-		{
-			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		}
-	}
-	*/
-
-
-	if (player.m_facing == 1)//right
-	{
-		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
-		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
-	}
-	else
-	{
-		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
-		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
-	}
 
 }
 
