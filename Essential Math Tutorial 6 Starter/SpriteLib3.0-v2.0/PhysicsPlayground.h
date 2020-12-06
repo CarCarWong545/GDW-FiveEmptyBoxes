@@ -27,25 +27,34 @@ protected:
 	bool firstdialogue = true;
 	bool secondd = true;
 	bool thirdd = true;
+	bool fourthd = true;
+	bool fifthd = true;
 	bool canmove = true;
 
 	clock_t firstdstart;
 	clock_t seconddstart;
 	clock_t thirddstart;
-	
+	clock_t fourthstart;
+	clock_t fifthstart;
 	
 	double firstdstop;
 	double secondstop;
 	double thirdstop;
+	double fourthstop;
+	double fifthstop;
 	
 	const double secondspassforfirst = 3;
 
 	bool deletefirstd = true;
 	bool deletesecondd = true;
+	bool deletefourthd = true;
+	bool deletefifthd = true;
 	bool DialoguedoneEGadd = false;
 
 	unsigned int fd;
 	unsigned int sd;
 	unsigned int td;
-
+	unsigned int ffd;
+	unsigned int fffd;
+	
 };

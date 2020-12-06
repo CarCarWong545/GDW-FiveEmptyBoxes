@@ -484,7 +484,7 @@ void PhysicsPlayground::Update()
 
 	if (!firstdialogue && deletefirstd) {
 		firstdstop = (clock() - firstdstart) / CLOCKS_PER_SEC;
-		if (firstdstop >= secondspassforfirst) {
+		if (firstdstop >= 6) {
 			PhysicsBody::m_bodiesToDelete.push_back(fd);
 			deletefirstd = false;
 		}
@@ -498,14 +498,41 @@ void PhysicsPlayground::Update()
 	}
 
 	if (!secondd && deletesecondd) {
-		secondstop = (clock() - seconddstart) / CLOCKS_PER_SEC;
+		secondstop = (clock() - 4.5) / CLOCKS_PER_SEC;
 		if (secondstop >= secondspassforfirst) {
 			PhysicsBody::m_bodiesToDelete.push_back(sd);
 			deletesecondd = false;
+			
+		}
+	}
+	if (fourthd && !deletesecondd) {
+		fourthstart = clock();
+		ffd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 3.png");
+		fourthd = false;
+	}
+
+	if (!fourthd && deletefourthd) {
+		fourthstop = (clock() - fourthstart) / CLOCKS_PER_SEC;
+		if (fourthstop >= 8.5) {
+			PhysicsBody::m_bodiesToDelete.push_back(ffd);
+			deletefourthd = false;
+			
+		}
+	}
+	if (fifthd && !deletefourthd) {
+		fifthstart = clock();
+		fffd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 4.png");
+		fifthd = false;
+	}
+
+	if (!fifthd && deletefifthd) {
+		fifthstop = (clock() - fifthstart) / CLOCKS_PER_SEC;
+		if (fifthstop >= 4) {
+			PhysicsBody::m_bodiesToDelete.push_back(fffd);
+			deletefifthd = false;
 			DialoguedoneEGadd = true;
 		}
 	}
-
 	if (!thirdd) {
 		thirdstop = (clock() - thirddstart) / CLOCKS_PER_SEC;
 		if (thirdstop >= secondspassforfirst) {
