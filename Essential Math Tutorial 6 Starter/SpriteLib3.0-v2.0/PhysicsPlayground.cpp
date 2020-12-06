@@ -728,27 +728,6 @@ void PhysicsPlayground::KeyboardUp()
 void PhysicsPlayground::GamepadStroke(XInputController* con)
 {
 
-	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-
-	if (canmove) 
-	{
-		float speed = 1.f;
-		b2Vec2 vel = b2Vec2(0.f, 0.f);
-
-		if (con->IsButtonStroked(XINPUT_GAMEPAD_DPAD_LEFT)) //move left
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-		}
-		if (con->IsButtonStroked(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-		}
-		if (con->IsButtonStroked(XINPUT_GAMEPAD_Y)) //sprint
-		{
-			speed *= 5.f;
-		}
-	}
-
 }
 void PhysicsPlayground::GamepadUp(XInputController* con)
 {
@@ -756,6 +735,29 @@ void PhysicsPlayground::GamepadUp(XInputController* con)
 }
 void PhysicsPlayground::GamepadDown(XInputController* con)
 {
+
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+
+	if (canmove)
+	{
+		float speed = 1.f;
+		b2Vec2 vel = b2Vec2(0.f, 0.f);
+
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_LEFT)) //move left
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_DPAD_RIGHT)) //move right
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
+		if (con->IsButtonPressed(XINPUT_GAMEPAD_Y)) //sprint
+		{
+			speed *= 5.f;
+		}
+	}
+
+
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
