@@ -49,7 +49,7 @@ if (scene.m_switch1)
 void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 {
 
-	
+	curt_1 = true;
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
 
@@ -741,91 +741,7 @@ void MasterBedLevel::Update()
 				}
 			}
 		}
-		if (c_ghost.m_suck && player.m_suck)
-		{
-			if (player.m_facing == 0) //left
-			{
-				anims.SetActiveAnim(2);
-			}
-			else //right
-			{
-				anims.SetActiveAnim(3);
-			}
-			c_ghost.m_candamage = false;
-			c_ghost.m_stun = true;
-			c_ghost2.m_candamage = false;
-			c_ghost2.m_stun = true;
-			b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
-			direction.Normalize();
-			float scale = 10.f;
-			direction *= scale;
-			ghost.GetBody()->SetLinearVelocity(direction);
-			ghost_2.GetBody()->SetLinearVelocity(direction);
-			b2Vec2 force = direction;
-			force *= 300.f;
-			playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
-			c_ghost.hp -= 1;
-
-			int offset = 20; //20 is good value
-			//ghost comes within offet~ of contact with vacuum
-			//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
-			if (c_ghost.hp <= 0)
-			{
-				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
-				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
-				ghost_1 = false;
-
-				enemies[1] = 0;
-				MainEntities::Enemies(enemies);
-				MainEntities::Capture(MainEntities::Captured() + 1);
-				//spawn heart
-				{
-					//Creates entity
-					auto entity = ECS::CreateEntity();
-					//Add components
-					ECS::AttachComponent<Sprite>(entity);
-					ECS::AttachComponent<Transform>(entity);
-					ECS::AttachComponent<PhysicsBody>(entity);
-					ECS::AttachComponent<Trigger*>(entity);
-
-					//Sets up components
-					std::string fileName = "Ghost_Heart.png";
-					ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
-					ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-					ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-					ECS::GetComponent<Trigger*>(entity) = new HealthTrigger();
-					ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-					
-
-					auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-					auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-					float shrinkX = 0.f;
-					float shrinkY = 0.f;
-					b2Body* tempBody;
-					b2BodyDef tempDef;
-					tempDef.type = b2_staticBody;
-					tempDef.position.Set(float32(0), float32(0));
-
-					tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-					tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
-					tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-				}
-			}
-
-		}
-		else if (c_ghost.m_suck)
-		{
-			c_ghost.m_stun = false;
-			c_ghost2.m_stun = false;
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		}
-		else if (!c_ghost.m_candamage && !c_ghost.m_suck)
-		{
-			//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
-			ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
-		}
+		
 
 		if (!curt_1) //curtain gone
 		{
@@ -848,12 +764,99 @@ void MasterBedLevel::Update()
 					ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
 				}
 			}
+			if (c_ghost.m_suck && player.m_suck)
+			{
+				if (player.m_facing == 0) //left
+				{
+					anims.SetActiveAnim(2);
+				}
+				else //right
+				{
+					anims.SetActiveAnim(3);
+				}
+				c_ghost.m_candamage = false;
+				c_ghost.m_stun = true;
+				c_ghost2.m_candamage = false;
+				c_ghost2.m_stun = true;
+				b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
+				direction.Normalize();
+				float scale = 10.f;
+				direction *= scale;
+				ghost.GetBody()->SetLinearVelocity(direction);
+				ghost_2.GetBody()->SetLinearVelocity(direction);
+				b2Vec2 force = direction;
+				force *= 300.f;
+				playerb.GetBody()->ApplyLinearImpulseToCenter(force, true);
+				c_ghost.hp -= 1;
+
+				int offset = 20; //20 is good value
+				//ghost comes within offet~ of contact with vacuum
+				//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
+				if (c_ghost.hp <= 0)
+				{
+					PhysicsBody::m_bodiesToDelete.push_back(ghost1);
+					PhysicsBody::m_bodiesToDelete.push_back(ghost2);
+					ghost_1 = false;
+
+					enemies[1] = 0;
+					MainEntities::Enemies(enemies);
+					MainEntities::Capture(MainEntities::Captured() + 1);
+					//spawn heart
+					{
+						//Creates entity
+						auto entity = ECS::CreateEntity();
+						//Add components
+						ECS::AttachComponent<Sprite>(entity);
+						ECS::AttachComponent<Transform>(entity);
+						ECS::AttachComponent<PhysicsBody>(entity);
+						ECS::AttachComponent<Trigger*>(entity);
+
+						//Sets up components
+						std::string fileName = "Ghost_Heart.png";
+						ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+						ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+						ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+						ECS::GetComponent<Trigger*>(entity) = new HealthTrigger();
+						ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+
+
+						auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+						auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+						float shrinkX = 0.f;
+						float shrinkY = 0.f;
+						b2Body* tempBody;
+						b2BodyDef tempDef;
+						tempDef.type = b2_staticBody;
+						tempDef.position.Set(float32(0), float32(0));
+
+						tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+						tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, PTRIGGER, PLAYER);
+						tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+					}
+				}
+
+			}
+			else if (c_ghost.m_suck)
+			{
+				c_ghost.m_stun = false;
+				c_ghost2.m_stun = false;
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			}
+			else if (!c_ghost.m_candamage && !c_ghost.m_suck)
+			{
+				//ghost.GetBody()->SetLinearVelocity(b2Vec2(15, 0));
+				ghost.GetBody()->SetLinearVelocity(b2Vec2(0, 0));
+			}
 			
 		}
 		else
 		{
 			c_ghost.m_canbestun = false;
 			c_ghost2.m_canbestun = false;
+			c_ghost.m_candamage = true;
+			c_ghost2.m_candamage = true;
 		}
 	}
 

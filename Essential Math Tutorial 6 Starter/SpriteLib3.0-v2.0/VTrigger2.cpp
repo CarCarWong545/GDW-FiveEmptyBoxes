@@ -13,9 +13,9 @@ void VTrigger2::OnEnter(int entity)
 	{
 		for (int i = 1; i < m_targetEntities.size(); i++)
 		{
-			if (!ECS::GetComponent<CanDamage>(m_targetEntities[i]).m_candamage)
+			if (!ECS::GetComponent<CanDamage>(entity).m_candamage)
 			{
-				ECS::GetComponent<CanDamage>(m_targetEntities[i]).m_suck = true;
+				ECS::GetComponent<CanDamage>(entity).m_suck = true;
 			}
 			
 		}

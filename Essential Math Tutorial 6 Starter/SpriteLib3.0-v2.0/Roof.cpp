@@ -32,6 +32,11 @@ int Roof::ChangeScene() {
 		scene.m_switch13 = false;
 		return 13;
 	}
+	else if (scene.m_switch15)
+	{
+		scene.m_switch15 = false;
+		return 15;
+	}
 	else
 	{
 		return -1;
