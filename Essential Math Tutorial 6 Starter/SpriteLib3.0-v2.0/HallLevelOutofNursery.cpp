@@ -1,53 +1,60 @@
-#include "Game.h"
-#include "FortuneLevel.h"
+//#include "Game.h"
 #include "Utilities.h"
-
-
-#include <random>
+#include "HallLevelOutofNursery.h"
 #include "HealthBar.h"
+
 static int healthBarUI = 0;
 static int healthBarBackUI = 0;
 static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
-static HealthBar hb;
-
-FortuneLevel::FortuneLevel(std::string name)
-	:Scene(name)
+HallLevelOutofNursery::HallLevelOutofNursery(std::string name)
+	: Scene(name)
 {
 	//No gravity this is a top down scene
 	m_gravity = b2Vec2(0.f, -98.f);
 
 }
-int FortuneLevel::ChangeScene() {
+
+int HallLevelOutofNursery::ChangeScene()
+{
 	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-	//return to beginning
-	if (MainEntities::Health() <= 0)
+	if (scene.m_switch3)
 	{
+		scene.m_switch3 = false;
+		return 3;
+	}
+	else if (scene.m_switch0)
+	{
+		scene.m_switch0 = false;
 		return 0;
 	}
-
-	if (scene.m_switch19)
+	else if (scene.m_switch2)
 	{
-		scene.m_switch19 = false;
-		return 19;
+		scene.m_switch2 = false;
+		return 2;
 	}
-	else if (scene.m_switch7)
+	else if (scene.m_switch4)
 	{
-		scene.m_switch7 = false;
-		return 7;
+		scene.m_switch4 = false;
+		return 4;
+	}
+	else if (scene.m_switch5)
+	{
+		scene.m_switch5 = false;
+		return 5;
 	}
 	else
 	{
 		return -1;
 	}
+
 }
 
-void FortuneLevel::InitScene(float windowWidth, float windowHeight)
+void HallLevelOutofNursery::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
-
 	m_physicsWorld = new b2World(m_gravity);
 	m_physicsWorld->SetGravity(m_gravity);
 
@@ -55,7 +62,7 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
-	
+
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
@@ -81,7 +88,6 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<HorizontalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 		ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 	}
-
 	//Setup new Entity
 	{
 		/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
@@ -94,7 +100,7 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 
 		//Set up the components
-		std::string fileName = "Fortune.png";
+		std::string fileName = "Hall.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 297, 108);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 1.f));
@@ -112,7 +118,7 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 
 		//Set up the components
 		std::string fileName = "Brown.jp";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 1000, 500);
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 500, 500);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 0.f));
 	}
@@ -130,13 +136,11 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
-		ECS::AttachComponent<MoveUp>(entity);
+		//ECS::AttachComponent<MoveUp>(entity);
 		ECS::AttachComponent<AnimationController>(entity);
-		ECS::AttachComponent<MoveDown>(entity);
+		//ECS::AttachComponent<MoveDown>(entity);
 		ECS::AttachComponent<SwitchScene>(entity);
-		ECS::AttachComponent<Dialouge>(entity);
 		ECS::AttachComponent<CanDoor>(entity);
-
 
 		//Sets up the components
 		std::string fileName = "spritesheets/luigi.png";
@@ -144,76 +148,49 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		//ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
-		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 45, 35, &ECS::GetComponent<Sprite>(entity),
+		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
 			&ECS::GetComponent<AnimationController>(entity),
 			&ECS::GetComponent<Transform>(entity));
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
-		ECS::GetComponent<Player>(entity).m_flashlight = false;
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-		float shrinkX = 10.f;
+		float shrinkX = 0.f;
 		float shrinkY = 0.f;
 
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(70.f), float32(10.f));
+		tempDef.position.Set(float32(-10.f), float32(0.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, OBJECTS | PICKUP | TRIGGER | GROUND | ENVIRONMENT, 0.5f, 3.f);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
 		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);
 
 		tempPhsBody.SetRotationAngleDeg(0.f);
 		tempPhsBody.SetFixedRotation(true);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-		tempPhsBody.SetGravityScale(1.2f);
-
+		tempPhsBody.SetGravityScale(1.f);
 	}
-	
-	Scene::BoxMaker(450, 5, 0, -13, 0, 0);
-	Scene::BoxMaker(200, 10, -120, -10, 90, 0);
-	Scene::BoxMaker(200, 10, 180, -10, 90, 0);
-	{
+	// Floor
+	Scene::BoxMaker(325, 2, 20.f, -10.f, 0, 0);
 
-		//Creates entity
-		auto entity = ECS::CreateEntity();
+	//Wall left
+	Scene::BoxMaker(325, 2, 175.f, 50.f, 90, 0);
 
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<Trigger*>(entity);
+	//Wall right
+	Scene::BoxMaker(325, 2, -120.f, 50.f, 90, 0);
 
-		//Set up the components
-		std::string fileName = "Madame.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 40);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 65.f, 2.f));
-
-		ECS::GetComponent<Trigger*>(entity) = new DialogueTrigger(0);
-		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = 10.f;
-		float shrinkY = 10.f;
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(-28.f), float32(10.f));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-	}
-	//door trigger 1
+	healthBarUI = Scene::createHealthBar();
+	healthBarBackUI = Scene::createHealthBarBack();
+	ghostBackUI = Scene::createGhostBack();
+	ghostFillUI = Scene::createGhostFill();
+	ghostsUI = Scene::createGhosts(13);
+	//Scene::BoxMaker(325, 2, 30.f, 52.f, 0, 0);
+	//door trigger to FOYER
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -229,11 +206,9 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(19);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(2);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-
-
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -250,142 +225,159 @@ void FortuneLevel::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
+	//door trigger back to IDK
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
 
-	healthBarUI = Scene::createHealthBar();
-	healthBarBackUI = Scene::createHealthBarBack();
-	ghostBackUI = Scene::createGhostBack();
-	ghostFillUI = Scene::createGhostFill();
-	ghostsUI = Scene::createGhosts(13);
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(5);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(-10.f), float32(10.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
+
+	//door trigger to MasterBedroom
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(4);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(-80.f), float32(10.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
+	//door trigger to STUDY
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(3);
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(140.f), float32(10.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
-void FortuneLevel::Update()
+void HallLevelOutofNursery::Update()
 {
-
-	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
-	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
-
-
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
-	int* enemies = MainEntities::Enemies();
 
-	auto& playerb = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	auto& players = ECS::GetComponent<Sprite>(MainEntities::MainPlayer());
-
-
-
-	if (!firstdialogue && deletefirstd) {
-		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;
-		if (firststop >= 10) {
-			PhysicsBody::m_bodiesToDelete.push_back(dialouge);
-			deletefirstd = false;
-			canmove = true;
-
-			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-		}
-	}
-
-		if (!seconddialogue) {
-			secondstop = (clock() - secondstart) / CLOCKS_PER_SEC;
-			if (secondstop >= 8) {
-				PhysicsBody::m_bodiesToDelete.push_back(sdialouge);
-				seconddialogue = true;
-				canmove = true;
-
-				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-
-
-			}
-		}
-
-	
-
-
-
+	HealthBar hb;
+	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
+	hb.UpdateGhostCounter(ghostsUI, ghostFillUI, ghostBackUI);
 }
 
 
-
-void FortuneLevel::KeyboardHold()
+void HallLevelOutofNursery::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
+
 
 	float speed = 1.5f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
-	if (canmove) {
-		if (Input::GetKey(Key::Shift))
-		{
-			speed *= 5.f;
-		}
-
-		if (Input::GetKey(Key::A))
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-		}
-		if (Input::GetKey(Key::D))
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-		}
-
-		//Change physics body size for circle
-		if (Input::GetKey(Key::O))
-		{
-			player.ScaleBody(1.3 * Timer::deltaTime, 0);
-		}
-		else if (Input::GetKey(Key::I))
-		{
-			player.ScaleBody(-1.3 * Timer::deltaTime, 0);
-		}
-	}
-}
-
-void FortuneLevel::KeyboardDown()
-{
-	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
-	auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
-	auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
-	auto& isdialogue = ECS::GetComponent<Dialouge>(MainEntities::MainPlayer());
-	auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-
-	auto& canDoor = ECS::GetComponent<CanDoor>(MainEntities::MainPlayer());
-	auto& player2 = ECS::GetComponent<Player>(MainEntities::MainPlayer());
-
-	if (Input::GetKeyDown(Key::T))
+	if (Input::GetKey(Key::Shift))
 	{
-		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
+		speed *= 5.f;
 	}
-	if (canmove) {
-		if (canJump.m_canJump)
-		{
-			if (Input::GetKeyDown(Key::Space))
-			{
-				player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
-				canJump.m_canJump = false;
-			}
-		}
-	}
-	if (canMove.moveUp)
+
+	if (Input::GetKey(Key::A))
 	{
-		if (Input::GetKeyDown(Key::UpArrow))
-		{
-			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y + 60), 0);
-			canMove.moveUp = false;
-		}
+		player.GetBody()->ApplyForceToCenter(b2Vec2(-300000.f * speed, 0.f), true);
 	}
-	if (canMoveD.moveDown)
+	if (Input::GetKey(Key::D))
 	{
-		if (Input::GetKeyDown(Key::DownArrow))
-		{
-			player.GetBody()->SetTransform(b2Vec2(player.GetPosition().x, player.GetPosition().y - 70), 0);
-			canMoveD.moveDown = false;
-		}
+		player.GetBody()->ApplyForceToCenter(b2Vec2(300000.f * speed, 0.f), true);
+	}
+
+	//Change physics body size for circle
+	if (Input::GetKey(Key::O))
+	{
+		player.ScaleBody(1.3 * Timer::deltaTime, 0);
+	}
+	else if (Input::GetKey(Key::I))
+	{
+		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
 	}
 	if (canDoor.m_door)
 	{
@@ -397,47 +389,52 @@ void FortuneLevel::KeyboardDown()
 			{
 				scene.m_switch0 = true;
 			}
-			else if (scene.can_switch19)
+			else if (scene.can_switch1)
 			{
-				scene.m_switch19 = true;
+				scene.m_switch1 = true;
 			}
-			else if (scene.can_switch7)
+			else if (scene.can_switch2)
 			{
-				scene.m_switch7 = true;
+				scene.m_switch2 = true;
 			}
 			else if (scene.can_switch3)
 			{
 				scene.m_switch3 = true;
 			}
-		}
-	}
-	if (Input::GetKeyDown(Key::F))
-	{
-		if (isdialogue.dialouge) {
-			if (firstdialogue) {
-				firstdstart = clock();
-				dialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Clair1.png");
-				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
-				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
-				canmove = false;
-				firstdialogue = false;
+			else if (scene.can_switch4)
+			{
+				scene.m_switch4 = true;
 			}
-
-			if (!deletefirstd && seconddialogue && MainEntities::Pickups() == 3) {
-				secondstart = clock();
-				sdialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Clair2.png");
-				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(sdialouge));
-				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(sdialouge));
-				canmove = false;
-				seconddialogue = false;
-				
+			else if (scene.can_switch5)
+			{
+				scene.m_switch5 = true;
 			}
 		}
 	}
 }
 
-void FortuneLevel::KeyboardUp()
+void HallLevelOutofNursery::KeyboardDown()
 {
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+	//auto& canMove = ECS::GetComponent<MoveUp>(MainEntities::MainPlayer());
+	//auto& canMoveD = ECS::GetComponent<MoveDown>(MainEntities::MainPlayer());
 
 
+	if (Input::GetKeyDown(Key::T))
+	{
+		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
+	}
+	if (canJump.m_canJump)
+	{
+		if (Input::GetKeyDown(Key::Space))
+		{
+			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 1600000.f), true);
+			canJump.m_canJump = false;
+		}
+	}
+}
+
+void HallLevelOutofNursery::KeyboardUp()
+{
 }

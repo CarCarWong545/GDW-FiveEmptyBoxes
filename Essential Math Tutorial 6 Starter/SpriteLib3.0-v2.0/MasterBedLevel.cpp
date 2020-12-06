@@ -31,10 +31,10 @@ int MasterBedLevel::ChangeScene() {
 		return 0;
 	}
 
-if (scene.m_switch1)
+if (scene.m_switch18)
 	{
-		scene.m_switch1 = false;
-		return 1;
+		scene.m_switch18 = false;
+		return 18;
 	}
 	else if (scene.m_switch2)
 	{
@@ -233,7 +233,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(-65.f), float32(30.f));
+			tempDef.position.Set(float32(-65.f), float32(10.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -404,7 +404,7 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-			ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(1);
+			ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(18);
 			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -969,9 +969,9 @@ if (Input::GetKeyDown(Key::E))
 	{
 		scene.m_switch0 = true;
 	}
-	else if (scene.can_switch1)
+	else if (scene.can_switch18)
 	{
-		scene.m_switch1 = true;
+		scene.m_switch18 = true;
 	}
 	else if (scene.can_switch2)
 	{

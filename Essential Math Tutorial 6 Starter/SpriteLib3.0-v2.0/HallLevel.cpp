@@ -164,7 +164,7 @@ void HallLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(34.f), float32(0.f));
+		tempDef.position.Set(float32(70.f), float32(0.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 

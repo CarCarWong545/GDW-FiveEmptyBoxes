@@ -1,6 +1,5 @@
-//#include "Game.h"
 #include "Utilities.h"
-#include "HallLevel2.h"
+#include "HallLevel2OutofKitchen.h"
 #include "HealthBar.h"
 static int healthBarUI = 0;
 static int healthBarBackUI = 0;
@@ -9,7 +8,7 @@ static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
 
-HallLevel2::HallLevel2(std::string name)
+HallLevel2OutofKitchen::HallLevel2OutofKitchen(std::string name)
 	: Scene(name)
 {
 	//No gravity this is a top down scene
@@ -17,10 +16,10 @@ HallLevel2::HallLevel2(std::string name)
 
 }
 
-int HallLevel2::ChangeScene()
+int HallLevel2OutofKitchen::ChangeScene()
 {
 	auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
-	
+
 	if (scene.m_switch7)
 	{
 		scene.m_switch7 = false;
@@ -28,8 +27,8 @@ int HallLevel2::ChangeScene()
 	}
 	else if (scene.m_switch8)
 	{
-	scene.m_switch8 = false;
-	return 8;
+		scene.m_switch8 = false;
+		return 8;
 	}
 	else if (scene.m_switch9)
 	{
@@ -53,7 +52,7 @@ int HallLevel2::ChangeScene()
 
 }
 
-void HallLevel2::InitScene(float windowWidth, float windowHeight)
+void HallLevel2OutofKitchen::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
@@ -156,7 +155,8 @@ void HallLevel2::InitScene(float windowWidth, float windowHeight)
 
 		ECS::GetComponent<Player>(entity).m_equip = true;
 		ECS::GetComponent<Player>(entity).m_facing = RIGHT;
-		ECS::GetComponent<Player>(entity).m_flashlight = false;
+
+		
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -167,7 +167,7 @@ void HallLevel2::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(30.f), float32(0.f));
+		tempDef.position.Set(float32(-90.f), float32(0.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -376,14 +376,14 @@ void HallLevel2::InitScene(float windowWidth, float windowHeight)
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
-void HallLevel2::Update()
+void HallLevel2OutofKitchen::Update()
 {
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 }
 
 
-void HallLevel2::KeyboardHold()
+void HallLevel2OutofKitchen::KeyboardHold()
 {
 
 	hb.UpdateHealthBar(healthBarUI, healthBarBackUI);
@@ -420,7 +420,7 @@ void HallLevel2::KeyboardHold()
 	{
 		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
 	}
-	
+
 	if (canDoor.m_door)
 	{
 		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
@@ -452,7 +452,7 @@ void HallLevel2::KeyboardHold()
 	}
 }
 
-void HallLevel2::KeyboardDown()
+void HallLevel2OutofKitchen::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
@@ -474,9 +474,9 @@ void HallLevel2::KeyboardDown()
 		}
 	}
 
-	
+
 }
 
-void HallLevel2::KeyboardUp()
+void HallLevel2OutofKitchen::KeyboardUp()
 {
 }

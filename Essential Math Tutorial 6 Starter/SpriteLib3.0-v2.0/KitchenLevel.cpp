@@ -27,10 +27,10 @@ int KitchenLevel::ChangeScene() {
 		return 0;
 	}
 
-	if (scene.m_switch6)
+	if (scene.m_switch22)
 	{
-		scene.m_switch6 = false;
-		return 6;
+		scene.m_switch22 = false;
+		return 22;
 	}
 	else if (scene.m_switch7)
 	{
@@ -172,7 +172,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(-85.f), float32(20.f));
+		tempDef.position.Set(float32(-85.f), float32(10.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -401,7 +401,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 10);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(6);
+		ECS::GetComponent<Trigger*>(entity) = new SceneTrigger(22);
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
 
@@ -760,9 +760,9 @@ void KitchenLevel::KeyboardDown()
 				{
 					scene.m_switch0 = true;
 				}
-				else if (scene.can_switch6)
+				else if (scene.can_switch22)
 				{
-					scene.m_switch6 = true;
+					scene.m_switch22 = true;
 				}
 				else if (scene.can_switch7)
 				{
