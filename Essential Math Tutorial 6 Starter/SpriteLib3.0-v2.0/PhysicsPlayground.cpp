@@ -755,7 +755,7 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 		{
 			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
 			player2.m_facing = LEFT;
-			//player2.m_moving = true;
+			player2.m_moving = true;
 			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
 
 		}
@@ -765,6 +765,11 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 			player2.m_facing = RIGHT;
 			player2.m_moving = true;
 			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(true);
+		}
+		else
+		{
+			player2.m_moving = false;
+			ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_move(false);
 		}
 		if (con->IsButtonPressed(XINPUT_GAMEPAD_Y)) //sprint
 		{
@@ -893,6 +898,13 @@ void PhysicsPlayground::GamepadDown(XInputController* con)
 		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_flash(false);
 
 	}
+	else
+	{
+		player2.m_suck = false;
+		ECS::GetComponent<Player>(MainEntities::MainPlayer()).Set_vacuum(false);
+	}
+
+	player2.AnimationUpdate();
 }
 void PhysicsPlayground::GamepadStick(XInputController* con)
 {
