@@ -40,7 +40,7 @@ protected:
 
 	bool seconddialogue = true;
 	clock_t secondstart;
-	bool seconddelete = true;
+	
 
 	double firststop;
 	double secondstop;
@@ -49,7 +49,7 @@ protected:
 	unsigned int sdialouge;
 
 	bool deletefirstd = true;
-
+	bool deletesecond = true;
 	bool isstunned = false;
 
 	clock_t startstuntime;

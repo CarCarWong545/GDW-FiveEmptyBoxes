@@ -285,7 +285,8 @@ void FortuneLevel::Update()
 	auto& players = ECS::GetComponent<Sprite>(MainEntities::MainPlayer());
 
 
-	if(!firstdialogue && deletefirstd) {
+
+	if (!firstdialogue && deletefirstd) {
 		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;
 		if (firststop >= 10) {
 			PhysicsBody::m_bodiesToDelete.push_back(dialouge);
@@ -295,6 +296,7 @@ void FortuneLevel::Update()
 			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 		}
+	}
 
 		if (!seconddialogue) {
 			secondstop = (clock() - secondstart) / CLOCKS_PER_SEC;
@@ -302,10 +304,15 @@ void FortuneLevel::Update()
 				PhysicsBody::m_bodiesToDelete.push_back(sdialouge);
 				seconddialogue = true;
 				canmove = true;
+
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+
+
 			}
 		}
 
-	}
+	
 
 	/*if (ghost_1)
 	{
@@ -383,7 +390,7 @@ void FortuneLevel::Update()
 	*/
 
 
-	if (player.m_facing == 1)//right
+	/*if (player.m_facing == 1)//right
 	{
 		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x + players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
@@ -393,7 +400,7 @@ void FortuneLevel::Update()
 		light.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 		v.SetPosition(b2Vec2(playerb.GetBody()->GetWorldCenter().x - players.GetWidth() / 2.f, playerb.GetBody()->GetWorldCenter().y - players.GetHeight() / 5.f), false);
 	}
-
+	*/
 }
 
 
@@ -510,13 +517,14 @@ void FortuneLevel::KeyboardDown()
 				firstdialogue = false;
 			}
 
-			if (!firstdialogue && seconddialogue && MainEntities::Pickups() == 3) {
+			if (!deletefirstd && seconddialogue && MainEntities::Pickups() == 3) {
 				secondstart = clock();
 				sdialouge = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Clair2.png");
-				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
-				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(dialouge));
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(sdialouge));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(sdialouge));
 				canmove = false;
 				seconddialogue = false;
+				
 			}
 		}
 	}
