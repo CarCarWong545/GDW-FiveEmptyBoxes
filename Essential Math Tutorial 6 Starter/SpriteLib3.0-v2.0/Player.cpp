@@ -114,7 +114,10 @@ void Player::MovementUpdate()
 		if (m_equip) {
 			m_flashlight = !m_flashlight;
 			std::string output = "The flashlight is: ";
+			if (MainEntities::Captured() <= 8) {
 				PhysicsPlayground::changeFlashlight(m_flashlight);
+			}
+				
 				if (m_flashlight) {
 					output += "ON";
 				}

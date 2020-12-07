@@ -72,6 +72,19 @@ void ReturnFoyer2::InitScene(float windowWidth, float windowHeight)
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
+	if (MainEntities::Captured() > 3 && MainEntities::Pickups == 0) {
+		if (MainEntities::Captured() == 4) {
+			MainEntities::Pickup(1);
+		}
+		if (MainEntities::Captured() == 5) {
+			MainEntities::Pickup(2);
+		}
+		if (MainEntities::Captured() == 8) {
+			MainEntities::Pickup(3);
+		}
+
+	}
+
 	//Setup MainCamera Entity
 	{
 		/*Scene::CreateCamera(m_sceneReg, vec4(-75.f, 75.f, -75.f, 75.f), -100.f, 100.f, windowWidth, windowHeight, true, true);*/
@@ -651,6 +664,20 @@ void ReturnFoyer2::KeyboardDown()
 	{
 		auto& scene = ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer());
 
+
+		if (MainEntities::Captured() > 3 && MainEntities::Pickups() == 0) {
+			if (MainEntities::Captured() == 4) {
+				MainEntities::Pickup(1);
+			}
+			if (MainEntities::Captured() == 5) {
+				MainEntities::Pickup(2);
+			}
+			if (MainEntities::Captured() == 8) {
+				MainEntities::Pickup(3);
+			}
+			scene.can_switch12 = true;
+		}
+
 		if (Input::GetKeyDown(Key::E))
 		{
 			if (scene.can_switch0)
@@ -671,6 +698,7 @@ void ReturnFoyer2::KeyboardDown()
 			}
 			else if (scene.can_switch12)
 			{
+				
 				if (MainEntities::Pickups() == 3)
 				{
 					scene.m_switch12 = true;

@@ -59,7 +59,7 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 	int* enemies = MainEntities::Enemies();
 
 	st.LoadData();
-	if (st.isGhostDefeated(8) == 1)//enemies[0] != 0
+	if (enemies[8] != 0)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}

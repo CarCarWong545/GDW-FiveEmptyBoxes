@@ -481,7 +481,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	
 
-	if (st.isFlashlightOn()) {
+	if (st.isFlashlightOn() == 0) {
 		auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 		equip.m_equip = true;
 	}
