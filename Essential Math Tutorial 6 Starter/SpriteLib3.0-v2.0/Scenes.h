@@ -18,6 +18,7 @@
 #include "Roof.h"
 #include "TitleScreen.h"
 #include "InfoScene.h"
+#include "EndScreen.h"
 
 
 #include "HallLevelOutofStudyRoom.h" // 16 put 14 and 15 above then remove comment

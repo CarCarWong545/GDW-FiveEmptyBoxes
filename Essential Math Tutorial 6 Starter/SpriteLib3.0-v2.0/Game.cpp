@@ -58,7 +58,7 @@ void Game::InitGame()
 	m_scenes.push_back(new HallLevel2OutofWash("Right Hallway")); //20
 	m_scenes.push_back(new HallLevel2OutofDining("Right Hallway")); //21
 	m_scenes.push_back(new HallLevel2OutofKitchen("Right Hallway")); //22
-	m_scenes.push_back(new HallLevel2OutofKitchen("final thanks for playing")); //23
+	m_scenes.push_back(new EndScreen("final thanks for playing")); //23
 
 	for (int i = 0; i < m_scenes.size(); i++)
 	{
@@ -66,7 +66,7 @@ void Game::InitGame()
 	}
 	 
 	//Sets active scene reference to our scene
-	m_activeScene = m_scenes[0];
+	m_activeScene = m_scenes[13];
 
 	m_activeScene->InitScene(float(BackEnd::GetWindowWidth()), float(BackEnd::GetWindowHeight()));
 

@@ -98,6 +98,7 @@
     <ClCompile Include="HallLevel2OutofKitchen.cpp" />
     <ClCompile Include="TitleScreen.cpp" />
     <ClCompile Include="InfoScene.cpp" />
+    <ClCompile Include="EndScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="HallLevel2OutofKitchen.h" />
     <ClInclude Include="TitleScreen.h" />
     <ClInclude Include="InfoScene.h" />
+    <ClInclude Include="EndScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\imgui\.travis.yml" />

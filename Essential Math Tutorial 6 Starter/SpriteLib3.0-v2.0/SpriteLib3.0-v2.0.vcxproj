@@ -153,6 +153,7 @@
     <ClInclude Include="DiningLevel.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EndScreen.h" />
     <ClInclude Include="EnemyTrigger.h" />
     <ClInclude Include="FlashlightTrigger.h" />
     <ClInclude Include="FortuneLevel.h" />
@@ -255,6 +256,7 @@
     <ClCompile Include="DiningLevel.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="EndScreen.cpp" />
     <ClCompile Include="EnemyTrigger.cpp" />
     <ClCompile Include="FlashlightTrigger.cpp" />
     <ClCompile Include="FortuneLevel.cpp" />
