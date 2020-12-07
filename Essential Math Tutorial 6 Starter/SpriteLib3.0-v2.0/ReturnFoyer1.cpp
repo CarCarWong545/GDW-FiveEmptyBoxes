@@ -686,9 +686,10 @@ void ReturnFoyer1::KeyboardDown()
 			dialoguestart = clock();
 			d = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
 			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(d));
-			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(d));
+			st2.LoadData();
 			st2.SaveData();
 			st2.LoadData();
+
 			std::cout << st2.numberGhostsDefeated() << std::endl;
 			dialogue = false;
 			canmove = false;

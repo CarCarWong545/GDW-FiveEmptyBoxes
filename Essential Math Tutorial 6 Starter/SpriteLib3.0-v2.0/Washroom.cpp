@@ -11,7 +11,7 @@ static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
-
+static SavingTrigger st;
 Washroom::Washroom(std::string name)
 	:Scene(name)
 {
@@ -57,7 +57,8 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
 
-	if (enemies[3] != 0) //4th enemy
+	st.LoadData();
+	if (st.isGhostDefeated(3) == 1)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}
@@ -65,7 +66,7 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 	{
 		ghost_1 = false;
 	}
-	if (enemies[4] != 0)
+	if (st.isGhostDefeated(6) == 1)
 	{
 		ghost_21 = true;
 	}
@@ -73,7 +74,7 @@ void Washroom::InitScene(float windowWidth, float windowHeight)
 	{
 		ghost_21 = false;
 	}
-	if (enemies[5] != 0)
+	if (st.isGhostDefeated(7) == 1)
 	{
 		ghost_31 = true;
 	}
@@ -783,6 +784,14 @@ void Washroom::Update()
 			int offset = 20; 
 			if (c_ghost.hp <= 0)
 			{
+				st.setGhostDefeated(3, true, true);
+				st.SaveData();
+				//std::cout << st.numberGhostsDefeated() << std::endl;
+				std::vector<int> setting = st.getSettings();
+				//for (int i : setting) {
+				//	std::cout << i << std::endl;
+				//}
+				st.LoadData();
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
 				ghost_1 = false;
@@ -920,6 +929,14 @@ void Washroom::Update()
 			int offset = 20;
 			if (c_ghost2.hp <= 0)
 			{
+				st.setGhostDefeated(6, true, true);
+				st.SaveData();
+				//std::cout << st.numberGhostsDefeated() << std::endl;
+				std::vector<int> setting = st.getSettings();
+				//for (int i : setting) {
+				//	std::cout << i << std::endl;
+				//}
+				st.LoadData();
 				PhysicsBody::m_bodiesToDelete.push_back(ghost21);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost22);
 				ghost_21 = false;
@@ -1019,6 +1036,14 @@ void Washroom::Update()
 
 			if (c_ghost3.hp <= 0)
 			{
+				st.setGhostDefeated(7, true, true);
+				st.SaveData();
+				//std::cout << st.numberGhostsDefeated() << std::endl;
+				std::vector<int> setting = st.getSettings();
+				//for (int i : setting) {
+				//	std::cout << i << std::endl;
+				//}
+				st.LoadData();
 				PhysicsBody::m_bodiesToDelete.push_back(ghost31);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost32);
 				ghost_31 = false;

@@ -11,7 +11,7 @@ static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
-
+static SavingTrigger st;
 
 
 MasterBedLevel::MasterBedLevel(std::string name)
@@ -62,7 +62,8 @@ void MasterBedLevel::InitScene(float windowWidth, float windowHeight)
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
 
-	if (enemies[1] != 0)
+	st.LoadData();
+	if (st.isGhostDefeated(1) == 1)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}
@@ -797,6 +798,14 @@ void MasterBedLevel::Update()
 				//if ((v.GetPosition().x - offset <= ghost.GetPosition().x && ghost.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost.GetPosition().y && ghost.GetPosition().y <= v.GetPosition().y + offset) || (v.GetPosition().x - offset <= ghost_2.GetPosition().x && ghost_2.GetPosition().x <= v.GetPosition().x + offset) && (v.GetPosition().y - offset <= ghost_2.GetPosition().y && ghost_2.GetPosition().y <= v.GetPosition().y + offset))
 				if (c_ghost.hp <= 0)
 				{
+					st.setGhostDefeated(1, true, true);
+					st.SaveData();
+					//std::cout << st.numberGhostsDefeated() << std::endl;
+					//std::vector<int> setting = st.getSettings();
+					//for (int i : setting) {
+					//	std::cout << i << std::endl;
+					//}
+					st.LoadData();
 					PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 					PhysicsBody::m_bodiesToDelete.push_back(ghost2);
 					ghost_1 = false;

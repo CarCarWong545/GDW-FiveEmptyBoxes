@@ -50,8 +50,13 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 	std::ofstream output;
 	output.open("Luigi.txt");
 	if (output.is_open()) {
+		int startingIndex = 0;
+		if (settings.size() <= settingsBeforeGhosts) {
+			LoadData();
+		}
 		if (!ignoreStats) {//if ignoreStats is on, it will not record the players current stats,\\
 			it will take them from settings instead
+			//startingIndex = 4;
 			int scene = 0;
 			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch0 == true) {
 				scene = 0;
@@ -62,23 +67,24 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch2 == true) {
 				scene = 2;
 			}
+			settings[0] = scene;
+			settings[1] = int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x);
+				settings[2] = int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().y);
+				settings[3] = MainEntities().Health();
 
-			output << scene << std::endl;
-			output << int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x) << std::endl;
-			output << int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().y) << std::endl;
-			output << MainEntities().Health() << std::endl;//MainEntities Health 
+			//output << scene << std::endl;
+			//output << int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x) << std::endl;
+			//output << int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().y) << std::endl;
+			//output << MainEntities().Health() << std::endl;//MainEntities Health 
 
-			output << int(ECS::GetComponent<Player>(MainEntities::MainPlayer()).m_flashlight) << std::endl;
+			//output << int(ECS::GetComponent<Player>(MainEntities::MainPlayer()).m_equip) ;
 		}
-		else
-		{
-			for (int i = 0; i < settingsBeforeGhosts; i++) {
-				output << settings[i] << std::endl;
-			}
+		for (int i = startingIndex; i < settings.size(); i++) {
+			output << settings[i] << std::endl;
 		}
 		
 
-		
+		/*
 		int index = 0;
 
 		for (int i : settings) {
@@ -89,10 +95,10 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 			index++;
 		}
 
-
-		
+		*/
+		output.close();
 	}
-	output.close();
+	
 
 
 }
@@ -104,13 +110,22 @@ void SavingTrigger::LoadData()//sets the indexes of settings
 	}
 	std::ifstream input;
 	input.open("Luigi.txt");
+	int index = 0;
 	if (input.is_open()) {
 		
 
 		while (input.good()) {
 			int setting;
-			input >> setting;
-			settings.push_back(setting);
+			
+			if (index < settingsBeforeGhosts + ghostNumber) {
+				input >> setting;
+				settings.push_back(setting);
+			}
+			else
+			{
+				break;
+			}
+			index++;
 			//std::cout << settings[index] << std::endl; // output for error handling 
 			
 		}
@@ -122,7 +137,7 @@ void SavingTrigger::LoadData()//sets the indexes of settings
 
 int SavingTrigger::getLuigiX()
 {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
 	
@@ -131,7 +146,7 @@ int SavingTrigger::getLuigiX()
 
 int SavingTrigger::getLuigiY()
 {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
 	return settings[2];
@@ -139,7 +154,7 @@ int SavingTrigger::getLuigiY()
 
 int SavingTrigger::getLuigiHP()
 {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
 	return settings[3];
@@ -147,7 +162,7 @@ int SavingTrigger::getLuigiHP()
 
 int SavingTrigger::getLuigiScene()
 {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
 	return settings[0];
@@ -155,18 +170,18 @@ int SavingTrigger::getLuigiScene()
 
 bool SavingTrigger::isFlashlightOn()//0 if true, 1 if false 
 {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
 	return settings[4];
 }
 
 int SavingTrigger::isGhostDefeated(int i) {//saveDataNow is to save the value right after putting it in settings. ignoreStats is for the SaveData function. ignoreStats = true will use data from settings only, as opposed to the real player values in the game
-	if (!settings.empty()) {//if settings are empty, we will fill them from the settins automatically
+	if (settings.empty()) {//if settings are empty, we will fill them from the settins automatically
 		LoadData();
 	}
-	if (settings.size() <= ((i-1) + settingsBeforeGhosts)) {//make sure your ghost i is 0 indexed!
-		return settings[(i-1) + settingsBeforeGhosts];
+	if (((i)+(settingsBeforeGhosts)) <= settings.size()) {//make sure your ghost i is 0 indexed!
+		return settings[(i) + (settingsBeforeGhosts)];
 	}
 	else
 	{
@@ -175,10 +190,10 @@ int SavingTrigger::isGhostDefeated(int i) {//saveDataNow is to save the value ri
 }
 
 void SavingTrigger::setGhostDefeated(int i, bool saveDataNow, bool ignoreStats) {//gets whether or not the ghost has been defeated. indexes start at 0. there is no hp storage for the ghost, only whether or not to spawn it in again.
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
-	settings[(i-1) + settingsBeforeGhosts] = 0;//make sure i is 0 indexed!
+	settings[(i) + (settingsBeforeGhosts)] = 0;//make sure i is 0 indexed!
 	if (saveDataNow) {
 		SaveData();
 	}
@@ -188,7 +203,7 @@ void SavingTrigger::setGhostDefeated(int i, bool saveDataNow, bool ignoreStats) 
 
 void SavingTrigger::setLuigiX(int i, bool saveDataNow, bool ignoreStats)
 {
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
 	settings[1] = i;
@@ -200,7 +215,7 @@ void SavingTrigger::setLuigiX(int i, bool saveDataNow, bool ignoreStats)
 
 void SavingTrigger::setLuigiY(int i, bool saveDataNow, bool ignoreStats)
 {
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
 	settings[2] = i;
@@ -212,7 +227,7 @@ void SavingTrigger::setLuigiY(int i, bool saveDataNow, bool ignoreStats)
 
 void SavingTrigger::setLuigiHP(int i, bool saveDataNow, bool ignoreStats)
 {
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
 	settings[3] = i;
@@ -224,7 +239,7 @@ void SavingTrigger::setLuigiHP(int i, bool saveDataNow, bool ignoreStats)
 
 void SavingTrigger::setLuigiScene(int i, bool saveDataNow, bool ignoreStats)
 {
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
 	settings[0] = i;
@@ -236,7 +251,7 @@ void SavingTrigger::setLuigiScene(int i, bool saveDataNow, bool ignoreStats)
 
 void SavingTrigger::setFlashlightOn(bool b, bool saveDataNow, bool ignoreStats)
 {
-	if (!settings.empty()) {
+	if (settings.empty()) {
 		LoadData();
 	}
 	settings[4] = b;
