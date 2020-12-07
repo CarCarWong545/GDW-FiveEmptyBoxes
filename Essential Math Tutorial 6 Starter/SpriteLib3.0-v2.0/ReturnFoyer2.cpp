@@ -72,7 +72,7 @@ void ReturnFoyer2::InitScene(float windowWidth, float windowHeight)
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
-	if (MainEntities::Captured() > 3 && MainEntities::Pickups == 0) {
+	/*if (MainEntities::Captured() > 3 && MainEntities::Pickups == 0) {
 		if (MainEntities::Captured() == 4) {
 			MainEntities::Pickup(1);
 		}
@@ -83,7 +83,7 @@ void ReturnFoyer2::InitScene(float windowWidth, float windowHeight)
 			MainEntities::Pickup(3);
 		}
 
-	}
+	}*/
 
 	//Setup MainCamera Entity
 	{
