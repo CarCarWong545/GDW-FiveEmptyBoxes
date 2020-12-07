@@ -35,7 +35,6 @@ protected:
 	bool isstunned = false;
 	int vacuum = 0;
 	bool ghost_1;
-	int pin1 = 0;
-	int pin2 = 0;
+	int pin = 0;
 	int pin3 = 0;
 };

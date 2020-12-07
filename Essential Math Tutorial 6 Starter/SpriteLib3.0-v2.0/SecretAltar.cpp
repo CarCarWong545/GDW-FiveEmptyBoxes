@@ -239,8 +239,6 @@ void SecretAltar::Update()
 	auto& playerb = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& players = ECS::GetComponent<Sprite>(MainEntities::MainPlayer());
 
-	auto& light = ECS::GetComponent<PhysicsBody>(flashlight);
-	auto& v = ECS::GetComponent<PhysicsBody>(vacuum);
 
 	if (!firstdialogue && deletefirstd) {
 		firststop = (clock() - firstdstart) / CLOCKS_PER_SEC;

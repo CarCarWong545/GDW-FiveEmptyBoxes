@@ -297,6 +297,103 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 		//tempSpr.SetTransparency(0);
 	}
 
+	
+
+	//pin 3 entity
+	{
+		auto entity = ECS::CreateEntity();
+		pin3 = entity;
+
+		//Add components  
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<CanDamage>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+
+		//Sets up the components  
+		std::string fileName = "spiky.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<Trigger*>(entity) = new SpikeTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
+
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(0.f), float32(60.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | ENEMY, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+		tempPhsBody.SetGravityScale(0);
+		tempPhsBody.SetFixedRotation(true);
+		//downwards velocity for the spikes
+		tempPhsBody.GetBody()->SetLinearVelocity(b2Vec2(0, -20));
+	}
+	//pin entity
+	{
+		auto entity = ECS::CreateEntity();
+		pin = entity;
+
+		//Add components  
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<CanDamage>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+
+		//Sets up the components  
+		std::string fileName = "spiky.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<Trigger*>(entity) = new SpikeTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
+
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(100.f), float32(60.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | ENEMY, 0.5f, 3.f);
+		//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
+
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+		tempPhsBody.SetGravityScale(0);
+		tempPhsBody.SetFixedRotation(true);
+		//downwards velocity for the spikes
+		tempPhsBody.GetBody()->SetLinearVelocity(b2Vec2(0, -20));
+
+	}
+
+
 	//flashlight trigger
 	{
 		//Creates entity
@@ -413,104 +510,6 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
-	if (ghost_1)
-	{
-		//pin entity
-		{
-			auto entity = ECS::CreateEntity();
-			pin1 = entity;
-
-			//Add components  
-			ECS::AttachComponent<Sprite>(entity);
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-			ECS::AttachComponent<CanDamage>(entity);
-			ECS::AttachComponent<Trigger*>(entity);
-
-
-			//Sets up the components  
-			std::string fileName = "spiky.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
-			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
-			ECS::GetComponent<Trigger*>(entity) = new SpikeTrigger();
-			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
-
-
-			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(100.f), float32(60.f));
-
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | ENEMY, 0.5f, 3.f);
-			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
-
-			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-			tempPhsBody.SetGravityScale(0);
-			tempPhsBody.SetFixedRotation(true);
-			//downwards velocity for the spikes
-			tempPhsBody.GetBody()->SetLinearVelocity(b2Vec2(0, -20));
-
-		}
-		
-		//pin 3 entity
-		{
-			auto entity = ECS::CreateEntity();
-			pin3 = entity;
-
-			//Add components  
-			ECS::AttachComponent<Sprite>(entity);
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-			ECS::AttachComponent<CanDamage>(entity);
-			ECS::AttachComponent<Trigger*>(entity);
-
-
-			//Sets up the components  
-			std::string fileName = "spiky.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 10);
-			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
-			ECS::GetComponent<Trigger*>(entity) = new SpikeTrigger();
-			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(MainEntities::MainPlayer());
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(ghost2);
-
-
-			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_dynamicBody;
-			tempDef.position.Set(float32(0.f), float32(60.f));
-
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, ETRIGGER, PLAYER | ENEMY, 0.5f, 3.f);
-			//tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetHeight() - shrinkY)/2.f), vec2(0.f, 0.f), false, PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER, 0.5f, 3.f);  
-
-			tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-			tempPhsBody.SetGravityScale(0);
-			tempPhsBody.SetFixedRotation(true);
-			//downwards velocity for the spikes
-			tempPhsBody.GetBody()->SetLinearVelocity(b2Vec2(0, -20));
-
-		}
-	}
 	
 	healthBarUI = Scene::createHealthBar();
 	healthBarBackUI = Scene::createHealthBarBack();
@@ -548,8 +547,8 @@ void Roof::Update()
 
 		auto& ghost_2 = ECS::GetComponent<PhysicsBody>(ghost2);
 		ghost_2.SetPosition(b2Vec2(ghost.GetBody()->GetWorldCenter()), false);
-		ghost.GetBody()->SetAwake(true);
-		ghost_2.GetBody()->SetAwake(true);
+		//ghost.GetBody()->SetAwake(true);
+		//ghost_2.GetBody()->SetAwake(true);
 		auto& anims = ECS::GetComponent<AnimationController>(ghost2);
 		b2Vec2 direction = b2Vec2(playerb.GetPosition().x - ghost.GetPosition().x, playerb.GetPosition().y - ghost.GetPosition().y);
 		direction.Normalize();
@@ -557,9 +556,11 @@ void Roof::Update()
 		float scale = 25.f;
 		direction *= scale;
 		c_ghost.m_suck = false; //cant suck the ghost
-		auto& pin_1 = ECS::GetComponent<PhysicsBody>(pin1);
-		//auto& pin_2 = ECS::GetComponent<PhysicsBody>(pin2);
+		auto& pin_1 = ECS::GetComponent<PhysicsBody>(pin);
 		auto& pin_3 = ECS::GetComponent<PhysicsBody>(pin3);
+
+		pin_1.GetBody()->SetAwake(true);
+		pin_3.GetBody()->SetAwake(true);
 
 		//if the pin falls below the floor, bring it back up to the top
 		
@@ -670,7 +671,7 @@ void Roof::Update()
 		PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 		PhysicsBody::m_bodiesToDelete.push_back(ghost2);
 		PhysicsBody::m_bodiesToDelete.push_back(pin3);
-		PhysicsBody::m_bodiesToDelete.push_back(pin1);
+		PhysicsBody::m_bodiesToDelete.push_back(pin);
 		ghost_1 = false;
 
 		enemies[8] = 0; //7th enemy
