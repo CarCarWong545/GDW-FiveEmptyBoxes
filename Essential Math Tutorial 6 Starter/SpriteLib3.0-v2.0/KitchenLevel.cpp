@@ -465,7 +465,7 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 	healthBarBackUI = Scene::createHealthBarBack();
 	ghostBackUI = Scene::createGhostBack();
 	ghostFillUI = Scene::createGhostFill();
-	ghostsUI = Scene::createGhosts(13);
+	ghostsUI = Scene::createGhosts(9);
 
 	
 

@@ -226,6 +226,7 @@ int Scene::createHealthBarBack() {
 std::vector<int> Scene::createGhosts(int totalGhostCount)
 {
 	std::vector<int> ghosts;
+	
 	for (int i = 0; i < totalGhostCount; i++) {
 		auto entity = ECS::CreateEntity();
 
@@ -235,7 +236,8 @@ std::vector<int> Scene::createGhosts(int totalGhostCount)
 
 		//Set up the components
 		std::string fileName = "GhostFrame.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, (64/totalGhostCount), 8);
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, (63 / totalGhostCount) + 1, 8);
+
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, 45.f, 71.f));
 		ghosts.push_back(entity);
