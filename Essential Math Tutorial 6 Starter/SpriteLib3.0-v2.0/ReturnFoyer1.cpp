@@ -675,8 +675,8 @@ void ReturnFoyer1::KeyboardDown()
 		}
 
 		if (saveable.m_save) {
-
-			st2.SaveData(false);
+			st2.LoadData();
+			st2.SaveData();
 			st2.LoadData();
 
 			std::cout << st2.numberGhostsDefeated() << std::endl;

@@ -11,6 +11,7 @@ static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
+static SavingTrigger st;
 
 Roof::Roof(std::string name)
 	:Scene(name)
@@ -57,7 +58,8 @@ void Roof::InitScene(float windowWidth, float windowHeight)
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
 
-	if (enemies[8] != 0)
+	st.LoadData();
+	if (st.isGhostDefeated(8) == 1)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}
@@ -665,6 +667,14 @@ void Roof::Update()
 		}
 	if (c_ghost.hp <= 0)
 	{
+		st.setGhostDefeated(8, true, true);
+		st.SaveData();
+		//std::cout << st.numberGhostsDefeated() << std::endl;
+		std::vector<int> setting = st.getSettings();
+		//for (int i : setting) {
+		//	std::cout << i << std::endl;
+		//}
+		st.LoadData();
 		PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 		PhysicsBody::m_bodiesToDelete.push_back(ghost2);
 		PhysicsBody::m_bodiesToDelete.push_back(pin3);

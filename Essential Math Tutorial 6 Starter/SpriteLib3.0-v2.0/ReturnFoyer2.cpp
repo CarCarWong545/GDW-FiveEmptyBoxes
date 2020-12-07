@@ -13,7 +13,7 @@ static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
 
-// SavingTrigger st2;
+SavingTrigger st3;
 
 ReturnFoyer2::ReturnFoyer2(std::string name)
 	: Scene(name)
@@ -673,14 +673,14 @@ void ReturnFoyer2::KeyboardDown()
 			equip.m_equip = true;
 		}
 
-		/*
+		
 		if (saveable.m_save) {
-
-			st2.SaveData(false);
-
-			std::cout << st2.numberGhostsDefeated() << std::endl;
+			st3.LoadData();
+			st3.SaveData();
+			st3.LoadData();
+			//std::cout << st2.numberGhostsDefeated() << std::endl;
 		}
-		*/
+		
 	}
 
 

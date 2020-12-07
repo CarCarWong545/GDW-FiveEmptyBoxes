@@ -11,6 +11,7 @@ static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
+static SavingTrigger st;
 
 KitchenLevel::KitchenLevel(std::string name)
 	:Scene(name)
@@ -57,7 +58,8 @@ void KitchenLevel::InitScene(float windowWidth, float windowHeight)
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
 
-	if (enemies[6] != 0) //7th enemy
+	st.LoadData();
+	if (st.isGhostDefeated(5) == 1)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}
@@ -572,6 +574,14 @@ void KitchenLevel::Update()
 			int offset = 20;
 			if (c_ghost.hp <= 0)
 			{
+				st.setGhostDefeated(5, true, true);
+				st.SaveData();
+				//std::cout << st.numberGhostsDefeated() << std::endl;
+				std::vector<int> setting = st.getSettings();
+				//for (int i : setting) {
+				//	std::cout << i << std::endl;
+				//}
+				st.LoadData();
 				PhysicsBody::m_bodiesToDelete.push_back(ghost1);
 				PhysicsBody::m_bodiesToDelete.push_back(ghost2);
 				ghost_1 = false;

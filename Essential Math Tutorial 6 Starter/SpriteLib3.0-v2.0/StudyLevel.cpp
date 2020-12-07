@@ -11,6 +11,7 @@ static int ghostBackUI = 0;
 static int ghostFillUI = 0;
 static std::vector<int> ghostsUI;
 static HealthBar hb;
+static SavingTrigger st;
 StudyLevel::StudyLevel(std::string name)
 	: Scene(name)
 {
@@ -56,8 +57,8 @@ void StudyLevel::InitScene(float windowWidth, float windowHeight)
 	//Attach the register
 	ECS::AttachRegister(m_sceneReg);
 	int* enemies = MainEntities::Enemies();
-	
-	if (enemies[0] != 0)
+	st.LoadData();
+	if (st.isGhostDefeated(0) == 1)//enemies[0] != 0
 	{
 		ghost_1 = true;
 	}
@@ -606,6 +607,16 @@ void StudyLevel::Update()
 				enemies[0] = 0;
 				MainEntities::Enemies(enemies);
 				MainEntities::Capture(MainEntities::Captured() + 1);
+				
+				
+				st.setGhostDefeated(0, true,true);
+				st.SaveData();
+				std::cout << st.numberGhostsDefeated() << std::endl;
+				std::vector<int> setting = st.getSettings();
+				for (int i : setting) {
+					std::cout << i << std::endl;
+				}
+				st.LoadData();
 				//spawn heart
 				{
 					//Creates entity

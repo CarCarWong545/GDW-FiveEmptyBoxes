@@ -30,7 +30,7 @@ public:
 	std::vector<int> getSettings();//returns the settings int vector
 	std::vector<int> settings;//the settings themselves
 	int settingsBeforeGhosts = 5;//scene,x,y,hp,flashlight
-	int ghostNumber = (5 * 2); //(rooms * number of ghosts per room)
+	int ghostNumber = 9; //(rooms * number of ghosts per room)
 
 	void defaultSave();//sets up for the first save (DONT RUN THIS, ITS FOR DEBUG PURPOSES ONLY) 
 protected:

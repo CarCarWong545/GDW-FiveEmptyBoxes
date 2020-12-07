@@ -13,7 +13,7 @@ static int ghostBar = 0;
 static int ghostBarBack = 0;
 static std::vector<int> ghostCount;
 VignetteEffect* ve;
-
+bool alreadyLoadedData = false;
 PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
@@ -45,6 +45,11 @@ int PhysicsPlayground::ChangeScene() {
 void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 {
 	MainEntities::Health(100);
+	if (!alreadyLoadedData) {
+		st.LoadData();
+		alreadyLoadedData = true;
+	}
+
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
 
@@ -201,7 +206,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		std::string animations = "Luigi.json";
 		//ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 3.f));
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3((float)st.getLuigiX(), (float)st.getLuigiY(), 3.f));
 		ECS::GetComponent<Player>(entity).InitPlayer(fileName, animations, 40, 30, &ECS::GetComponent<Sprite>(entity),
 			&ECS::GetComponent<AnimationController>(entity),
 			&ECS::GetComponent<Transform>(entity));
@@ -215,7 +220,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_dynamicBody;
-		tempDef.position.Set(float32(33.f), float32(30.f));
+		tempDef.position.Set(float32((float)st.getLuigiX()), float32((float)st.getLuigiY()));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -226,6 +231,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetFixedRotation(true);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 		tempPhsBody.SetGravityScale(1.f);
+		
 	}
 	//e.gadd
 	{
@@ -474,6 +480,12 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	
+
+	if (st.isFlashlightOn()) {
+		auto& equip = ECS::GetComponent<Player>(MainEntities::MainPlayer());
+		equip.m_equip = true;
+	}
+	MainEntities::Capture(st.numberGhostsDefeated());
 }
 
 void PhysicsPlayground::Update()
@@ -484,7 +496,7 @@ void PhysicsPlayground::Update()
 
 	if (!firstdialogue && deletefirstd) {
 		firstdstop = (clock() - firstdstart) / CLOCKS_PER_SEC;
-		if (firstdstop >= 6) {
+		if (firstdstop >= 5) {
 			PhysicsBody::m_bodiesToDelete.push_back(fd);
 			deletefirstd = false;
 		}
@@ -498,7 +510,7 @@ void PhysicsPlayground::Update()
 	}
 
 	if (!secondd && deletesecondd) {
-		secondstop = (clock() - 4.5) / CLOCKS_PER_SEC;
+		secondstop = (clock() - 3) / CLOCKS_PER_SEC;
 		if (secondstop >= secondspassforfirst) {
 			PhysicsBody::m_bodiesToDelete.push_back(sd);
 			deletesecondd = false;
@@ -513,7 +525,7 @@ void PhysicsPlayground::Update()
 
 	if (!fourthd && deletefourthd) {
 		fourthstop = (clock() - fourthstart) / CLOCKS_PER_SEC;
-		if (fourthstop >= 8.5) {
+		if (fourthstop >= 4) {
 			PhysicsBody::m_bodiesToDelete.push_back(ffd);
 			deletefourthd = false;
 			
@@ -527,7 +539,7 @@ void PhysicsPlayground::Update()
 
 	if (!fifthd && deletefifthd) {
 		fifthstop = (clock() - fifthstart) / CLOCKS_PER_SEC;
-		if (fifthstop >= 4) {
+		if (fifthstop >= 2) {
 			PhysicsBody::m_bodiesToDelete.push_back(fffd);
 			deletefifthd = false;
 			DialoguedoneEGadd = true;
@@ -670,25 +682,40 @@ void PhysicsPlayground::KeyboardDown()
 	}
 	if (Input::GetKeyDown(Key::G))
 	{
-		if (saveable.m_save) {
-			
-			st.defaultSave();
-			st.LoadData();
-		}
+		
 	}
 	if (Input::GetKeyDown(Key::G))
 	{
-		MainEntities().Health(MainEntities().Health() - 1);
-		
+		//MainEntities().Health(MainEntities().Health() - 1);
+		if (saveable.m_save) {
+			
+			//st.defaultSave();
+			st.LoadData();
+		}
 	}
 	if (Input::GetKeyDown(Key::H))
 	{
-		MainEntities().Capture(MainEntities().Captured() + 1);
+		//MainEntities().Capture(MainEntities().Captured() + 1);
+		if (saveable.m_save) {
+
+			//st.defaultSave();
+			st.LoadData();
+			st.SaveData();
+			st.LoadData();
+		}
 	}
 	if (Input::GetKeyDown(Key::F))
 	{
+		if (saveable.m_save) {
+			//st.LoadData();
+			st.SaveData();
+			//st.defaultSave();
+			st.LoadData();
+		}
+
 		if (isdialogue.dialouge) {
 			if (firstdialogue) {
+				st.setFlashlightOn(true,true);
 				firstdstart = clock();
 				fd = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Egadd Dialouge 1.png");
 				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(fd));
@@ -710,9 +737,9 @@ void PhysicsPlayground::KeyboardDown()
 			td = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
 			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
 			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(td));
-			st.SaveData();
-			st.LoadData();
-			std::cout << st.numberGhostsDefeated() << std::endl;
+			//st.SaveData();
+			//st.LoadData();
+			//std::cout << st.numberGhostsDefeated() << std::endl;
 			thirdd = false;
 			canmove = false;
 		}
