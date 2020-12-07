@@ -59,14 +59,19 @@ void HealthBar::UpdateGhostCounter(std::vector<int> ghosts, int fillColour, int 
 	int ghostphoto = (bcspr.GetWidth() / (ghosts.size()));
 	
 	int fcoffset = ((bcspr.GetWidth()/2) - (ghostscaptured*(ghostphoto/2)));
+	
 	//(ghostscaptured * ghostphoto) - (((ghosts.size() / 2) + 1) * ghostphoto) - (ghostscaptured * (ghostphoto/2));
 					//((ghostscaptured * ghostphoto) - (((ghosts.size()/2)+1) * ghostphoto)) - (((ghostscaptured) * ghostphoto)/2);
 	
 
 
 	fcspr.SetWidth((ghostscaptured) * ghostphoto);
+	double extra = 0;
+	for (int i = 0; i < ghostscaptured; i++) {
+		extra += 0.5;
+	}
 	bcspr.SetWidth(ghosts.size() * ghostphoto);
-	fcui.SetPositionX((cameraH.GetCam()->GetPosition().x + 60) - fcoffset);
+	fcui.SetPositionX((cameraH.GetCam()->GetPosition().x + (60 + (int)extra)) - fcoffset);
 	fcui.SetPositionY(cameraV.GetCam()->GetPosition().y - 72);
 
 	bcui.SetPositionX(cameraH.GetCam()->GetPosition().x + 60);
@@ -79,7 +84,7 @@ void HealthBar::UpdateGhostCounter(std::vector<int> ghosts, int fillColour, int 
 		ghostFilter.SetPositionY(cameraV.GetCam()->GetPosition().y - 72);
 		ghostFilter.SetPositionX((cameraH.GetCam()->GetPosition().x + 60) + ((bcspr.GetWidth()/2) - (ghostphoto/2) - (index*(ghostphoto))));
 		index++;
-
+		
 	}
 
 }

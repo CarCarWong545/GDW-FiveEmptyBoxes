@@ -128,7 +128,7 @@ void ReturnFoyer2::InitScene(float windowWidth, float windowHeight)
 		//Set up the components
 		std::string fileName = "toad.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 23, 26);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(-16.f, 3.f, 2.f));
 		ECS::GetComponent<Trigger*>(entity) = new SavingTrigger();
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
@@ -543,7 +543,7 @@ void ReturnFoyer2::InitScene(float windowWidth, float windowHeight)
 	healthBarBackUI = Scene::createHealthBarBack();
 	ghostBackUI = Scene::createGhostBack();
 	ghostFillUI = Scene::createGhostFill();
-	ghostsUI = Scene::createGhosts(13);
+	ghostsUI = Scene::createGhosts(9);
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));

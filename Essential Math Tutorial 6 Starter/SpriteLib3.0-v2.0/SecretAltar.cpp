@@ -218,7 +218,7 @@ void SecretAltar::InitScene(float windowWidth, float windowHeight)
 	healthBarBackUI = Scene::createHealthBarBack();
 	ghostBackUI = Scene::createGhostBack();
 	ghostFillUI = Scene::createGhostFill();
-	ghostsUI = Scene::createGhosts(13);
+	ghostsUI = Scene::createGhosts(9);
 	
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));

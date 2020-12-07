@@ -67,9 +67,9 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 			if (ECS::GetComponent<SwitchScene>(MainEntities::MainPlayer()).m_switch2 == true) {
 				scene = 2;
 			}
-			settings[0] = scene;
-			settings[1] = int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x);
-				settings[2] = int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().y);
+			settings[0] = 0;//scene;
+			settings[1] = 0; //int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().x);
+				settings[2] = 5;//int(ECS::GetComponent<Transform>(MainEntities::MainPlayer()).GetPosition().y);
 				settings[3] = MainEntities().Health();
 
 			//output << scene << std::endl;
@@ -105,7 +105,7 @@ void SavingTrigger::SaveData(bool ignoreStats)//ignoreStats ignores the players 
 
 void SavingTrigger::LoadData()//sets the indexes of settings
 {
-	if (settings.size() > 0) {//if settings are empty, we will just load and save (so there are no errors!)
+	if (settings.size() == 0) {//if settings are empty, we will just load and save (so there are no errors!)
 		settings.clear();
 	}
 	std::ifstream input;

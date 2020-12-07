@@ -189,7 +189,7 @@ void HallLevelOutofMaster::InitScene(float windowWidth, float windowHeight)
 	healthBarBackUI = Scene::createHealthBarBack();
 	ghostBackUI = Scene::createGhostBack();
 	ghostFillUI = Scene::createGhostFill();
-	ghostsUI = Scene::createGhosts(13);
+	ghostsUI = Scene::createGhosts(9);
 	//Scene::BoxMaker(325, 2, 30.f, 52.f, 0, 0);
 	//door trigger to FOYER
 	{
