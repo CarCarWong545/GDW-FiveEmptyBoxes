@@ -561,8 +561,8 @@ void Roof::Update()
 		auto& pin_1 = ECS::GetComponent<PhysicsBody>(pin);
 		auto& pin_3 = ECS::GetComponent<PhysicsBody>(pin3);
 
-		pin_1.GetBody()->SetAwake(true);
-		pin_3.GetBody()->SetAwake(true);
+		//pin_1.GetBody()->SetAwake(true);
+		//pin_3.GetBody()->SetAwake(true);
 
 		//if the pin falls below the floor, bring it back up to the top
 		
@@ -574,7 +574,7 @@ void Roof::Update()
 		
 		if (pin_3.GetPosition().y <= 0)
 		{
-			pin_3.GetBody()->SetTransform(b2Vec2(pin_3.GetPosition().x, 100), 0);
+			pin_3.GetBody()->SetTransform(b2Vec2(80, 100), 0);
 
 		}
 		

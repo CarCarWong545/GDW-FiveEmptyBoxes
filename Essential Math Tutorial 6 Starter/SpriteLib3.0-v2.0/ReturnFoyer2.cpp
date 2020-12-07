@@ -698,7 +698,7 @@ void ReturnFoyer2::KeyboardDown()
 			st3.SaveData();
 			st3.LoadData();
 		}
-		*/
+		
 	}
 
 
