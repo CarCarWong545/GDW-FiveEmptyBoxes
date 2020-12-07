@@ -560,6 +560,17 @@ void ReturnFoyer2::Update()
 	auto& player = ECS::GetComponent<Player>(MainEntities::MainPlayer());
 	player.Update();
 
+	if (!dialogue) {
+		dialoguestop = (clock() - dialoguestart) / CLOCKS_PER_SEC;
+		if (dialoguestop > 3) {
+			canmove = true;
+			dialogue = true;
+			PhysicsBody::m_bodiesToDelete.push_back(d);
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+		}
+	}
+
 }
 
 
@@ -673,15 +684,17 @@ void ReturnFoyer2::KeyboardDown()
 			Scene::EnviroMaker(20, 20, -5, 90, 90, 1, "PHDialogue");
 			equip.m_equip = true;
 		}
-
-		/*
-		if (saveable.m_save) {
-
-			st2.SaveData(false);
-
-			std::cout << st2.numberGhostsDefeated() << std::endl;
+		if (saveable.m_save && dialogue) {
+			dialoguestart = clock();
+			d = Scene::DialogueMaker(200, 40, 30, 60, 5, 0, 1, "Dialogue.png");
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(d));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(d));
+			//st3.SaveData();
+			//st3.LoadData();
+			//std::cout << st2.numberGhostsDefeated() << std::endl;
+			dialogue = false;
+			canmove = false;
 		}
-		*/
 	}
 
 

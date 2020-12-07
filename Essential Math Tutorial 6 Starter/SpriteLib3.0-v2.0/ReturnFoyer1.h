@@ -22,4 +22,14 @@ protected:
 	PhysicsPlaygroundListener listener;
 
 	int ball = 0;
+
+	bool dialogue = true;
+
+	clock_t dialoguestart;
+
+	double dialoguestop;
+
+	bool canmove = true;
+
+	unsigned int d;
 };
